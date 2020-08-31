@@ -11,8 +11,8 @@
 //
 // Global CONSTANTS (TypeScript 1.5 introduced const. Very cool.)
 //
-const APP_NAME: string    = "TSOS";   // 'cause Bob and I were at a loss for a better name.
-const APP_VERSION: string = "0.07";   // What did you expect?
+const APP_NAME: string    = "MARIA";   // 'cause Bob and I were at a loss for a better name.
+const APP_VERSION: string = "0.011111";   // What did you expect?
 
 const CPU_CLOCK_INTERVAL: number = 100;   // This is in ms (milliseconds) so 1000 = 1 second.
 
@@ -42,11 +42,11 @@ var _Trace: boolean = true;              // Default the OS trace to be on.
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;
 var _KernelInterruptQueue: TSOS.Queue = null;
-var _KernelInputQueue: TSOS.Queue = null; 
-var _KernelBuffers = null; 
+var _KernelInputQueue: TSOS.Queue = null;
+var _KernelBuffers = null;
 
 // Standard input and output
-var _StdIn:  TSOS.Console = null; 
+var _StdIn:  TSOS.Console = null;
 var _StdOut: TSOS.Console = null;
 
 // UI
