@@ -252,6 +252,24 @@ module TSOS {
                     case "help":
                         _StdOut.putText("Help displays a list of (hopefully) valid commands.");
                         break;
+                    case "ver":
+                        _StdOut.putText("Ver displays the current version of this OS.");
+                        break;
+                    case "shutdown":
+                        _StdOut.putText("This stops the OS running.");
+                        break;
+                    case "cls":
+                        _StdOut.putText("Cls clears the screen and resets the cursor to the top of the page.");
+                        break;
+                    case "date":
+                        _StdOut.putText("Date displays the current date and time... if time is even real that is.");
+                        break;
+                    case "whereami":
+                        _StdOut.putText("Whereami displays the users current location.");
+                        break;
+                    case "horoscope":
+                        _StdOut.putText("Horoscope confers with the stars to display the user's daily horoscope.");
+                        break;
                     // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
