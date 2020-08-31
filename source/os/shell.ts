@@ -85,6 +85,12 @@ module TSOS {
                                   "-Displays the user's current location.");
             this.commandList[this.commandList.length] = sc;
 
+            // horoscope
+            sc = new ShellCommand(this.shellHoroscope,
+                                  "horoscope",
+                                  "-Displays a daily horoscope for the user.");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -303,6 +309,10 @@ module TSOS {
 
         public shellWhereami(args: string[]) {
             _StdOut.putText("You are currently up my butt");
+        }
+
+        public shellHoroscope(args: string[]) {
+            _StdOut.putText("Today you have power in spirituality, self, and love. Try to get in touch with the areas in your life where you still have some growing to do.");
         }
 
     }

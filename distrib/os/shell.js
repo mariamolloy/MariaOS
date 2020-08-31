@@ -51,6 +51,9 @@ var TSOS;
             // whereami
             sc = new TSOS.ShellCommand(this.shellWhereami, "whereami", "-Displays the user's current location.");
             this.commandList[this.commandList.length] = sc;
+            // horoscope
+            sc = new TSOS.ShellCommand(this.shellHoroscope, "horoscope", "-Displays a daily horoscope for the user.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -256,6 +259,9 @@ var TSOS;
         }
         shellWhereami(args) {
             _StdOut.putText("You are currently up my butt");
+        }
+        shellHoroscope(args) {
+            _StdOut.putText("Today you have power in spirituality, self, and love.\n Try to get in touch with the areas in your life where you still have some growing to do.");
         }
     }
     TSOS.Shell = Shell;
