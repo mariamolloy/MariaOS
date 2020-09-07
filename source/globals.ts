@@ -39,6 +39,9 @@ var _FontHeightMargin: number = 4;       // Additional space added to font size 
 
 var _Trace: boolean = true;              // Default the OS trace to be on.
 
+var _Today: new Date();
+var _Status: string = "hi"; //Status displayed in task bar that the user can edit
+
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;
 var _KernelInterruptQueue: TSOS.Queue = null;

@@ -54,6 +54,9 @@ var TSOS;
             // horoscope
             sc = new TSOS.ShellCommand(this.shellHoroscope, "horoscope", "-Displays a daily horoscope for the user.");
             this.commandList[this.commandList.length] = sc;
+            //status <string>
+            sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Sets the status.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -280,6 +283,15 @@ var TSOS;
         }
         shellHoroscope(args) {
             _StdOut.putText("Today you have power in spirituality, self, and love. Try to get in touch with the areas in your life where you still have some growing to do.");
+        }
+        shellStatus(args) {
+            if (args.length > 0) {
+                _Status = args[0];
+                _StdOut.putText(_Status);
+            }
+            else {
+                _StdOut.putText("Usage: status <string>  Please supply a string.");
+            }
         }
     }
     TSOS.Shell = Shell;
