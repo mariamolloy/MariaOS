@@ -97,6 +97,12 @@ module TSOS {
                                   "<string> - Sets the status.");
             this.commandList[this.commandList.length] = sc;
 
+            //load
+            sc = new ShellCommand(this.shellLoad,
+                                  "load",
+                                  "Validates and loads the user program.");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -347,6 +353,16 @@ module TSOS {
             _StdOut.putText("Usage: status <string>  Please supply a string.");
           }
         }
+
+        public shellLoad (args){
+          var userInp = document.getElementById('taProgramInput').value.trim();
+          if (userInp.length == 0){
+            _StdOut.putText("No User Input was entered.");
+          } else {
+
+          }
+        }
+
 
     }
 }
