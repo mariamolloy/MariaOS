@@ -32,7 +32,7 @@
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment the line below to enable GLaDOS testing. -->
    <script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip0.js"></script>
-   
+
 </head>
 
 <body onload="onDocumentLoad()">
@@ -67,10 +67,10 @@
              onclick="TSOS.Control.hostBtnReset_click(this);">
    </div>
 
-   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
+   <div id="divConsole" style="margin:4px; max-width:500px; max-height:500px; float:left; overflow: scroll">
       <canvas id="display"
-              width="500px"
-              height="500px"
+              width="1000px"
+              height="1000px"
               tabindex="3">
       </canvas>
    </div>

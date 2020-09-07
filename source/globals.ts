@@ -39,7 +39,7 @@ var _FontHeightMargin: number = 4;       // Additional space added to font size 
 
 var _Trace: boolean = true;              // Default the OS trace to be on.
 
-var _Status: string = "[status]";
+var _Status: string = "[status]";					//Status set by the user
 
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;
