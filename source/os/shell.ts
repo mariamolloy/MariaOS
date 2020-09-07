@@ -91,6 +91,12 @@ module TSOS {
                                   "-Displays a daily horoscope for the user.");
             this.commandList[this.commandList.length] = sc;
 
+            // status
+            sc = new ShellCommand(this.shellStatus,
+                                  "status",
+                                  "<string> - Sets the status.");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
 
@@ -331,6 +337,15 @@ module TSOS {
 
         public shellHoroscope(args: string[]) {
             _StdOut.putText("Today you have power in spirituality, self, and love. Try to get in touch with the areas in your life where you still have some growing to do.");
+        }
+
+        public shellStatus(args: string[]) {
+          if (args.length > 0){
+            _Status = args[0];
+            _StdOut.putText("New status: " + _Status);
+          } else {
+            _StdOut.putText("Usage: status <string>  Please supply a string.");
+          }
         }
 
     }
