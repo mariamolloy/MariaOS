@@ -35,7 +35,7 @@ module TSOS {
             var chr = "";
             // Check to see if we even want to deal with the key that was pressed.
             if ((keyCode >= 65) && (keyCode <= 90)) { // letter
-                if (isShifted === true) { 
+                if (isShifted === true) {
                     chr = String.fromCharCode(keyCode); // Uppercase A-Z
                 } else {
                     chr = String.fromCharCode(keyCode + 32); // Lowercase a-z
