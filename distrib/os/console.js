@@ -7,14 +7,12 @@
 var TSOS;
 (function (TSOS) {
     class Console {
-        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, canvasSize = _Canvas.height, oneLine = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-            _FontHeightMargin, buffer = "") {
+        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, canvasSize = _Canvas.height, buffer = "") {
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
             this.currentYPosition = currentYPosition;
             this.canvasSize = canvasSize;
-            this.oneLine = oneLine;
             this.buffer = buffer;
         }
         init() {
@@ -67,14 +65,17 @@ var TSOS;
             }
         }
         advanceLine() {
+            var oneLine = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                _FontHeightMargin;
+            // Handles scrolling
             if (this.currentYPosition >= this.canvasSize) {
-                let prevY = this.currentYPosition;
-                let canv = document.getElementById('canvas');
-                let ctx = canv.getContext('2d');
+                var prevY = this.currentYPosition;
+                var canv = document.getElementById('display');
+                var ctx = canv.getContext('2d');
                 let imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height);
                 ctx.putImageData(imageData, 0, 0 - _DefaultFontSize);
                 this.currentXPosition = 0;
-                this.currentYPosition = this.prevY;
+                this.currentYPosition = prevY;
             }
             else {
                 this.currentXPosition = 0;
@@ -83,20 +84,7 @@ var TSOS;
                  * Font descent measures from the baseline to the lowest point in the font.
                  * Font height margin is extra spacing between the lines.
                  */
-                this.currentYPosition += _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-                    _FontHeightMargin;
-            }
-            // TODO: Handle scrolling. (iProject 1)
-        }
-        scrollScreen() {
-            if (this.currentYPosition > canvasSize) {
-                let prevY = this.currentYPosition;
-                const canv = document.getElementById('canvas');
-                const ctx = canv.getContext('2d');
-                let imageData = ctx.getImageData(0, oneLine, _Canvas.width, _Canvas.height);
-                ctx.putImageData(imageData, 0, 0);
-                this.currentXPosition = 0;
-                this.currentYPosition = prevY;
+                this.currentYPosition += oneLine;
             }
         }
     }

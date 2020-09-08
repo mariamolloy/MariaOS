@@ -76,15 +76,15 @@ module TSOS {
 
           // Handles scrolling
           if (this.currentYPosition >= this.canvasSize){
-            let prevY = this.currentYPosition;
+            var prevY = this.currentYPosition;
 
-            let canv = document.getElementById('canvas');
-            let ctx = canv.getContext('2d');
+            var canv = document.getElementById('display');
+            var ctx = canv.getContext('2d');
 
             let imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height);
             ctx.putImageData(imageData, 0, 0 - _DefaultFontSize);
             this.currentXPosition = 0;
-            this.currentYPosition = this.prevY;
+            this.currentYPosition = prevY;
           } else {
             this.currentXPosition = 0;
             /*
