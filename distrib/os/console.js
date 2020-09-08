@@ -65,15 +65,19 @@ var TSOS;
             }
         }
         advanceLine() {
+            /*
+             * Font size measures from the baseline to the highest point in the font.
+             * Font descent measures from the baseline to the lowest point in the font.
+             * Font height margin is extra spacing between the lines.
+             */
             var oneLine = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
-            // Handles scrolling
+            // Handles scrolling by taking a picture of the current screen and reprinting
+            // it up a line on the canvas
             if (this.currentYPosition >= 475) {
                 var prevY = this.currentYPosition;
                 var canv = document.getElementById('display');
                 var ctx = canv.getContext('2d');
-                //We will take a picture of the current screen and reprint it up a line on the canvas
-                //to simulate scrolling
                 let imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height);
                 this.clearScreen();
                 ctx.putImageData(imageData, 0, 0 - oneLine);
@@ -82,12 +86,18 @@ var TSOS;
             }
             else {
                 this.currentXPosition = 0;
-                /*
-                 * Font size measures from the baseline to the highest point in the font.
-                 * Font descent measures from the baseline to the lowest point in the font.
-                 * Font height margin is extra spacing between the lines.
-                 */
                 this.currentYPosition += oneLine;
+            }
+        }
+        deleteText(ch) {
+            if (this.currentXPosition > 0) {
+                //remove from buffer
+                this.buffer = this.buffer.substring(0, this.buffer.length - 1);
+                //move current x position back
+                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, ch);
+                this.currentXPosition = this.currentXPosition - offset;
+                //delete character by drawing a clear rect over it
+                _DrawingContext.clearRect(this.currentXPosition + offset, this.currentYPosition, offset, this.currentFontSize);
             }
         }
     }

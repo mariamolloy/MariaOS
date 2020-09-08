@@ -289,7 +289,15 @@ module TSOS {
                     case "horoscope":
                         _StdOut.putText("Horoscope confers with the stars to display the user's daily horoscope.");
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "status":
+                        _StdOut.putText("Status <string> sets the OS task bar status to <string>.");
+                        break;
+                    case "bsod":
+                        _StdOut.putText("BSOD is a test command for a kernel OS error message.");
+                        break;
+                    case "load":
+                        _StdOut.putText("Load validates that the user input is hex characters and loads it into the register.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -362,7 +370,7 @@ module TSOS {
         }
 
         public shellBsod(args){
-          _StdOut.putText("ERROR ERROR ERROR ERROR ERROR");
+          _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
         }
 
         public shellLoad (args){

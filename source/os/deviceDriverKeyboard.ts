@@ -82,7 +82,9 @@ module TSOS {
                 chr = String.fromCharCode(keyCode);
               }
                 _KernelInputQueue.enqueue(chr);
-            }
+            } /*else if (keyCode == 08){      //backspace key
+              _StdOut.deleteText(chr);
+            }*/
         }
     }
 }
