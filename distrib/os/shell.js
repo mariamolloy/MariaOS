@@ -57,6 +57,9 @@ var TSOS;
             // status
             sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Sets the status.");
             this.commandList[this.commandList.length] = sc;
+            //load
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "Validates and loads the user program.");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -291,6 +294,14 @@ var TSOS;
             }
             else {
                 _StdOut.putText("Usage: status <string>  Please supply a string.");
+            }
+        }
+        shellLoad(args) {
+            var userInp = document.getElementById('taProgramInput').value.trim();
+            if (userInp.length == 0) {
+                _StdOut.putText("No User Input was entered.");
+            }
+            else {
             }
         }
     }

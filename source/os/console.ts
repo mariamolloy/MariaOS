@@ -13,6 +13,7 @@ module TSOS {
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
+                    public canvasSize = _Canvas.height,
                     public buffer = "") {
         }
 
@@ -70,17 +71,33 @@ module TSOS {
          }
 
         public advanceLine(): void {
+          var oneLine = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                           _FontHeightMargin;
+
+          // Handles scrolling
+          if (this.currentYPosition >= this.canvasSize){
+            let prevY = this.currentYPosition;
+
+            let canv = document.getElementById('canvas');
+            let ctx = canv.getContext('2d');
+
+            let imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height);
+            ctx.putImageData(imageData, 0, 0 - _DefaultFontSize);
+            this.currentXPosition = 0;
+            this.currentYPosition = this.prevY;
+          } else {
             this.currentXPosition = 0;
             /*
              * Font size measures from the baseline to the highest point in the font.
              * Font descent measures from the baseline to the lowest point in the font.
              * Font height margin is extra spacing between the lines.
              */
-            this.currentYPosition += _DefaultFontSize + 
-                                     _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-                                     _FontHeightMargin;
 
-            // TODO: Handle scrolling. (iProject 1)
+            this.currentYPosition += oneLine;
+                           }
         }
+
+
+
     }
  }

@@ -158,6 +158,7 @@ module TSOS {
         public execute(fn, args?) {
             // We just got a command, so advance the line...
             _StdOut.advanceLine();
+            
             // ... call the command function passing in the args with some über-cool functional programming ...
             fn(args);
             // Check to see if we need to advance the line again
