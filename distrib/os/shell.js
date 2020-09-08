@@ -60,6 +60,9 @@ var TSOS;
             //load
             sc = new TSOS.ShellCommand(this.shellLoad, "load", "Validates and loads the user program.");
             this.commandList[this.commandList.length] = sc;
+            //BSOD test
+            sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "Tests an error message");
+            this.commandList[this.commandList.length] = sc;
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -295,6 +298,9 @@ var TSOS;
             else {
                 _StdOut.putText("Usage: status <string>  Please supply a string.");
             }
+        }
+        shellBsod(args) {
+            _StdOut.putText("ERROR ERROR ERROR ERROR ERROR");
         }
         shellLoad(args) {
             var userInp = document.getElementById('taProgramInput').value.trim();

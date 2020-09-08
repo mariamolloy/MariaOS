@@ -68,12 +68,15 @@ var TSOS;
             var oneLine = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
                 _FontHeightMargin;
             // Handles scrolling
-            if (this.currentYPosition >= this.canvasSize) {
+            if (this.currentYPosition >= 475) {
                 var prevY = this.currentYPosition;
                 var canv = document.getElementById('display');
                 var ctx = canv.getContext('2d');
+                //We will take a picture of the current screen and reprint it up a line on the canvas
+                //to simulate scrolling
                 let imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height);
-                ctx.putImageData(imageData, 0, 0 - _DefaultFontSize);
+                this.clearScreen();
+                ctx.putImageData(imageData, 0, 0 - oneLine);
                 this.currentXPosition = 0;
                 this.currentYPosition = prevY;
             }

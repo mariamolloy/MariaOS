@@ -42,6 +42,8 @@ var TSOS;
                 (keyCode == 13)) { // enter
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
+                //to deal with symbols and numbers and shift characters
+                //logic inspired by KaiOS
             }
             else if (((keyCode >= 44) && (keyCode <= 57)) || //digits and punctuation
                 ((keyCode >= 91) && (keyCode <= 93)) || //square brackets
