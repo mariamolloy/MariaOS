@@ -79,9 +79,11 @@ var TSOS;
                     chr = String.fromCharCode(keyCode);
                 }
                 _KernelInputQueue.enqueue(chr);
-            } /*else if (keyCode == 08){      //backspace key
-              _StdOut.deleteText(chr);
-            }*/
+            }
+            else if (keyCode == 8) { //backspace key
+                _StdOut.deleteText(chr);
+                //_KernelInputQueue.dequeue();
+            }
         }
     }
     TSOS.DeviceDriverKeyboard = DeviceDriverKeyboard;

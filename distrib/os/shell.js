@@ -302,6 +302,7 @@ var TSOS;
             if (args.length > 0) {
                 _Status = args[0];
                 _StdOut.putText("New status: " + _Status);
+                document.getElementById('status').innerHTML = _Status;
             }
             else {
                 _StdOut.putText("Usage: status <string>  Please supply a string.");

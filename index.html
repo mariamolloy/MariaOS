@@ -39,6 +39,16 @@
 
 <div id="divMain" style="width:100%;">
 
+   <div id="statusBar" style="margin:4px;">
+    <p id="date"></p>
+    <script> document.getElementById("date").innerHTML = Date(); </script>
+    <br>
+    <p id="status"></p>
+      <script>
+        document.getElementById('status').innerHTML = _Status;
+      </script>
+   </div>
+
    <div id="divButtonBar" style="margin:4px;">
       <input type="button"
              id = "btnStartOS"

@@ -100,18 +100,21 @@ module TSOS {
           }
         }
 
-        public deleteText(ch): void{
-            if (this.currentXPosition > 0){
-              //remove from buffer
-              this.buffer = this.buffer.substring(0, this.buffer.length - 2);
-              //move current x position back
-              var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, ch);
-              this.currentXPosition = this.currentXPosition - offset;
+        public deleteText(text): void{
+        /*  while (_KernelInputQueue.getSize() > 0) {
+                // Get the next character from the kernel input queue.
+                var ch = _KernelInputQueue.dequeue();*/
+                  if /*((ch === String.fromCharCode(8)) && */(this.currentXPosition > 0){ //if delete is pressed and theres a character to be deleted
+                    //remove from buffer
+                    this.buffer = this.buffer.substring(0, this.buffer.length - 2);
+                    //move current x position back
+                    var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
+                    this.currentXPosition = this.currentXPosition - offset;
 
-              //delete character by drawing a clear rect over it
-              _DrawingContext.clearRect(this.currentXPosition + offset, this.currentYPosition, offset, this.currentFontSize);
-
-            }
+                    //delete character by drawing a clear rect over it
+                    _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition, offset, this.currentFontSize * 2);
+                  }
+        //    }
         }
 
 
