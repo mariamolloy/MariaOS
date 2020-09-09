@@ -54,9 +54,17 @@ var TSOS;
             // horoscope
             sc = new TSOS.ShellCommand(this.shellHoroscope, "horoscope", "-Displays a daily horoscope for the user.");
             this.commandList[this.commandList.length] = sc;
-            //status <string>
+
+            // status
             sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Sets the status.");
             this.commandList[this.commandList.length] = sc;
+            //load
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "Validates and loads the user program.");
+            this.commandList[this.commandList.length] = sc;
+            //BSOD test
+            sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "Tests an error message");
+            this.commandList[this.commandList.length] = sc;
+
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -223,7 +231,15 @@ var TSOS;
                     case "horoscope":
                         _StdOut.putText("Horoscope confers with the stars to display the user's daily horoscope.");
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "status":
+                        _StdOut.putText("Status <string> sets the OS task bar status to <string>.");
+                        break;
+                    case "bsod":
+                        _StdOut.putText("BSOD is a test command for a kernel OS error message.");
+                        break;
+                    case "load":
+                        _StdOut.putText("Load validates that the user input is hex characters and loads it into the register.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -287,12 +303,28 @@ var TSOS;
         shellStatus(args) {
             if (args.length > 0) {
                 _Status = args[0];
-                _StdOut.putText(_Status);
+
+                _StdOut.putText("New status: " + _Status);
+                document.getElementById('status').innerHTML = _Status;
+
             }
             else {
                 _StdOut.putText("Usage: status <string>  Please supply a string.");
             }
         }
+
+        shellBsod(args) {
+            _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
+        }
+        shellLoad(args) {
+            var userInp = document.getElementById('taProgramInput').value.trim();
+            if (userInp.length == 0) {
+                _StdOut.putText("No User Input was entered.");
+            }
+            else {
+            }
+        }
+
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));

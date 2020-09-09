@@ -1,6 +1,6 @@
+
 /* ----------------------------------
    DeviceDriverKeyboard.ts
-
    The Kernel Keyboard Device Driver.
    ---------------------------------- */
 
@@ -42,11 +42,49 @@ module TSOS {
                 }
                 // TODO: Check for caps-lock and handle as shifted if so.
                 _KernelInputQueue.enqueue(chr);
-            } else if (((keyCode >= 48) && (keyCode <= 57)) ||   // digits
-                        (keyCode == 32)                     ||   // space
-                        (keyCode == 13)) {                       // enter
+            } else if ((keyCode == 32)      ||   // space
+                        (keyCode == 13)) {      // enter
                 chr = String.fromCharCode(keyCode);
                 _KernelInputQueue.enqueue(chr);
+
+            //to deal with symbols and numbers and shift characters
+            //logic inspired by KaiOS
+            } else if (((keyCode >= 44) && (keyCode <= 57)) || //digits and punctuation
+                        ((keyCode >= 91) && (keyCode <= 93)) || //square brackets
+                                             (keyCode == 59) || //semi-colon
+                                             (keyCode == 61) || //equals sign
+                                             (keyCode == 96)){
+                if (isShifted === true){
+                  var spec_Char = {
+                    '44':'60',
+                    '45':'95',
+                    '46':'62',
+                    '47':'63',
+                    '48':'41',
+                    '49':'33',
+                    '50':'64',
+                    '51':'35',
+                    '52':'36',
+                    '53':'37',
+                    '54':'94',
+                    '55':'38',
+                    '56':'42',
+                    '57':'40',
+                    '59':'58',
+                    '61':'43',
+                    '91':'123',
+                    '92':'124',
+                    '93':'125',
+                    '96':'126'
+                  }
+                chr = String.fromCharCode(spec_Char[keyCode]);
+              } else {
+                chr = String.fromCharCode(keyCode);
+              }
+                _KernelInputQueue.enqueue(chr);
+            } else if (keyCode == 8){      //backspace key
+              _StdOut.deleteText(chr);
+              //_KernelInputQueue.dequeue();
             }
         }
     }

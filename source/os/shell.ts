@@ -91,11 +91,26 @@ module TSOS {
                                   "-Displays a daily horoscope for the user.");
             this.commandList[this.commandList.length] = sc;
 
+
             //status <string>
+
             sc = new ShellCommand(this.shellStatus,
                                   "status",
                                   "<string> - Sets the status.");
             this.commandList[this.commandList.length] = sc;
+
+            //load
+            sc = new ShellCommand(this.shellLoad,
+                                  "load",
+                                  "Validates and loads the user program.");
+            this.commandList[this.commandList.length] = sc;
+
+            //BSOD test
+            sc = new ShellCommand(this.shellBsod,
+                                  "bsod",
+                                  "Tests an error message");
+            this.commandList[this.commandList.length] = sc;
+
 
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -152,6 +167,7 @@ module TSOS {
         public execute(fn, args?) {
             // We just got a command, so advance the line...
             _StdOut.advanceLine();
+
             // ... call the command function passing in the args with some über-cool functional programming ...
             fn(args);
             // Check to see if we need to advance the line again
@@ -276,7 +292,15 @@ module TSOS {
                     case "horoscope":
                         _StdOut.putText("Horoscope confers with the stars to display the user's daily horoscope.");
                         break;
-                    // TODO: Make descriptive MANual page entries for the the rest of the shell commands here.
+                    case "status":
+                        _StdOut.putText("Status <string> sets the OS task bar status to <string>.");
+                        break;
+                    case "bsod":
+                        _StdOut.putText("BSOD is a test command for a kernel OS error message.");
+                        break;
+                    case "load":
+                        _StdOut.putText("Load validates that the user input is hex characters and loads it into the register.");
+                        break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
                 }
@@ -342,11 +366,30 @@ module TSOS {
         public shellStatus(args: string[]) {
           if (args.length > 0){
             _Status = args[0];
-            _StdOut.putText(_Status);
+
+            _StdOut.putText("New status: " + _Status);
+            document.getElementById('status').innerHTML = _Status;
+
           } else {
             _StdOut.putText("Usage: status <string>  Please supply a string.");
           }
         }
+
+
+        public shellBsod(args){
+          _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
+        }
+
+        public shellLoad (args){
+          var userInp = document.getElementById('taProgramInput').value.trim();
+          if (userInp.length == 0){
+            _StdOut.putText("No User Input was entered.");
+          } else {
+
+          }
+        }
+
+
 
     }
 }

@@ -13,6 +13,7 @@ module TSOS {
                     public currentFontSize = _DefaultFontSize,
                     public currentXPosition = 0,
                     public currentYPosition = _DefaultFontSize,
+                    public canvasSize = _Canvas.height,
                     public buffer = "") {
         }
 
@@ -70,17 +71,53 @@ module TSOS {
          }
 
         public advanceLine(): void {
-            this.currentXPosition = 0;
-            /*
-             * Font size measures from the baseline to the highest point in the font.
-             * Font descent measures from the baseline to the lowest point in the font.
-             * Font height margin is extra spacing between the lines.
-             */
-            this.currentYPosition += _DefaultFontSize + 
-                                     _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
-                                     _FontHeightMargin;
+          /*
+           * Font size measures from the baseline to the highest point in the font.
+           * Font descent measures from the baseline to the lowest point in the font.
+           * Font height margin is extra spacing between the lines.
+           */
+          var oneLine = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) +
+                           _FontHeightMargin;
 
-            // TODO: Handle scrolling. (iProject 1)
+          // Handles scrolling by taking a picture of the current screen and reprinting
+          // it up a line on the canvas
+          if (this.currentYPosition >= 475){
+            var prevY = this.currentYPosition;
+
+            var canv = document.getElementById('display');
+            var ctx = canv.getContext('2d');
+
+            let imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height );
+
+            this.clearScreen();
+
+            ctx.putImageData(imageData, 0, 0 - oneLine);
+            this.currentXPosition = 0;
+            this.currentYPosition = prevY;
+          } else {
+            this.currentXPosition = 0;
+            this.currentYPosition += oneLine;
+          }
         }
+
+        public deleteText(text): void{
+        /*  while (_KernelInputQueue.getSize() > 0) {
+                // Get the next character from the kernel input queue.
+                var ch = _KernelInputQueue.dequeue();*/
+                  if /*((ch === String.fromCharCode(8)) && */(this.currentXPosition > 0){ //if delete is pressed and theres a character to be deleted
+                    //remove from buffer
+                    this.buffer = this.buffer.substring(0, this.buffer.length - 2);
+                    //move current x position back
+                    var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
+                    this.currentXPosition = this.currentXPosition - offset;
+
+                    //delete character by drawing a clear rect over it
+                    _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition, offset, this.currentFontSize * 2);
+                  }
+        //    }
+        }
+
+
+
     }
  }

@@ -56,6 +56,16 @@
   </div>
 
 
+   <div id="statusBar" style="margin:4px;">
+    <p id="date"></p>
+    <script> document.getElementById("date").innerHTML = Date(); </script>
+    <br>
+    <p id="status"></p>
+      <script>
+        document.getElementById('status').innerHTML = _Status;
+      </script>
+   </div>
+
    <div id="divButtonBar" style="margin:4px;">
       <input type="button"
              id = "btnStartOS"
@@ -84,9 +94,9 @@
              onclick="TSOS.Control.hostBtnReset_click(this);">
    </div>
 
-   <div id="divConsole" style="margin:4px; width:500px; height:500px; float:left;">
+   <div id="divConsole" style="margin:4px; max-width:500px; max-height:500px; float:left; overflow: scroll">
       <canvas id="display"
-              width="500px"
+              width="5000px"
               height="500px"
               tabindex="3">
       </canvas>
