@@ -91,7 +91,9 @@ module TSOS {
                                   "-Displays a daily horoscope for the user.");
             this.commandList[this.commandList.length] = sc;
 
-            // status
+
+            //status <string>
+
             sc = new ShellCommand(this.shellStatus,
                                   "status",
                                   "<string> - Sets the status.");
@@ -108,6 +110,7 @@ module TSOS {
                                   "bsod",
                                   "Tests an error message");
             this.commandList[this.commandList.length] = sc;
+
 
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
@@ -363,12 +366,15 @@ module TSOS {
         public shellStatus(args: string[]) {
           if (args.length > 0){
             _Status = args[0];
+
             _StdOut.putText("New status: " + _Status);
             document.getElementById('status').innerHTML = _Status;
+
           } else {
             _StdOut.putText("Usage: status <string>  Please supply a string.");
           }
         }
+
 
         public shellBsod(args){
           _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
@@ -382,6 +388,7 @@ module TSOS {
 
           }
         }
+
 
 
     }
