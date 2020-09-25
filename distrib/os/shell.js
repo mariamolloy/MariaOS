@@ -54,8 +54,7 @@ var TSOS;
             // horoscope
             sc = new TSOS.ShellCommand(this.shellHoroscope, "horoscope", "-Displays a daily horoscope for the user.");
             this.commandList[this.commandList.length] = sc;
-
-            // status
+            //status <string>
             sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Sets the status.");
             this.commandList[this.commandList.length] = sc;
             //load
@@ -64,7 +63,6 @@ var TSOS;
             //BSOD test
             sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "Tests an error message");
             this.commandList[this.commandList.length] = sc;
-
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -303,16 +301,13 @@ var TSOS;
         shellStatus(args) {
             if (args.length > 0) {
                 _Status = args[0];
-
                 _StdOut.putText("New status: " + _Status);
                 document.getElementById('status').innerHTML = _Status;
-
             }
             else {
                 _StdOut.putText("Usage: status <string>  Please supply a string.");
             }
         }
-
         shellBsod(args) {
             _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
         }
@@ -324,7 +319,6 @@ var TSOS;
             else {
             }
         }
-
     }
     TSOS.Shell = Shell;
 })(TSOS || (TSOS = {}));

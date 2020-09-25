@@ -85,7 +85,7 @@ module TSOS {
             var prevY = this.currentYPosition;
 
             var canv = document.getElementById('display');
-            var ctx = canv.getContext('2d');
+            var ctx: any = canv.getContext('2d');
 
             let imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height );
 
