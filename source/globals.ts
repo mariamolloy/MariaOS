@@ -44,6 +44,8 @@ var _Status: string = "[status]";					//Status set by the user
 
 var memSize: number = 768; //default memory size
 
+var _Memory: TSOS.Memory; //create the memory
+
 
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;

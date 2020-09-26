@@ -50,6 +50,8 @@ module TSOS {
                 _GLaDOS = new Glados();
                 _GLaDOS.init();
             }
+
+            _Memory = new Memory; //instantiate new memory
         }
 
         public static hostLog(msg: string, source: string = "?"): void {

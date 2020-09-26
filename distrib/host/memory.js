@@ -10,6 +10,7 @@ var TSOS;
         }
         //returns a memory address
         readMem(addy) {
+            //to do add to check its above 0
             if (addy < memSize) {
                 return this.mem[addy];
             }
@@ -18,8 +19,8 @@ var TSOS;
             }
         }
         //adds a byte to Memory
-        //to do: check that its valid input
-        //to do: check that it is one byte
+        //to do: check that its valid input only rlly need line 27 in this
+        //move byte check to MA
         //for memory accessor u can handle an array of bytes but here just one byte at a time
         writeMem(addy, byte) {
             if (byte.length == 2) {

@@ -42,6 +42,7 @@ var TSOS;
                 _GLaDOS = new Glados();
                 _GLaDOS.init();
             }
+            _Memory = new TSOS.Memory; //instantiate new memory
         }
         static hostLog(msg, source = "?") {
             // Note the OS CLOCK.
