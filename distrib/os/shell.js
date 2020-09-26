@@ -63,6 +63,8 @@ var TSOS;
             //BSOD test
             sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "Tests an error message");
             this.commandList[this.commandList.length] = sc;
+            //to do:
+            //to do: run <pid> program in memory
             // ps  - list the running processes and their IDs
             // kill <id> - kills the specified process id.
             // Display the initial prompt.
@@ -312,11 +314,37 @@ var TSOS;
             _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
         }
         shellLoad(args) {
+            //load user input char by char into a array and then go thru array and check each is hex or space
             var userInp = document.getElementById('taProgramInput').value.trim();
+            var inp = new Array();
+            for (var i = 0; i < userInp.length; i++) {
+                var letter = userInp.substring(i, i + 1);
+                inp.push(letter);
+            }
             if (userInp.length == 0) {
                 _StdOut.putText("No User Input was entered.");
             }
             else {
+                var inputLength = 0;
+                for (var i = 0; i < inp.length; i++) {
+                    var letter = inp[i];
+                    if (letter == " ") {
+                        inputLength++;
+                    } //theres def a better way to do this vvvvv
+                    else if (letter == "1" || letter == "2" || letter == "3" || letter == "4" || letter == "5" || letter == "6"
+                        || letter == "7" || letter == "8" || letter == "9" || letter == "A" || letter == "B" || letter == "C" ||
+                        letter == "D" || letter == "E" || letter == "F") {
+                        inputLength++;
+                    }
+                }
+                if (inputLength == inp.length) {
+                    for (var i = 0; i < inp.length; i++) {
+                        _StdOut.putText(inp[i]);
+                    }
+                }
+                else {
+                    _StdOut.putText("Please enter valid input");
+                }
             }
         }
     }

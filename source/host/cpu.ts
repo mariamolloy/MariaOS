@@ -46,11 +46,12 @@ module TSOS {
 
         public execute(opCode){
           this.op = opCode.toUpperCase();
-          switch(op){
+          switch(this.op){
             case "A9": { //load the accumulator with a constant
               break;
             }
             case "AD": { //Load the accumulator from memory
+              this.Acc = 1;
               break;
             }
             case "8D": { //Store the accumulator in memory
