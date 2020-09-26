@@ -42,6 +42,8 @@ var _Trace: boolean = true;              // Default the OS trace to be on.
 
 var _Status: string = "[status]";					//Status set by the user
 
+var memSize: number = 768; //default memory size
+
 
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;
