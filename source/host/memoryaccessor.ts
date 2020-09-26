@@ -12,6 +12,7 @@ module TSOS {
       return true;
     }
 
+    //make it so u can write an array of bytes, multiple bytes
     public write(addy: number, val: string): void{
       //check its a valid address
       if ((addy >= 0) && (addy < memSize)){
@@ -26,6 +27,8 @@ module TSOS {
       }
   }
 
+  //to do read
+  //be able to read multiple
 
     //to do for iProj 3
     mapAddress(): void{
