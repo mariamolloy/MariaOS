@@ -384,7 +384,7 @@ module TSOS {
           var userInp = document.getElementById('taProgramInput').value.trim();
           if (userInp.length == 0){
             _StdOut.putText("No User Input was entered.");
-          } else {
+          } else if (){
 
           }
         }
