@@ -12,20 +12,20 @@ module TSOS {
       return true;
     }
 
-    //make it so u can write an array of bytes, multiple bytes
+    //make it so u can write an array of bytes, multiple bytes to memory
     public write(addy: number, val: string[]): void{
       //check its a valid address
       if ((addy >= 0) && (addy < _memSize)){
         //check if we r adding just one byte or many bytes
         if (val.length == 1){
-          _Memory.writeMem(addy, val[0]);
+          _Memory.writeMem(addy, val[0].toString());
         } else if (val.length < _memSize){
             for (var i = 0; i < var.length; i++){
-              var newByte =
-              _Memory.writeMem(addy + i, val[i]);
+              var newByte = val[i].toString();
+              var add = addy + (i * 2);
+              _Memory.writeMem(addy + i, newByte);
             }
-          }
-        } else {
+          }else {
           _StdOut.putText("ur not valid smh");
         }
       } else {
