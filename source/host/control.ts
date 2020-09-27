@@ -42,6 +42,14 @@ module TSOS {
             // Use the TypeScript cast to HTMLInputElement
             (<HTMLInputElement> document.getElementById("btnStartOS")).focus();
 
+            //create CPU and memory <3__<3
+              _CPU	=	new	Cpu();
+              _CPU.init();
+              _Memory	=	new	Memory();
+              _Memory.init();
+              _MemoryAccessor	=	new	MemoryAccessor();
+
+
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
