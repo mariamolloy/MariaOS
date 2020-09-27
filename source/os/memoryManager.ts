@@ -1,5 +1,5 @@
 module TSOS {
-  export class memoryManager {
+  export class MemoryManager {
 
 //to do: allocation and deallocation
 

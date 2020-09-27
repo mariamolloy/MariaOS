@@ -46,7 +46,7 @@ var _memSize: number = 768; //default memory size
 
 
 //Hardware (OS)
-var	_CPU:	TSOS.CPU;
+var	_CPU:	TSOS.Cpu;
 var	_Memory:	TSOS.Memory;
 var	_MemoryAccessor:	TSOS.MemoryAccessor;
 //	Software	(OS)

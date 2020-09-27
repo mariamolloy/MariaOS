@@ -2,16 +2,19 @@ var TSOS;
 (function (TSOS) {
     class Memory {
         //make memory and initialize it to 0
-        constructor(mem = new Array(memSize)) {
+        constructor(mem = new Array(_memSize)) {
             this.mem = mem;
-            for (var i = 0; i < memSize; i++) {
+            for (var i = 0; i < _memSize; i++) {
                 mem[i] = "00";
             }
+        }
+        //to do initialize mem
+        init() {
         }
         //returns a memory address
         readMem(addy) {
             //to do add to check its above 0
-            if (addy < memSize) {
+            if (addy < _memSize) {
                 return this.mem[addy];
             }
             else {

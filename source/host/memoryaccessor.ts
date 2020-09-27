@@ -1,5 +1,5 @@
 module TSOS {
-  export class memoryAccessor {
+  export class MemoryAccessor {
     constructor(){}
     //request checks what block to write mem in
     //to do for proj 3
@@ -20,7 +20,7 @@ module TSOS {
         if (val.length == 1){
           _Memory.writeMem(addy, val[0].toString());
         } else if (val.length < _memSize){
-            for (var i = 0; i < var.length; i++){
+            for (var i = 0; i < val.length; i++){
               var newByte = val[i].toString();
               var add = addy + (i * 2);
               _Memory.writeMem(addy + i, newByte);

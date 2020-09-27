@@ -8,6 +8,11 @@ module TSOS {
       }
     }
 
+    //to do initialize mem
+    public init(): void{
+
+    }
+
     //returns a memory address
     public readMem(addy: number): String {
       //to do add to check its above 0
