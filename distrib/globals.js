@@ -37,6 +37,7 @@ var _Memory;
 var _MemoryAccessor;
 //	Software	(OS)
 var _MemoryManager = null;
+var _ProcessManager; //creates a process manager to deal w PCBs
 // The OS Kernel and its queues.
 var _Kernel;
 var _KernelInterruptQueue = null;

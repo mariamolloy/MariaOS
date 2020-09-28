@@ -394,9 +394,14 @@ module TSOS {
         }
 
         public shellLoad (args){
-          //load user input char by char into a array
+          //create an array of input letter by letter to check for valid input
+          //and create an array of input bytes to pass on to memory
           var userInp = document.getElementById('taProgramInput').value.trim();
           var inp = new Array();
+          var bytes = new Array();
+          //remove all whitespace from input
+          userInp = userInp.trim();
+          userInp = userInp.replace(/\s+/g, '');
 
           for (var i = 0; i < userInp.length; i++){
             var letter = userInp.substring(i, i + 1);
@@ -405,53 +410,57 @@ module TSOS {
 
           if (userInp.length == 0){
             _StdOut.putText("No User Input was entered.");
-          } else {
+          } else if (userInp.length%2 == 0){ //check that its all full bytes entered
 
-            //to do:::::: also make a array<string> of bytes not of individual letters
-            //go thru array and check each is hex or space
             var inputLength = 0;
             for (var i = 0; i < inp.length; i++){
               var letter = inp[i];
-              if (letter == " "){
-                inputLength++;
-              }//theres def a better way to do this vvvvv
-               else if (letter == "1" || letter == "2" || letter == "3" || letter == "4" || letter == "5" || letter == "6"
+              if (letter == "1" || letter == "2" || letter == "3" || letter == "4" || letter == "5" || letter == "6"
                       ||letter == "7" || letter == "8" || letter == "9" || letter == "A" || letter == "B" || letter == "C" ||
                         letter == "D" || letter == "E" || letter == "F") {
                     inputLength++;
                 }
             }
             if (inputLength == inp.length){
+              //this means all input is valid hex and we can continue and load into memory
               //prints user input for testing purposes
               for (var i = 0; i < inp.length; i++){
                 _StdOut.putText(inp[i]);
             }
+            for (var i = 0; i < userInp.length; i+=2){
+              var newBite = userInp.substring(i, i+2);
+              bytes.push(newBite);
+            }
+
+            //to do• return	the	PID	to	the	console	and	display	it.
+            //once u do ur MemoryManager then use array of bytes and load into memory
+
+            //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
+            var processID = _ProcessManager.idCounter;
+            var newPcb = new PCB(processID);
+            _ProcessManager.allPcbs.push(newPcb);
+            newPcb.init(0); //to do for iProj3 once we have partitions, for now just set partition to 0
+            _StdOut.putText("Running Process " + processID);
+            //go through the array and load into memory at location $0000
+            _MemoryManager.writingTime(0, bytes);
+
           } else {
             _StdOut.putText("Please enter valid input");
           }
 
-          //go through the array and load into memory at location $0000
-
-          //to do• return	the	PID	to	the	console	and	display	it.
-          //once u do ur MemoryManager then use array of bytes and load into memory
-
-          //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
-          var processID = 1;
-          var newPcb = new PCB(processID);
-          newPcb.init(0); //to do for iProj3 once we have partitions, for now just set partition to 0
-          for (var i = 0; i < inp.length; i++){
-
-          }
-
+        } else {
+          _StdOut.putText("Please enter BYTES thank u");
         }
       }
 
+      //take pid look for pcb w that pid and call ProcessManager.run w correct pcb
+      //_ProcessManager.run()
       public shellRun(args) {
         if (args.length > 0){
           var inputPID = parseInt(args, 10);
+          for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
 
-          _StdOut.putText("New status: " + _Status);
-          document.getElementById('status').innerHTML = _Status;
+          }
 
         } else {
           _StdOut.putText("Usage: Run <pid>  Please supply a process ID.");

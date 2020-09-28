@@ -2,15 +2,20 @@ var TSOS;
 (function (TSOS) {
     class ProcessManager {
         constructor() {
+            //to do for iproj3:
+            //add queue stuff so we can do multiple processes
+            //counter to create processIDs starting with 0
+            //array of all of the pcbs
+            this.idCounter = 0;
         }
-        run() {
+        run(process) {
             //to do: scheduling and priorities and all that fun stuff
             //take all pcb stuff and make it cpu stuff
-            _CPU.PC = this.process.PC;
-            _CPU.Acc = this.process.Acc;
-            _CPU.Xreg = this.process.Xreg;
-            _CPU.Yreg = this.process.Yreg;
-            _CPU.Zflag = this.process.Zflag;
+            _CPU.PC = process.PC;
+            _CPU.Acc = process.Acc;
+            _CPU.Xreg = process.Xreg;
+            _CPU.Yreg = process.Yreg;
+            _CPU.Zflag = process.Zflag;
             _CPU.isExecuting = true; //starts program essentially
         }
     }

@@ -52,7 +52,7 @@ var	_MemoryAccessor:	TSOS.MemoryAccessor;
 //	Software	(OS)
 var	_MemoryManager:	any	=	null;
 
-
+var _ProcessManager: TSOS.ProcessManager; //creates a process manager to deal w PCBs
 
 
 
