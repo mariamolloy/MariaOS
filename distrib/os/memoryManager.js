@@ -1,13 +1,13 @@
 var TSOS;
 (function (TSOS) {
-    class MemoryManager {
-        constructor() {
+    var MemoryManager = /** @class */ (function () {
+        function MemoryManager() {
             //to do for iproj3: make partitions here
         }
         //to do i proj3: allocation and deallocation
         //to do write (wrap around memory accessor)
         //make it so u can write an array of bytes, multiple bytes to memory
-        writingTime(addy, val) {
+        MemoryManager.prototype.writingTime = function (addy, val) {
             //check its a valid address
             if ((addy >= 0) && (addy < _memSize)) {
                 //check if we r adding just one byte or many bytes
@@ -27,11 +27,11 @@ var TSOS;
             else {
                 _StdOut.putText("ur memory address isn't valid smh");
             }
-        }
+        };
         //be able to read mutiple bytes w start end and PCB
         //but PCB is for proj 3
         //start = the memory address where we wanna start reading bytes and end is where we wanna end
-        readingTime(start, end, maPcb) {
+        MemoryManager.prototype.readingTime = function (start, end, maPcb) {
             var amtToRead = end - start;
             if (amtToRead == 1) {
                 return _MemoryAccessor.read(start);
@@ -41,8 +41,8 @@ var TSOS;
                     return _MemoryAccessor.read(start + i);
                 }
             }
-        }
-    }
+        };
+        return MemoryManager;
+    }());
     TSOS.MemoryManager = MemoryManager;
 })(TSOS || (TSOS = {}));
-//# sourceMappingURL=memoryManager.js.map

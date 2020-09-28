@@ -6,8 +6,14 @@
      ------------ */
 var TSOS;
 (function (TSOS) {
-    class Console {
-        constructor(currentFont = _DefaultFontFamily, currentFontSize = _DefaultFontSize, currentXPosition = 0, currentYPosition = _DefaultFontSize, canvasSize = _Canvas.height, buffer = "") {
+    var Console = /** @class */ (function () {
+        function Console(currentFont, currentFontSize, currentXPosition, currentYPosition, canvasSize, buffer) {
+            if (currentFont === void 0) { currentFont = _DefaultFontFamily; }
+            if (currentFontSize === void 0) { currentFontSize = _DefaultFontSize; }
+            if (currentXPosition === void 0) { currentXPosition = 0; }
+            if (currentYPosition === void 0) { currentYPosition = _DefaultFontSize; }
+            if (canvasSize === void 0) { canvasSize = _Canvas.height; }
+            if (buffer === void 0) { buffer = ""; }
             this.currentFont = currentFont;
             this.currentFontSize = currentFontSize;
             this.currentXPosition = currentXPosition;
@@ -15,18 +21,18 @@ var TSOS;
             this.canvasSize = canvasSize;
             this.buffer = buffer;
         }
-        init() {
+        Console.prototype.init = function () {
             this.clearScreen();
             this.resetXY();
-        }
-        clearScreen() {
+        };
+        Console.prototype.clearScreen = function () {
             _DrawingContext.clearRect(0, 0, _Canvas.width, _Canvas.height);
-        }
-        resetXY() {
+        };
+        Console.prototype.resetXY = function () {
             this.currentXPosition = 0;
             this.currentYPosition = this.currentFontSize;
-        }
-        handleInput() {
+        };
+        Console.prototype.handleInput = function () {
             while (_KernelInputQueue.getSize() > 0) {
                 // Get the next character from the kernel input queue.
                 var chr = _KernelInputQueue.dequeue();
@@ -47,8 +53,8 @@ var TSOS;
                 }
                 // TODO: Add a case for Ctrl-C that would allow the user to break the current program.
             }
-        }
-        putText(text) {
+        };
+        Console.prototype.putText = function (text) {
             /*  My first inclination here was to write two functions: putChar() and putString().
                 Then I remembered that JavaScript is (sadly) untyped and it won't differentiate
                 between the two. (Although TypeScript would. But we're compiling to JavaScipt anyway.)
@@ -63,8 +69,8 @@ var TSOS;
                 var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
                 this.currentXPosition = this.currentXPosition + offset;
             }
-        }
-        advanceLine() {
+        };
+        Console.prototype.advanceLine = function () {
             /*
              * Font size measures from the baseline to the highest point in the font.
              * Font descent measures from the baseline to the lowest point in the font.
@@ -78,7 +84,7 @@ var TSOS;
                 var prevY = this.currentYPosition;
                 var canv = document.getElementById('display');
                 var ctx = canv.getContext('2d');
-                let imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height);
+                var imageData = ctx.getImageData(0, 0, _Canvas.width, _Canvas.height);
                 this.clearScreen();
                 ctx.putImageData(imageData, 0, 0 - oneLine);
                 this.currentXPosition = 0;
@@ -88,8 +94,8 @@ var TSOS;
                 this.currentXPosition = 0;
                 this.currentYPosition += oneLine;
             }
-        }
-        deleteText(text) {
+        };
+        Console.prototype.deleteText = function (text) {
             /*  while (_KernelInputQueue.getSize() > 0) {
                     // Get the next character from the kernel input queue.
                     var ch = _KernelInputQueue.dequeue();*/
@@ -103,8 +109,8 @@ var TSOS;
                 _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition, offset, this.currentFontSize * 2);
             }
             //    }
-        }
-    }
+        };
+        return Console;
+    }());
     TSOS.Console = Console;
 })(TSOS || (TSOS = {}));
-//# sourceMappingURL=console.js.map

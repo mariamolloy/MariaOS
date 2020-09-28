@@ -1,15 +1,16 @@
 var TSOS;
 (function (TSOS) {
-    class MemoryAccessor {
-        constructor() { }
+    var MemoryAccessor = /** @class */ (function () {
+        function MemoryAccessor() {
+        }
         //request checks what block to write mem in
         //to do for proj 3
-        requestMem() {
-        }
+        MemoryAccessor.prototype.requestMem = function () {
+        };
         //to do for proj3
-        releaseMem() {
+        MemoryAccessor.prototype.releaseMem = function () {
             return true;
-        }
+        };
         /*  //make it so u can write an array of bytes, multiple bytes to memory
           public write(addy: number, val: string[]): void{
             //check its a valid address
@@ -47,17 +48,17 @@ var TSOS;
             }
         */
         //writes byte to memory
-        write(addy, bite) {
+        MemoryAccessor.prototype.write = function (addy, bite) {
             _Memory.writeMem(addy, bite);
-        }
+        };
         //reads byte from memory
-        read(addy) {
+        MemoryAccessor.prototype.read = function (addy) {
             return _Memory.readMem(addy);
-        }
+        };
         //to do for iProj 3
-        mapAddress() {
-        }
-    }
+        MemoryAccessor.prototype.mapAddress = function () {
+        };
+        return MemoryAccessor;
+    }());
     TSOS.MemoryAccessor = MemoryAccessor;
 })(TSOS || (TSOS = {}));
-//# sourceMappingURL=memoryaccessor.js.map
