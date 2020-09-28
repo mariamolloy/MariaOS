@@ -7,9 +7,10 @@ module TSOS {
     //counter to create processIDs starting with 0
     //array of all of the pcbs
     public idCounter: number = 0;
-    public allPcbs: Array<PCB>;
-    constructor(){
-    }
+    public allPcbs: PCB[] = new Array();
+constructor(){
+}
+
 
     public run(process: PCB): void{
       //to do: scheduling and priorities and all that fun stuff

@@ -31,6 +31,7 @@ var TSOS;
             this.krnTrace(_krnKeyboardDriver.status);
             //create the memory manager
             _MemoryManager = new TSOS.MemoryManager();
+            _ProcessManager = new TSOS.ProcessManager();
             //
             // ... more?
             //

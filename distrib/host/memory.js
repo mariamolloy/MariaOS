@@ -1,9 +1,8 @@
 var TSOS;
 (function (TSOS) {
     class Memory {
-        //make memory and initialize it to 0
-        constructor(mem = new Array(_memSize)) {
-            this.mem = mem;
+        constructor() {
+            this.mem = new Array(_memSize);
         }
         //initialize memory to 00000000...
         init() {

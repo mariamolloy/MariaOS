@@ -50,9 +50,9 @@ var _memSize: number = 255; //just for proj 2 for proj3 it will be 768; //defaul
 var	_Memory:	TSOS.Memory;
 var	_MemoryAccessor:	TSOS.MemoryAccessor;
 //	Software	(OS)
-var	_MemoryManager:	any	=	null;
+var	_MemoryManager:	any;
 
-var _ProcessManager: TSOS.ProcessManager; //creates a process manager to deal w PCBs
+var _ProcessManager: any; //creates a process manager to deal w PCBs
 
 
 

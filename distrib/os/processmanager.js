@@ -7,6 +7,7 @@ var TSOS;
             //counter to create processIDs starting with 0
             //array of all of the pcbs
             this.idCounter = 0;
+            this.allPcbs = new Array();
         }
         run(process) {
             //to do: scheduling and priorities and all that fun stuff

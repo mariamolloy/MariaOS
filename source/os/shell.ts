@@ -396,16 +396,15 @@ module TSOS {
         public shellLoad (args){
           //create an array of input letter by letter to check for valid input
           //and create an array of input bytes to pass on to memory
-          var userInp = document.getElementById('taProgramInput').value.trim();
+          var userInp: string = (<HTMLTextAreaElement>(document.getElementById("taProgramInput"))).value.trim().toUpperCase();
           var inp = new Array();
           var bytes = new Array();
           //remove all whitespace from input
-          userInp = userInp.trim();
           userInp = userInp.replace(/\s+/g, '');
 
           for (var i = 0; i < userInp.length; i++){
-            var letter = userInp.substring(i, i + 1);
-            inp.push(letter);
+            var char = userInp.substring(i, i + 1);
+            inp.push(char);
           }
 
           if (userInp.length == 0){
@@ -415,7 +414,7 @@ module TSOS {
             var inputLength = 0;
             for (var i = 0; i < inp.length; i++){
               var letter = inp[i];
-              if (letter == "1" || letter == "2" || letter == "3" || letter == "4" || letter == "5" || letter == "6"
+              if (letter == "0" || letter == "1" || letter == "2" || letter == "3" || letter == "4" || letter == "5" || letter == "6"
                       ||letter == "7" || letter == "8" || letter == "9" || letter == "A" || letter == "B" || letter == "C" ||
                         letter == "D" || letter == "E" || letter == "F") {
                     inputLength++;
@@ -424,9 +423,9 @@ module TSOS {
             if (inputLength == inp.length){
               //this means all input is valid hex and we can continue and load into memory
               //prints user input for testing purposes
-              for (var i = 0; i < inp.length; i++){
+            /*  for (var i = 0; i < inp.length; i++){
                 _StdOut.putText(inp[i]);
-            }
+            } */
             for (var i = 0; i < userInp.length; i+=2){
               var newBite = userInp.substring(i, i+2);
               bytes.push(newBite);
@@ -439,10 +438,14 @@ module TSOS {
             var processID = _ProcessManager.idCounter;
             var newPcb = new PCB(processID);
             _ProcessManager.allPcbs.push(newPcb);
+            _ProcessManager.idCounter++;
             newPcb.init(0); //to do for iProj3 once we have partitions, for now just set partition to 0
             _StdOut.putText("Running Process " + processID);
             //go through the array and load into memory at location $0000
             _MemoryManager.writingTime(0, bytes);
+
+            //for testing
+            //_StdOut.putText(_MemoryManager.readingTime(0, 3, 0));
 
           } else {
             _StdOut.putText("Please enter valid input");
@@ -459,9 +462,11 @@ module TSOS {
         if (args.length > 0){
           var inputPID = parseInt(args, 10);
           for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
-
+            var pcbToRun = _ProcessManager.allPcbs[i]
+            if (pcbToRun.Pid == inputPID){
+              _ProcessManager.run(pcbToRun);
+            }
           }
-
         } else {
           _StdOut.putText("Usage: Run <pid>  Please supply a process ID.");
         }

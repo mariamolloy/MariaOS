@@ -49,6 +49,8 @@ module TSOS {
               _Memory.init();
               _MemoryAccessor	=	new	MemoryAccessor();
 
+              
+
 
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
@@ -91,6 +93,7 @@ module TSOS {
             // .. enable the Halt and Reset buttons ...
             (<HTMLButtonElement>document.getElementById("btnHaltOS")).disabled = false;
             (<HTMLButtonElement>document.getElementById("btnReset")).disabled = false;
+            (<HTMLButtonElement>document.getElementById("btnStartSingleStep")).disabled = false;
 
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();
@@ -132,8 +135,15 @@ module TSOS {
             // page from its cache, which is not what we want.
         }
 
-        public static hostBtnSingleStep_click(btn): void {
-            //to do: each time you click button you increase clock tick by 1
+        public static hostBtnStartSingleStep_click(btn): void {
+          //starts single stepping
+          //to do: make it so it can stop single stepping too
+          btn.disabled = true;
+          (<HTMLButtonElement>document.getElementById("btnStep")).disabled = false;
+        }
+
+        public static hostBtnStep_click(btn): void {
+          //to do: each time you click button you increase clock tick by 1
         }
     }
 }

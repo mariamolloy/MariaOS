@@ -30,6 +30,7 @@
    <script type="text/javascript" src="distrib/os/userCommand.js"></script>
    <script type="text/javascript" src="distrib/os/MemoryManager.js"></script>
    <script type="text/javascript" src="distrib/os/pcb.js"></script>
+   <script type="text/javascript" src="distrib/os/processmanager.js"></script>
    <script type="text/javascript" src="distrib/os/kernel.js"></script>
 
    <!-- Other Routines -->
@@ -98,13 +99,22 @@
              onclick="TSOS.Control.hostBtnReset_click(this);">
 
        <input type="button"
-              id = "btnSingleStep"
-              name="brnSingleStep"
+              id = "btnStartSingleStep"
+              name="brnStartSingleStep"
               class="normal_button"
               disabled="disabled"
               value="Single Step"
               tabindex="3"
-              onclick="TSOS.Control.hostBtnSingleStep_click(this);">
+              onclick="TSOS.Control.hostBtnStartSingleStep_click(this);">
+
+        <input type="button"
+               id = "btnStep"
+               name="btnStep"
+               class="normal_button"
+               disabled="disabled"
+               value=">"
+               tabindex="3"
+               onclick="TSOS.Control.hostBtnStep_click(this);">
    </div>
 
    <div id="divConsole" style="margin:4px; max-width:500px; max-height:500px; float:left; overflow: scroll">
@@ -141,6 +151,36 @@
       </label>
    </div>
 
+<!--   <div id="divMemory" style="margin-left:520px;">
+         <br>
+         <table style="width:100%">
+          <tr>
+            <th></th>
+            <th colspan="8">Memory</th>
+          </tr>
+          <tr>
+            <td>0x000</td>
+            <td id='cpuPC'>  </td>
+          </tr>
+        </table>
+      </br></br>
+   </div> -->
+
+   <div id="divMemory">
+							<label class="center-align">
+								<div class="label-header">Memory</div>
+								<table name    ="tableMemory"
+									id      ="tableMemory"
+									bgcolor ="white"
+									style   ="color: black; height: 150px; overflow-y: scroll; display: block;"
+									class   ="table striped">
+								</table>
+								<tbody align="center">
+
+								</tbody>
+							</label>
+						</div>
+
    <div id="divLog" style="margin-left:520px;">
       <label>
          Host Log
@@ -164,6 +204,7 @@
          ></textarea>
       </label>
    </div>
+
 
 </div>
 

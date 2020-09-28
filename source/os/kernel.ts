@@ -37,6 +37,8 @@ module TSOS {
 
             //create the memory manager
             _MemoryManager	=	new	MemoryManager();
+
+            _ProcessManager = new ProcessManager();
             //
             // ... more?
             //

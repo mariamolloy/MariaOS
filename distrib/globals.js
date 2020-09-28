@@ -36,7 +36,7 @@ var _memSize = 255; //just for proj 2 for proj3 it will be 768; //default memory
 var _Memory;
 var _MemoryAccessor;
 //	Software	(OS)
-var _MemoryManager = null;
+var _MemoryManager;
 var _ProcessManager; //creates a process manager to deal w PCBs
 // The OS Kernel and its queues.
 var _Kernel;

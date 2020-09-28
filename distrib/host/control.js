@@ -71,6 +71,7 @@ var TSOS;
             // .. enable the Halt and Reset buttons ...
             document.getElementById("btnHaltOS").disabled = false;
             document.getElementById("btnReset").disabled = false;
+            document.getElementById("btnStartSingleStep").disabled = false;
             // .. set focus on the OS console display ...
             document.getElementById("display").focus();
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
@@ -105,7 +106,13 @@ var TSOS;
             // be reloaded from the server. If it is false or not specified the browser may reload the
             // page from its cache, which is not what we want.
         }
-        static hostBtnSingleStep_click(btn) {
+        static hostBtnStartSingleStep_click(btn) {
+            //starts single stepping
+            //to do: make it so it can stop single stepping too
+            btn.disabled = true;
+            document.getElementById("btnStep").disabled = false;
+        }
+        static hostBtnStep_click(btn) {
             //to do: each time you click button you increase clock tick by 1
         }
     }
