@@ -349,10 +349,12 @@ var TSOS;
                     _StdOut.putText("Please enter valid input");
                 }
                 //go through the array and load into memory at location $0000
-                //to do • assign	a	Process	ID	(PID)
-                //to do• create	a	Process	Control	Block	(PCB)
                 //to do• return	the	PID	to	the	console	and	display	it.
                 //once u do ur MemoryManager then use array of bytes and load into memory
+                //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
+                var processID = 1;
+                var mypcb = new TSOS.PCB(processID);
+                pcb.init();
                 for (var i = 0; i < inp.length; i++) {
                 }
             }

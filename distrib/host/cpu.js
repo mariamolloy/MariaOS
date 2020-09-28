@@ -13,13 +13,12 @@
 var TSOS;
 (function (TSOS) {
     class Cpu {
-        constructor(PC = 0, Acc = 0, Xreg = 0, Yreg = 0, Zflag = 0, op = "", isExecuting = false) {
+        constructor(PC = 0, Acc = 0, Xreg = 0, Yreg = 0, Zflag = 0, isExecuting = false) {
             this.PC = PC;
             this.Acc = Acc;
             this.Xreg = Xreg;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
-            this.op = op;
             this.isExecuting = isExecuting;
         }
         init() {
@@ -35,12 +34,23 @@ var TSOS;
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
         }
-        fetch() {
+        //might have to do fetch and decode separately bc of clock cycles
+        fetchNDecode() {
+            //fetch
+            var prog = _MemoryManager.readingTime(this.PC, this.PC + 1); //figure out how to get correct pcb from load);
+            //to do: decode
+            //if string starts w an op code that doesnt require more data.. then u can return String
+            //else if string is an op code that requires a certain amt of data then read that data
+            //and save as vars so we can use it when we exxecute
         }
         execute(opCode) {
-            this.op = opCode.toUpperCase();
-            switch (this.op) {
+            var opCode = opCode.toUpperCase();
+            //execute
+            switch (opCode) {
                 case "A9": { //load the accumulator with a constant
+                    //do i have to use mmu? or can i use ma
+                    this.Acc = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+                    this.PC = this.PC + 2;
                     break;
                 }
                 case "AD": { //Load the accumulator from memory
@@ -54,12 +64,16 @@ var TSOS;
                     break;
                 }
                 case "A2": { //Load the X register with a constant
+                    this.Xreg = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+                    this.PC = this.PC + 2;
                     break;
                 }
                 case "AE": { //Load the X register from memory
                     break;
                 }
                 case "A0": { //Load the Y register with a constant
+                    this.Yreg = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
+                    this.PC = this.PC + 2;
                     break;
                 }
                 case "AC": { //Load the Y register from memory

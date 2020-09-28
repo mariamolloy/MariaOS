@@ -20,7 +20,6 @@ module TSOS {
                     public Xreg: number = 0,
                     public Yreg: number = 0,
                     public Zflag: number = 0,
-                    public op: String = "",
                     public isExecuting: boolean = false) {
 
         }
@@ -40,14 +39,26 @@ module TSOS {
             // Do the real work here. Be sure to set this.isExecuting appropriately.
         }
 
-        public fetch(){
+  //might have to do fetch and decode separately bc of clock cycles
+
+        public fetchNDecode(){
+          //fetch
+          var prog = _MemoryManager.readingTime(this.PC, this.PC+1,); //figure out how to get correct pcb from load);
+
+          //to do: decode
+          //if string starts w an op code that doesnt require more data.. then u can return String
+          //else if string is an op code that requires a certain amt of data then read that data
+          //and save as vars so we can use it when we exxecute
 
         }
-
-        public execute(opCode){
-          this.op = opCode.toUpperCase();
-          switch(this.op){
+          public execute(opCode){
+          var opCode = opCode.toUpperCase();
+          //execute
+          switch(opCode){
             case "A9": { //load the accumulator with a constant
+              //do i have to use mmu? or can i use ma
+              this.Acc = parseInt(_MemoryAccessor.read(this.PC+1), 16);
+              this.PC = this.PC + 2;
               break;
             }
             case "AD": { //Load the accumulator from memory
@@ -61,18 +72,23 @@ module TSOS {
               break;
             }
             case "A2": { //Load the X register with a constant
+              this.Xreg = parseInt(_MemoryAccessor.read(this.PC+1), 16);
+              this.PC = this.PC + 2;
               break;
             }
             case "AE": { //Load the X register from memory
               break;
             }
             case "A0": { //Load the Y register with a constant
+              this.Yreg = parseInt(_MemoryAccessor.read(this.PC+1), 16);
+              this.PC = this.PC + 2;
               break;
             }
             case "AC": { //Load the Y register from memory
               break;
             }
             case "EA": { //No Operation
+              this.PC++;
               break;
             }
             case "00": { //Break (which is really a system call)
