@@ -42,11 +42,11 @@ var _Trace: boolean = true;              // Default the OS trace to be on.
 
 var _Status: string = "[status]";					//Status set by the user
 
-var _memSize: number = 768; //default memory size
+var _memSize: number = 255; //just for proj 2 for proj3 it will be 768; //default memory size
 
 
 //Hardware (OS)
-var	_CPU:	TSOS.Cpu;
+//var	_CPU:	TSOS.Cpu;
 var	_Memory:	TSOS.Memory;
 var	_MemoryAccessor:	TSOS.MemoryAccessor;
 //	Software	(OS)

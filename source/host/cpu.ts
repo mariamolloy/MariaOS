@@ -54,7 +54,7 @@ module TSOS {
 
         //method to execute op opCodes
         //param: opCode is the fetched and decoded op code we are executing
-        //inspired by piano god KaiOS
+        //inspired by piano + coding god KaiOS
         public execute(opCode){
           var opCode = opCode.toUpperCase();
           //execute

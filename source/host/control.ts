@@ -60,6 +60,7 @@ module TSOS {
             }
 
             _Memory = new Memory; //instantiate new memory
+
         }
 
         public static hostLog(msg: string, source: string = "?"): void {
@@ -103,6 +104,14 @@ module TSOS {
             // .. and call the OS Kernel Bootstrap routine.
             _Kernel = new Kernel();
             _Kernel.krnBootstrap();  // _GLaDOS.afterStartup() will get called in there, if configured.
+
+            //on start load CPU values into HTML display
+            document.getElementById("cpuPC").innerHTML = _CPU.PC.toString(16).toUpperCase();
+          //  document.getElementById("cpuIR").innerHTML = _CPU.IR.toString(16).toUpperCase();
+          document.getElementById("cpuAcc").innerHTML = _CPU.Acc.toString(16).toUpperCase();
+          document.getElementById("cpuX").innerHTML = _CPU.Xreg.toString(16).toUpperCase();
+          document.getElementById("cpuY").innerHTML = _CPU.Yreg.toString(16).toUpperCase();
+          document.getElementById("cpuZF").innerHTML = _CPU.Zflag.toString(16).toUpperCase();
         }
 
         public static hostBtnHaltOS_click(btn): void {

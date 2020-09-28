@@ -30,9 +30,9 @@ var _DefaultFontSize = 13;
 var _FontHeightMargin = 4; // Additional space added to font size when advancing a line.
 var _Trace = true; // Default the OS trace to be on.
 var _Status = "[status]"; //Status set by the user
-var _memSize = 768; //default memory size
+var _memSize = 255; //just for proj 2 for proj3 it will be 768; //default memory size
 //Hardware (OS)
-var _CPU;
+//var	_CPU:	TSOS.Cpu;
 var _Memory;
 var _MemoryAccessor;
 //	Software	(OS)

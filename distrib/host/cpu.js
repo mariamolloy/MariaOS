@@ -25,7 +25,7 @@ var TSOS;
             this.PC = 0;
             this.Acc = 0;
             this.Xreg = 0;
-            this.Yreg = 0;
+            this.Yreg = 3;
             this.Zflag = 0;
             this.isExecuting = false;
         }
@@ -45,7 +45,7 @@ var TSOS;
         }
         //method to execute op opCodes
         //param: opCode is the fetched and decoded op code we are executing
-        //inspired by piano god KaiOS
+        //inspired by piano + coding god KaiOS
         execute(opCode) {
             var opCode = opCode.toUpperCase();
             //execute
