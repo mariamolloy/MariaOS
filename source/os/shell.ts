@@ -102,13 +102,19 @@ module TSOS {
             //load
             sc = new ShellCommand(this.shellLoad,
                                   "load",
-                                  "Validates and loads the user program.");
+                                  "- Validates and loads the user program.");
+            this.commandList[this.commandList.length] = sc;
+
+            //run
+            sc = new ShellCommand(this.shellRun,
+                                  "run",
+                                  "<pid> - Runs a program loaded in memory corresponding to the provided process id");
             this.commandList[this.commandList.length] = sc;
 
             //BSOD test
             sc = new ShellCommand(this.shellBsod,
                                   "bsod",
-                                  "Tests an error message");
+                                  "- Tests an error message");
             this.commandList[this.commandList.length] = sc;
 
             //to do:
@@ -303,7 +309,10 @@ module TSOS {
                         _StdOut.putText("BSOD is a test command for a kernel OS error message.");
                         break;
                     case "load":
-                        _StdOut.putText("Load validates that the user input is hex characters and loads it into the register.");
+                        _StdOut.putText("Load validates that the user input is hex characters and loads it into the memory.");
+                        break;
+                    case "run":
+                        _StdOut.putText("Run <pid> runs the program loaded into memory with the given process ID.");
                         break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -436,6 +445,20 @@ module TSOS {
 
         }
       }
+
+      public shellRun(args) {
+        if (args.length > 0){
+          var inputPID = parseInt(args, 10);
+
+          _StdOut.putText("New status: " + _Status);
+          document.getElementById('status').innerHTML = _Status;
+
+        } else {
+          _StdOut.putText("Usage: Run <pid>  Please supply a process ID.");
+        }
+      }
+
+
 
 
     }
