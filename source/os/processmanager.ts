@@ -1,4 +1,4 @@
-export TSOS {
+module TSOS {
   export class ProcessManager {
     //to do for iproj3:
     //add queue stuff so we can do multiple processes

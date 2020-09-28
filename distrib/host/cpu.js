@@ -29,34 +29,21 @@ var TSOS;
             this.Zflag = 0;
             this.isExecuting = false;
         }
+        //inspired and assisted by piano + coding god KaiOS
         cycle() {
-            _Kernel.krnTrace('CPU cycle');
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
-        }
-        //might have to do fetch and decode separately bc of clock cycles
-        fetchNDecode() {
-            //fetch
-            var prog = _MemoryManager.readingTime(this.PC, this.PC + 1); //figure out how to get correct pcb from load);
-            //to do: decode
-            //if string starts w an op code that doesnt require more data.. then u can return String
-            //else if string is an op code that requires a certain amt of data then read that data
-            //and save as vars so we can use it when we exxecute
-        }
-        //method to execute op opCodes
-        //param: opCode is the fetched and decoded op code we are executing
-        //inspired by piano + coding god KaiOS
-        execute(opCode) {
-            var opCode = opCode.toUpperCase();
+            //fetch and decode
+            var opCode = _MemoryAccessor.read(this.PC).toUpperCase();
             //execute
+            _Kernel.krnTrace('CPU cycle');
             switch (opCode) {
-                case "A9": { //load the accumulator with a constant
+                case "A9": //load the accumulator with a constant
                     //do i have to use mmu? or can i use ma
                     this.Acc = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
                     this.PC = this.PC + 2;
                     break;
-                }
-                case "AD": { //Load the accumulator from memory
+                case "AD": //Load the accumulator from memory
                     //bc of little-endian we have to get the next 2 hex bytes and swap them
                     var lilEndian = _MemoryAccessor.read(this.PC + 1);
                     lilEndian = _MemoryAccessor.read(this.PC + 2) + lilEndian;
@@ -65,48 +52,40 @@ var TSOS;
                     this.Acc = parseInt(_MemoryAccessor.read(addy), 16);
                     this.PC = this.PC + 3;
                     break;
-                }
                 case "8D": { //Store the accumulator in memory
                     break;
                 }
-                case "6D": { //Add with carry:  Adds contents of an address to the contents of the accumulator and keeps the result in the accumulator
+                case "6D": //Add with carry:  Adds contents of an address to the contents of the accumulator and keeps the result in the accumulator
                     break;
-                }
-                case "A2": { //Load the X register with a constant
+                case "A2": //Load the X register with a constant
                     this.Xreg = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
                     this.PC = this.PC + 2;
                     break;
-                }
-                case "AE": { //Load the X register from memory
+                case "AE": //Load the X register from memory
                     break;
-                }
-                case "A0": { //Load the Y register with a constant
+                case "A0": //Load the Y register with a constant
                     this.Yreg = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
                     this.PC = this.PC + 2;
                     break;
-                }
-                case "AC": { //Load the Y register from memory
+                case "AC": //Load the Y register from memory
                     break;
-                }
-                case "EA": { //No Operation
+                case "EA": //No Operation
                     this.PC++;
                     break;
-                }
-                case "00": { //Break (which is really a system call)
+                case "00": //Break (which is really a system call)
+                    this.isExecuting = false;
+                    this.PC++;
                     break;
-                }
-                case "EC": { //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
+                case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
                     break;
-                }
-                case "D0": { //Branch n bytes if Z flag = 0
+                case "D0": //Branch n bytes if Z flag = 0
                     break;
-                }
-                case "EE": { //Increment the value of a byte
+                case "EE": //Increment the value of a byte
                     break;
-                }
-                case "FF": { //System Call: #$01 in X reg = print the integer stored in the Y register. #$02 in X reg = print the 00-terminated string stored at the address in the Y register.
+                case "FF": //System Call: #$01 in X reg = print the integer stored in the Y register. #$02 in X reg = print the 00-terminated string stored at the address in the Y register.
                     break;
-                }
+                default: //terminates single process
+                    this.isExecuting = false;
             }
         }
     }

@@ -58,10 +58,13 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellStatus, "status", "<string> - Sets the status.");
             this.commandList[this.commandList.length] = sc;
             //load
-            sc = new TSOS.ShellCommand(this.shellLoad, "load", "Validates and loads the user program.");
+            sc = new TSOS.ShellCommand(this.shellLoad, "load", "- Validates and loads the user program.");
+            this.commandList[this.commandList.length] = sc;
+            //run
+            sc = new TSOS.ShellCommand(this.shellRun, "run", "<pid> - Runs a program loaded in memory corresponding to the provided process id");
             this.commandList[this.commandList.length] = sc;
             //BSOD test
-            sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "Tests an error message");
+            sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "- Tests an error message");
             this.commandList[this.commandList.length] = sc;
             //to do:
             //to do: run <pid> program in memory
@@ -238,7 +241,10 @@ var TSOS;
                         _StdOut.putText("BSOD is a test command for a kernel OS error message.");
                         break;
                     case "load":
-                        _StdOut.putText("Load validates that the user input is hex characters and loads it into the register.");
+                        _StdOut.putText("Load validates that the user input is hex characters and loads it into the memory.");
+                        break;
+                    case "run":
+                        _StdOut.putText("Run <pid> runs the program loaded into memory with the given process ID.");
                         break;
                     default:
                         _StdOut.putText("No manual entry for " + args[0] + ".");
@@ -357,6 +363,16 @@ var TSOS;
                 newPcb.init(0); //to do for iProj3 once we have partitions, for now just set partition to 0
                 for (var i = 0; i < inp.length; i++) {
                 }
+            }
+        }
+        shellRun(args) {
+            if (args.length > 0) {
+                var inputPID = parseInt(args, 10);
+                _StdOut.putText("New status: " + _Status);
+                document.getElementById('status').innerHTML = _Status;
+            }
+            else {
+                _StdOut.putText("Usage: Run <pid>  Please supply a process ID.");
             }
         }
     }
