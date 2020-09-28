@@ -428,10 +428,10 @@ module TSOS {
 
           //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
           var processID = 1;
-          var mypcb = new PCB(processID);
-          pcb.init();
+          var newPcb = new PCB(processID);
+          newPcb.init(0); //to do for iProj3 once we have partitions, for now just set partition to 0
           for (var i = 0; i < inp.length; i++){
-            
+
           }
 
         }

@@ -51,7 +51,11 @@ module TSOS {
           //and save as vars so we can use it when we exxecute
 
         }
-          public execute(opCode){
+
+        //method to execute op opCodes
+        //param: opCode is the fetched and decoded op code we are executing
+        //inspired by piano god KaiOS
+        public execute(opCode){
           var opCode = opCode.toUpperCase();
           //execute
           switch(opCode){
@@ -62,7 +66,13 @@ module TSOS {
               break;
             }
             case "AD": { //Load the accumulator from memory
-              this.Acc = 1;
+              //bc of little-endian we have to get the next 2 hex bytes and swap them
+              var lilEndian = _MemoryAccessor.read(this.PC + 1);
+              lilEndian = _MemoryAccessor.read(this.PC + 2) + lilEndian;
+              //get the get the content of our lilEndian address and store it in the accumulator
+              var addy = parseInt(lilEndian, 16);
+              this.Acc = parseInt(_MemoryAccessor.read(addy), 16);
+              this.PC = this.PC + 3;
               break;
             }
             case "8D": { //Store the accumulator in memory
@@ -108,5 +118,7 @@ module TSOS {
             }
           }
         }
+
+
     }
 }

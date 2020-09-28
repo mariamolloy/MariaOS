@@ -353,8 +353,8 @@ var TSOS;
                 //once u do ur MemoryManager then use array of bytes and load into memory
                 //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
                 var processID = 1;
-                var mypcb = new TSOS.PCB(processID);
-                pcb.init();
+                var newPcb = new TSOS.PCB(processID);
+                newPcb.init(0);
                 for (var i = 0; i < inp.length; i++) {
                 }
             }
