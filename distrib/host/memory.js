@@ -4,12 +4,12 @@ var TSOS;
         //make memory and initialize it to 0
         constructor(mem = new Array(_memSize)) {
             this.mem = mem;
-            for (var i = 0; i < _memSize; i++) {
-                mem[i] = "00";
-            }
         }
-        //to do initialize mem
+        //initialize memory to 00000000...
         init() {
+            for (var i = 0; i < _memSize; i++) {
+                this.mem[i] = "00";
+            }
         }
         //returns a memory address
         readMem(addy) {
@@ -18,20 +18,13 @@ var TSOS;
                 return this.mem[addy];
             }
             else {
+                return "Error memory address out of bounds";
                 _StdOut.putText("Error memory address out of bounds");
             }
         }
         //adds a byte to Memory
-        //to do: check that its valid input only rlly need line 27 in this
-        //move byte check to MA
-        //for memory accessor u can handle an array of bytes but here just one byte at a time
         writeMem(addy, byte) {
-            if (byte.length == 2) {
-                this.mem[addy] = byte;
-            }
-            else {
-                _StdOut.putText("Not a byte smh");
-            }
+            this.mem[addy] = byte;
         }
     }
     TSOS.Memory = Memory;

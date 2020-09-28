@@ -314,7 +314,7 @@ var TSOS;
             _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
         }
         shellLoad(args) {
-            //load user input char by char into a array and then go thru array and check each is hex or space
+            //load user input char by char into a array
             var userInp = document.getElementById('taProgramInput').value.trim();
             var inp = new Array();
             for (var i = 0; i < userInp.length; i++) {
@@ -325,6 +325,8 @@ var TSOS;
                 _StdOut.putText("No User Input was entered.");
             }
             else {
+                //to do:::::: also make a array<string> of bytes not of individual letters
+                //go thru array and check each is hex or space
                 var inputLength = 0;
                 for (var i = 0; i < inp.length; i++) {
                     var letter = inp[i];
@@ -338,12 +340,20 @@ var TSOS;
                     }
                 }
                 if (inputLength == inp.length) {
+                    //prints user input for testing purposes
                     for (var i = 0; i < inp.length; i++) {
                         _StdOut.putText(inp[i]);
                     }
                 }
                 else {
                     _StdOut.putText("Please enter valid input");
+                }
+                //go through the array and load into memory at location $0000
+                //to do • assign	a	Process	ID	(PID)
+                //to do• create	a	Process	Control	Block	(PCB)
+                //to do• return	the	PID	to	the	console	and	display	it.
+                //once u do ur MemoryManager then use array of bytes and load into memory
+                for (var i = 0; i < inp.length; i++) {
                 }
             }
         }

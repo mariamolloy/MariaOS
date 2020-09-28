@@ -1,7 +1,7 @@
 module TSOS {
   export class MemoryAccessor {
     constructor(){}
-    
+
     //request checks what block to write mem in
     //to do for proj 3
     public requestMem(){
@@ -13,7 +13,7 @@ module TSOS {
       return true;
     }
 
-    //make it so u can write an array of bytes, multiple bytes to memory
+  /*  //make it so u can write an array of bytes, multiple bytes to memory
     public write(addy: number, val: string[]): void{
       //check its a valid address
       if ((addy >= 0) && (addy < _memSize)){
@@ -32,8 +32,9 @@ module TSOS {
       } else {
         _StdOut.putText("ur memory address isn't valid smh");
       }
-  }
+  } */
 
+/*
   //to do read
   //be able to read mutiple bytes w start end and PCB
   //but PCB is for proj 3
@@ -41,12 +42,23 @@ module TSOS {
     public read(start: number, end: number, maPcb: PCB): string {
       var amtToRead = end - start;
       if (amtToRead == 1){
-        _Memory.readMem(start);
+        return _Memory.readMem(start);
       } else {
         for (var i = 0; i < amtToRead; i++){
-          _Memory.readMem(start + i);
+        return _Memory.readMem(start + i);
         }
       }
+    }
+*/
+
+    //writes byte to memory
+    write(addy: number, bite: string): void{
+      _Memory.writeMem(addy, bite);
+    }
+
+    //reads byte from memory
+    read(addy: number): string {
+      return _Memory.readMem(addy);
     }
 
     //to do for iProj 3
