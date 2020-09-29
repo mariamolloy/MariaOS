@@ -418,6 +418,8 @@ module TSOS {
                       ||letter == "7" || letter == "8" || letter == "9" || letter == "A" || letter == "B" || letter == "C" ||
                         letter == "D" || letter == "E" || letter == "F") {
                     inputLength++;
+                } else {
+                  _StdOut.putText(letter);
                 }
             }
             if (inputLength == inp.length){
@@ -463,7 +465,7 @@ module TSOS {
             var pcbToRun = _ProcessManager.allPcbs[i];
             if (pcbToRun.Pid == inputPID){
               _ProcessManager.run(pcbToRun);
-            }
+            } 
           }
         } else {
           _StdOut.putText("Error pls say run <pid>");

@@ -343,6 +343,9 @@ var TSOS;
                         letter == "D" || letter == "E" || letter == "F") {
                         inputLength++;
                     }
+                    else {
+                        _StdOut.putText(letter);
+                    }
                 }
                 if (inputLength == inp.length) {
                     //this means all input is valid hex and we can continue and load into memory
@@ -384,6 +387,9 @@ var TSOS;
                     var pcbToRun = _ProcessManager.allPcbs[i];
                     if (pcbToRun.Pid == inputPID) {
                         _ProcessManager.run(pcbToRun);
+                    }
+                    else {
+                        _StdOut.putText("Sorry :( thats not a process id");
                     }
                 }
             }
