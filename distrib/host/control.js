@@ -42,9 +42,9 @@ var TSOS;
             _Memory = new TSOS.Memory();
             _Memory.init();
             _MemoryAccessor = new TSOS.MemoryAccessor();
+            //load in cpu values
             //load in cpu table and memory table w zeroed values
             Control.hostInitCPU();
-            Control.hostMemInit();
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -70,22 +70,21 @@ var TSOS;
         };
         Control.hostMemInit = function () {
             var table = document.getElementById('memoryTable');
-            var row;
-            var cell;
             //go through add rows of 8 bytes each all initialized to zero
             var counter = 0;
-            for (var i = 0; i < _memSize; i++) {
-                row = table.insertRow(i);
-                for (var j = 0; i < 9; j++) {
-                    counter++;
-                    cell = row.insertCell();
-                    if (j == 0) {
-                        var label = "0" + counter.toString(16).toUpperCase();
-                        cell.innerHTML = label;
-                    }
-                    else {
-                        cell.innerHTML = "00";
-                    }
+            for (var i = 0; i < (_memSize / 8); i++) {
+                var roww = table.insertRow(i);
+                var celll = roww.insertCell(0);
+                var addy = i * 8;
+                var label = "0x" + addy.toString(16);
+                for (var k = 0; k < 3 - addy.toString(16).length; k++) {
+                    label += "0";
+                }
+                label += addy.toString(16).toUpperCase();
+                celll.innerHTML = label;
+                for (var j = 1; i < 9; j++) {
+                    celll = roww.insertCell(j);
+                    celll.innerHTML = "00";
                 }
             }
         };
@@ -107,12 +106,12 @@ var TSOS;
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new TSOS.Cpu(); // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
-            //load in cpu values
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
             _Kernel = new TSOS.Kernel();
             _Kernel.krnBootstrap(); // _GLaDOS.afterStartup() will get called in there, if configured.
+            //Control.hostMemInit();
         };
         //create cpu table and zero it on initialization
         Control.hostInitCPU = function () {
