@@ -42,8 +42,8 @@ var TSOS;
             _Memory = new TSOS.Memory();
             _Memory.init();
             _MemoryAccessor = new TSOS.MemoryAccessor();
-            //load in zeroed cpu values\
-            Control.hostUpdateCPU();
+            //load in clu table w zeroed values
+            Control.hostInitCPU();
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -94,14 +94,44 @@ var TSOS;
             _Kernel = new TSOS.Kernel();
             _Kernel.krnBootstrap(); // _GLaDOS.afterStartup() will get called in there, if configured.
         };
+        //create cpu table and zero it on initialization
+        Control.hostInitCPU = function () {
+            var cpuTable = document.getElementById('cpuTable');
+            //first row is labels
+            var row = cpuTable.insertRow(0);
+            var cell = row.insertCell();
+            cell.innerHTML = "PC";
+            cell = row.insertCell();
+            cell.innerHTML = "IR";
+            cell = row.insertCell();
+            cell.innerHTML = "ACC";
+            cell = row.insertCell();
+            cell.innerHTML = "X";
+            cell = row.insertCell();
+            cell.innerHTML = "Y";
+            cell = row.insertCell();
+            cell.innerHTML = "Z";
+            //second row is all zeros
+            row = cpuTable.insertRow(1);
+            cell = row.insertCell();
+            cell.innerHTML = "0";
+            cell = row.insertCell();
+            cell.innerHTML = "00";
+            cell = row.insertCell();
+            cell.innerHTML = "0";
+            cell = row.insertCell();
+            cell.innerHTML = "0";
+            cell = row.insertCell();
+            cell.innerHTML = "0";
+            cell = row.insertCell();
+            cell.innerHTML = "0";
+        };
         //load correct values into cpu table in index
         //this is called in kernel and should update as programs run
         Control.hostUpdateCPU = function () {
             var cpuTable = document.getElementById('cpuTable');
-            //to do : add if init then add a row w labels then a row w all zeros
-            //else do this vvv
-            cpuTable.deleteRow(0);
-            var row = cpuTable.insertRow(0);
+            cpuTable.deleteRow(1);
+            var row = cpuTable.insertRow(1);
             var cell = row.insertCell(); //load in PC
             cell.innerHTML = _CPU.PC.toString(16).toUpperCase();
             cell = row.insertCell();
