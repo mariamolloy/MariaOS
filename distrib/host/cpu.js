@@ -58,11 +58,14 @@ var TSOS;
                     this.PC = this.PC + 3;
                     break;
                 case "8D": //Store the accumulator in memory
-                    var accStr = this.Acc.toString();
+                    var accStr = this.Acc.toString(16);
                     _MemoryAccessor.write(this.lilEndianTranslator(), accStr);
                     this.PC = this.PC + 3;
                     break;
                 case "6D": //Add with carry:  Adds contents of an address to the contents of the accumulator and keeps the result in the accumulator
+                    var addend = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
+                    this.Acc = this.Acc + addend;
+                    this.PC = this.PC + 3;
                     break;
                 case "A2": //Load the X register with a constant
                     this.Xreg = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
