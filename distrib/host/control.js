@@ -192,7 +192,6 @@ var TSOS;
             //starts single stepping/stops single stepping
             _SingleStep = !_SingleStep;
             if (_SingleStep) {
-                //to do: disconnect clockpulse from call back
                 document.getElementById("btnStep").disabled = false;
                 _CPU.isExecuting = false;
             }

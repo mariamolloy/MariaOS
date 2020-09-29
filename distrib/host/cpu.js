@@ -35,7 +35,7 @@ var TSOS;
             this.Zflag = 0;
             this.isExecuting = false;
         };
-        //inspired and assisted by piano + coding god KaiOS
+        //inspired by piano + coding god KaiOS
         Cpu.prototype.cycle = function () {
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
@@ -52,7 +52,6 @@ var TSOS;
                     this.Acc = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
                     this.PC = this.PC + 2;
                     break;
-                //doesnt work puts everything as "E" in accumulator
                 case "AD": //Load the accumulator from memory
                     this.Acc = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
                     this.PC = this.PC + 3;
@@ -158,8 +157,6 @@ var TSOS;
         Cpu.prototype.lilEndianTranslator = function () {
             var memAdd = _MemoryAccessor.read(this.PC + 1);
             memAdd = _MemoryAccessor.read(this.PC + 2) + memAdd;
-            //try w 10 and 16 bc i am not sure
-            //  var addy = parseInt(memAdd, 10);
             var addy = parseInt(memAdd, 16);
             return addy;
         };

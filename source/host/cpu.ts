@@ -33,7 +33,7 @@ module TSOS {
             this.isExecuting = false;
         }
 
-        //inspired and assisted by piano + coding god KaiOS
+        //inspired by piano + coding god KaiOS
         public cycle(): void {
 
             // TODO: Accumulate CPU usage and profiling statistics here.
@@ -53,7 +53,6 @@ module TSOS {
                 this.Acc = parseInt(_MemoryAccessor.read(this.PC+1), 16);
                 this.PC = this.PC + 2;
                 break;
-                //doesnt work puts everything as "E" in accumulator
               case "AD":  //Load the accumulator from memory
                 this.Acc = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
                 this.PC = this.PC + 3;
@@ -156,8 +155,6 @@ module TSOS {
         private lilEndianTranslator(): number {
           var memAdd = _MemoryAccessor.read(this.PC + 1);
           memAdd = _MemoryAccessor.read(this.PC + 2) + memAdd;
-          //try w 10 and 16 bc i am not sure
-          //  var addy = parseInt(memAdd, 10);
           var addy = parseInt(memAdd, 16);
           return addy;
         }

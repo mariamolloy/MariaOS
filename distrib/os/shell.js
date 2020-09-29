@@ -390,7 +390,7 @@ var TSOS;
                     }
                 }
             }
-            else {
+            else { //no argument
                 _StdOut.putText("Error pls say run <pid>");
             }
         };

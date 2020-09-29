@@ -465,9 +465,9 @@ module TSOS {
             var pcbToRun = _ProcessManager.allPcbs[i];
             if (pcbToRun.Pid == inputPID){
               _ProcessManager.run(pcbToRun);
-            } 
+            }
           }
-        } else {
+        } else { //no argument
           _StdOut.putText("Error pls say run <pid>");
         }
       }

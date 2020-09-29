@@ -5,8 +5,7 @@ var TSOS;
             //to do for iproj3: make partitions here
         }
         //to do i proj3: allocation and deallocation
-        //to do write (wrap around memory accessor)
-        //make it so u can write an array of bytes, multiple bytes to memory
+        //writingTime writes an array of strings to a specified address in memory
         MemoryManager.prototype.writingTime = function (addy, val) {
             //check its a valid address
             if ((addy >= 0) && (addy < _memSize)) {
