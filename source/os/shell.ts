@@ -443,7 +443,7 @@ module TSOS {
             _MemoryManager.writingTime(0, bytes);
 
             //for testing
-            _StdOut.putText(_MemoryManager.readingTime(0, 5, 0));
+            //_StdOut.putText(_MemoryManager.readingTime(0, 5, 0));
 
           } else {
             _StdOut.putText("Please enter valid input");

@@ -46,23 +46,22 @@ module TSOS {
 
             //execute
             _Kernel.krnTrace('CPU cycle: executing' + opCode);
-
+            var ir = opCode;
+            _ProcessManager.allPcbs[_ProcessManager.idCounter-1].Pid = ir;
             switch(opCode){
               case "A9":  //load the accumulator with a constant
                 this.Acc = parseInt(_MemoryAccessor.read(this.PC+1), 16);
                 this.PC = this.PC + 2;
                 break;
+                //doesnt work puts everything as "E" in accumulator
               case "AD":  //Load the accumulator from memory
-                //bc of little-endian we have to get the next 2 hex bytes and swap them
-                var lilEndian = _MemoryAccessor.read(this.PC + 1);
-                lilEndian = _MemoryAccessor.read(this.PC + 2) + lilEndian;
-                //get the get the content of our lilEndian address and store it in the accumulator
-                var addy = parseInt(lilEndian, 16);
-                this.Acc = parseInt(_MemoryAccessor.read(addy), 16);
+                this.Acc = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
                 this.PC = this.PC + 3;
                 break;
               case "8D":  //Store the accumulator in memory
-
+                var accStr = this.Acc.toString();
+                _MemoryAccessor.write(this.lilEndianTranslator(), accStr);
+                this.PC = this.PC + 3;
                 break;
               case "6D": //Add with carry:  Adds contents of an address to the contents of the accumulator and keeps the result in the accumulator
                 break;
@@ -83,7 +82,7 @@ module TSOS {
                 break;
               case "00":  //Break (which is really a system call)
                 this.isExecuting = false;
-                this.PC++;
+                //this.PC++;
                 break;
               case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
                 break;
@@ -92,6 +91,7 @@ module TSOS {
               case "EE":  //Increment the value of a byte
                 break;
               case "FF":  //System Call: #$01 in X reg = print the integer stored in the Y register. #$02 in X reg = print the 00-terminated string stored at the address in the Y register.
+                //if ()
                 break;
               default: //terminates single process
                 this.isExecuting = false;
@@ -100,7 +100,15 @@ module TSOS {
             }
         }
 
-
+      //method to get next two bytes from memory and swap them
+        private lilEndianTranslator(): number {
+          var memAdd = _MemoryAccessor.read(this.PC + 1);
+          memAdd = _MemoryAccessor.read(this.PC + 2) + memAdd;
+          //try w 10 and 16 bc i am not sure
+          //  var addy = parseInt(memAdd, 10);
+          var addy = parseInt(memAdd, 16);
+          return addy;
+        }
 
     }
 }
