@@ -98,6 +98,8 @@ var TSOS;
         //this is called in kernel and should update as programs run
         Control.hostUpdateCPU = function () {
             var cpuTable = document.getElementById('cpuTable');
+            //to do : add if init then add a row w labels then a row w all zeros
+            //else do this vvv
             cpuTable.deleteRow(0);
             var row = cpuTable.insertRow(0);
             var cell = row.insertCell(); //load in PC

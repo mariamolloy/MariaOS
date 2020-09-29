@@ -93,6 +93,7 @@ var TSOS;
                 default: //terminates single process
                     this.isExecuting = false;
                     _StdOut.putText("hmm i don't think thats an op code honey!");
+                    break;
             }
         };
         return Cpu;
