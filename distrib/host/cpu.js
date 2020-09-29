@@ -58,12 +58,16 @@ var TSOS;
                     this.PC = this.PC + 3;
                     break;
                 case "8D": //Store the accumulator in memory
+                    //save contents of accumulator
                     var accStr = this.Acc.toString(16);
+                    //save it in memory at specified location
                     _MemoryAccessor.write(this.lilEndianTranslator(), accStr);
                     this.PC = this.PC + 3;
                     break;
                 case "6D": //Add with carry:  Adds contents of an address to the contents of the accumulator and keeps the result in the accumulator
+                    //get value stored at address in memory
                     var addend = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
+                    //add to accumulator
                     this.Acc = this.Acc + addend;
                     this.PC = this.PC + 3;
                     break;
@@ -72,14 +76,19 @@ var TSOS;
                     this.PC = this.PC + 2;
                     break;
                 case "AE": //Load the X register from memory
+                    //read content from memory address specified into xreg
+                    this.Xreg = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
+                    this.PC = this.PC + 3;
                     break;
                 case "A0": //Load the Y register with a constant
                     this.Yreg = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
                     this.PC = this.PC + 2;
                     break;
                 case "AC": //Load the Y register from memory
+                    this.Yreg = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
+                    this.PC = this.PC + 3;
                     break;
-                case "EA": //No Operation
+                case "EA": //No Operation do nothing lol
                     this.PC++;
                     break;
                 case "00": //Break (which is really a system call)
@@ -87,13 +96,45 @@ var TSOS;
                     //this.PC++;
                     break;
                 case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
+                    var bite = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
+                    if (bite == this.Xreg) {
+                        this.Zflag = 1;
+                    }
+                    else {
+                        this.Zflag = 0;
+                    }
+                    this.PC = this.PC + 3;
                     break;
                 case "D0": //Branch n bytes if Z flag = 0
+                    if (this.Zflag == 0) {
+                    }
                     break;
                 case "EE": //Increment the value of a byte
+                    var bite = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
+                    bite++;
+                    var bight = bite.toString(16);
+                    _MemoryAccessor.write(this.lilEndianTranslator(), bight);
+                    this.PC = this.PC + 3;
                     break;
                 case "FF": //System Call: #$01 in X reg = print the integer stored in the Y register. #$02 in X reg = print the 00-terminated string stored at the address in the Y register.
-                    //if ()
+                    //check if x reg is 1 or 2
+                    //print y reg or print string at address in y reg, respectively
+                    if (this.Xreg == 1) {
+                        _StdOut.putText(this.Yreg);
+                    }
+                    else if (this.Xreg == 2) {
+                        var addy = this.Yreg;
+                        var print = "";
+                        while (_MemoryAccessor.read(addy) != "00") {
+                            var data = _MemoryAccessor.read(addy);
+                            var decimal = parseInt(data.toString(), 16);
+                            var letter = String.fromCharCode(decimal);
+                            print += letter;
+                            addy++;
+                        }
+                        _StdOut.putText(print);
+                    }
+                    this.PC++;
                     break;
                 default: //terminates single process
                     this.isExecuting = false;

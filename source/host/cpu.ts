@@ -97,13 +97,44 @@ module TSOS {
                 //this.PC++;
                 break;
               case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
+                var bite = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
+                if (bite == this.Xreg){
+                  this.Zflag = 1;
+                } else {
+                  this.Zflag = 0;
+                }
+                this.PC = this.PC + 3;
                 break;
               case "D0":  //Branch n bytes if Z flag = 0
+                if (this.Zflag == 0){
+
+                }
                 break;
               case "EE":  //Increment the value of a byte
+                var bite = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
+                bite++;
+                var bight = bite.toString(16);
+                _MemoryAccessor.write(this.lilEndianTranslator(), bight);
+                this.PC = this.PC + 3;
                 break;
               case "FF":  //System Call: #$01 in X reg = print the integer stored in the Y register. #$02 in X reg = print the 00-terminated string stored at the address in the Y register.
-                //if ()
+                //check if x reg is 1 or 2
+                //print y reg or print string at address in y reg, respectively
+                if (this.Xreg == 1){
+                  _StdOut.putText(this.Yreg);
+                } else if (this.Xreg == 2){
+                  var addy = this.Yreg;
+                  var print = "";
+                  while (_MemoryAccessor.read(addy) != "00"){
+                    var data = _MemoryAccessor.read(addy);
+                     var decimal = parseInt(data.toString(), 16);
+                     var letter = String.fromCharCode(decimal);
+                     print += letter;
+                     addy++;
+                  }
+                  _StdOut.putText(print);
+                }
+                this.PC++;
                 break;
               default: //terminates single process
                 this.isExecuting = false;
