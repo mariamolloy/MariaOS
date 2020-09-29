@@ -9,7 +9,8 @@ Fork this (or clone, but fork is probably better in case Alan changes anything a
 
 Grading
 ================
-For iProject1, please grade in the iProject1 branch! NOT the master branch :)
+For iProject2, please grade in the proj2 branch! NOT the master branch :) also i know that there is this compile error: "error TS2339: Property 'getContext' does not exist on type 'HTMLElement'.88 var ctx: any = canv.getContext('2d');" but the program runs fine despite it and idk how to get rid of it ~~~~~~~~~~
+
 
 A Few Notes
 ===========
