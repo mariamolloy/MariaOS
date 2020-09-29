@@ -127,24 +127,11 @@
 
    <div id="divCPU" style="margin-left:520px;">
       <label>
-         CPU
+         CPU   PC    IR    ACC   X    Y   ZF
          <br>
-         <table style="width:100%">
+         <table id="cpuTable" style="width:100%;">
             <tr>
-              <th>PC</th>
-              <th>IR</th>
-              <th>ACC</th>
-              <th>X</th>
-              <th>Y</th>
-              <th>ZF</th>
-            </tr>
-            <tr>
-                <td id='cpuPC'>--</td>
-                <td id='cpuIR'>--</td>
-                <td id='cpuAcc'>--</td>
-                <td id='cpuX'>--</td>
-                <td id='cpuY'>--</td>
-                <td id='cpuZF'>-</td>
+
             </tr>
         </table>
       </br></br>
@@ -169,15 +156,7 @@
    <div id="divMemory">
 							<label class="center-align">
 								<div class="label-header">Memory</div>
-								<table name    ="tableMemory"
-									id      ="tableMemory"
-									bgcolor ="white"
-									style   ="color: black; height: 150px; overflow-y: scroll; display: block;"
-									class   ="table striped">
-								</table>
-								<tbody align="center">
-
-								</tbody>
+                       <table id  ="tableMemory"></table>
 							</label>
 						</div>
 

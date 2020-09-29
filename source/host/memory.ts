@@ -2,8 +2,8 @@ module TSOS {
 
   export class Memory {
 
-    private mem: string[] = new Array(_memSize)
-    constructor (){
+
+    constructor (private mem: string[] = new Array(_memSize)){
     }
 
     //initialize memory to 00000000...

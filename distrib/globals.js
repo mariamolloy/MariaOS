@@ -38,6 +38,8 @@ var _MemoryAccessor;
 //	Software	(OS)
 var _MemoryManager;
 var _ProcessManager; //creates a process manager to deal w PCBs
+//single stepping is default off
+var _SingleStep = false;
 // The OS Kernel and its queues.
 var _Kernel;
 var _KernelInterruptQueue = null;

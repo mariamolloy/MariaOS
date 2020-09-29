@@ -1,8 +1,9 @@
 var TSOS;
 (function (TSOS) {
     var Memory = /** @class */ (function () {
-        function Memory() {
-            this.mem = new Array(_memSize);
+        function Memory(mem) {
+            if (mem === void 0) { mem = new Array(_memSize); }
+            this.mem = mem;
         }
         //initialize memory to 00000000...
         Memory.prototype.init = function () {

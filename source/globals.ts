@@ -49,11 +49,13 @@ var _memSize: number = 255; //just for proj 2 for proj3 it will be 768; //defaul
 //var	_CPU:	TSOS.Cpu;
 var	_Memory:	TSOS.Memory;
 var	_MemoryAccessor:	TSOS.MemoryAccessor;
+
 //	Software	(OS)
 var	_MemoryManager:	any;
-
 var _ProcessManager: any; //creates a process manager to deal w PCBs
 
+//single stepping is default off
+var _SingleStep: boolean = false;
 
 
 // The OS Kernel and its queues.

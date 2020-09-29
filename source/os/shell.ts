@@ -399,7 +399,7 @@ module TSOS {
           var userInp: string = (<HTMLTextAreaElement>(document.getElementById("taProgramInput"))).value.trim().toUpperCase();
           var inp = new Array();
           var bytes = new Array();
-          //remove all whitespace from input
+          //remove allllllll whitespace from input
           userInp = userInp.replace(/\s+/g, '');
 
           for (var i = 0; i < userInp.length; i++){
@@ -431,21 +431,19 @@ module TSOS {
               bytes.push(newBite);
             }
 
-            //to do• return	the	PID	to	the	console	and	display	it.
-            //once u do ur MemoryManager then use array of bytes and load into memory
-
             //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
             var processID = _ProcessManager.idCounter;
             var newPcb = new PCB(processID);
             _ProcessManager.allPcbs.push(newPcb);
             _ProcessManager.idCounter++;
             newPcb.init(0); //to do for iProj3 once we have partitions, for now just set partition to 0
-            _StdOut.putText("Running Process " + processID);
+            //return	the	PID	to	the	console	and	display	it.
+            _StdOut.putText("Loaded Process " + processID);
             //go through the array and load into memory at location $0000
             _MemoryManager.writingTime(0, bytes);
 
             //for testing
-            //_StdOut.putText(_MemoryManager.readingTime(0, 3, 0));
+            _StdOut.putText(_MemoryManager.readingTime(0, 5, 0));
 
           } else {
             _StdOut.putText("Please enter valid input");
@@ -456,19 +454,19 @@ module TSOS {
         }
       }
 
-      //take pid look for pcb w that pid and call ProcessManager.run w correct pcb
-      //_ProcessManager.run()
+      //this takes the pid and looks for the pcb w that pid and then calls _ProcessManager.run w found pcb
+      //args is the pid of the pcb u want to run
       public shellRun(args) {
         if (args.length > 0){
           var inputPID = parseInt(args, 10);
           for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
-            var pcbToRun = _ProcessManager.allPcbs[i]
+            var pcbToRun = _ProcessManager.allPcbs[i];
             if (pcbToRun.Pid == inputPID){
               _ProcessManager.run(pcbToRun);
             }
           }
         } else {
-          _StdOut.putText("Usage: Run <pid>  Please supply a process ID.");
+          _StdOut.putText("Error pls say run <pid>");
         }
       }
 

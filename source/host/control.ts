@@ -49,7 +49,8 @@ module TSOS {
               _Memory.init();
               _MemoryAccessor	=	new	MemoryAccessor();
 
-              
+              //load in zeroed cpu values\
+              Control.hostUpdateCPU();
 
 
             // Check for our testing and enrichment core, which
@@ -82,6 +83,14 @@ module TSOS {
             // TODO in the future: Optionally update a log database or some streaming service.
         }
 
+        public static hostMemInit(): void{
+           var table = (<HTMLTableElement>document.getElementById('tableMemory'));
+        }
+
+        public static hostMemUpdate(){
+
+        }
+
 
         //
         // Host Events
@@ -102,19 +111,47 @@ module TSOS {
             _CPU = new Cpu();  // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init();       //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
 
+
+            //load in cpu values
+
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
             _Kernel = new Kernel();
             _Kernel.krnBootstrap();  // _GLaDOS.afterStartup() will get called in there, if configured.
+        }
 
-            //on start load CPU values into HTML display
-            document.getElementById("cpuPC").innerHTML = _CPU.PC.toString(16).toUpperCase();
-          //  document.getElementById("cpuIR").innerHTML = _CPU.IR.toString(16).toUpperCase();
-          document.getElementById("cpuAcc").innerHTML = _CPU.Acc.toString(16).toUpperCase();
-          document.getElementById("cpuX").innerHTML = _CPU.Xreg.toString(16).toUpperCase();
-          document.getElementById("cpuY").innerHTML = _CPU.Yreg.toString(16).toUpperCase();
-          document.getElementById("cpuZF").innerHTML = _CPU.Zflag.toString(16).toUpperCase();
+        //load correct values into cpu table in index
+        //this is called in kernel and should update as programs run
+        public static hostUpdateCPU(): void {
+          var cpuTable = (<HTMLTableElement>document.getElementById('cpuTable'));
+
+          //to do : add if init then add a row w labels then a row w all zeros
+          //else do this vvv
+          cpuTable.deleteRow(0);
+          var row = cpuTable.insertRow(0);
+          var cell = row.insertCell(); //load in PC
+          cell.innerHTML = _CPU.PC.toString(16).toUpperCase();
+
+          cell = row.insertCell();
+          if (_CPU.isExecuting){ //load in IR if were running a program
+            var current = _ProcessManager.idCounter - 1;
+           cell.innerHTML = _ProcessManager.allPcbs[current].IR.toString(16).toUpperCase();
+         } else { //else no IR
+           cell.innerHTML = "0";
+         }
+
+         cell = row.insertCell(); //load in Accumulator
+         cell.innerHTML = _CPU.Acc.toString(16).toUpperCase();
+
+         cell = row.insertCell(); //load in X register
+         cell.innerHTML = _CPU.Xreg.toString(16).toUpperCase();
+
+         cell = row.insertCell(); //load in Y register
+         cell.innerHTML = _CPU.Yreg.toString(16).toUpperCase();
+
+         cell = row.insertCell(); //load in Z flag
+         cell.innerHTML = _CPU.Zflag.toString(16).toUpperCase();
         }
 
         public static hostBtnHaltOS_click(btn): void {
@@ -136,14 +173,20 @@ module TSOS {
         }
 
         public static hostBtnStartSingleStep_click(btn): void {
-          //starts single stepping
-          //to do: make it so it can stop single stepping too
-          btn.disabled = true;
-          (<HTMLButtonElement>document.getElementById("btnStep")).disabled = false;
+          //starts single stepping/stops single stepping
+          _SingleStep = !_SingleStep;
+          if (_SingleStep){
+            (<HTMLButtonElement>document.getElementById("btnStep")).disabled = false;
+            _CPU.isExecuting = false;
+          }else{
+            _CPU.isExecuting = true;
+          }
         }
 
         public static hostBtnStep_click(btn): void {
           //to do: each time you click button you increase clock tick by 1
         }
+
+
     }
 }

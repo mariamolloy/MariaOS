@@ -40,13 +40,15 @@ module TSOS {
             // Do the real work here. Be sure to set this.isExecuting appropriately.
 
             //fetch and decode
-            var opCode = _MemoryAccessor.read(this.PC).toUpperCase();
+            var opCode: string = _MemoryAccessor.read(this.PC);
+            //for testing
+            //_StdOut.putText(opCode);
 
             //execute
-            _Kernel.krnTrace('CPU cycle');
+            _Kernel.krnTrace('CPU cycle: executing' + opCode);
+
             switch(opCode){
               case "A9":  //load the accumulator with a constant
-                //do i have to use mmu? or can i use ma
                 this.Acc = parseInt(_MemoryAccessor.read(this.PC+1), 16);
                 this.PC = this.PC + 2;
                 break;
@@ -59,9 +61,9 @@ module TSOS {
                 this.Acc = parseInt(_MemoryAccessor.read(addy), 16);
                 this.PC = this.PC + 3;
                 break;
-              case "8D": { //Store the accumulator in memory
+              case "8D":  //Store the accumulator in memory
+
                 break;
-              }
               case "6D": //Add with carry:  Adds contents of an address to the contents of the accumulator and keeps the result in the accumulator
                 break;
               case "A2": //Load the X register with a constant
@@ -93,11 +95,9 @@ module TSOS {
                 break;
               default: //terminates single process
                 this.isExecuting = false;
+                _StdOut.putText("hmm i don't think thats an op code honey!")
             }
         }
-
-  //might have to do fetch and decode separately bc of clock cycles
-
 
 
 

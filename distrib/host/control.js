@@ -42,6 +42,8 @@ var TSOS;
             _Memory = new TSOS.Memory();
             _Memory.init();
             _MemoryAccessor = new TSOS.MemoryAccessor();
+            //load in zeroed cpu values\
+            Control.hostUpdateCPU();
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -65,6 +67,11 @@ var TSOS;
             taLog.value = str + taLog.value;
             // TODO in the future: Optionally update a log database or some streaming service.
         };
+        Control.hostMemInit = function () {
+            var table = document.getElementById('tableMemory');
+        };
+        Control.hostMemUpdate = function () {
+        };
         //
         // Host Events
         //
@@ -80,18 +87,37 @@ var TSOS;
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new TSOS.Cpu(); // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
+            //load in cpu values
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
             _Kernel = new TSOS.Kernel();
             _Kernel.krnBootstrap(); // _GLaDOS.afterStartup() will get called in there, if configured.
-            //on start load CPU values into HTML display
-            document.getElementById("cpuPC").innerHTML = _CPU.PC.toString(16).toUpperCase();
-            //  document.getElementById("cpuIR").innerHTML = _CPU.IR.toString(16).toUpperCase();
-            document.getElementById("cpuAcc").innerHTML = _CPU.Acc.toString(16).toUpperCase();
-            document.getElementById("cpuX").innerHTML = _CPU.Xreg.toString(16).toUpperCase();
-            document.getElementById("cpuY").innerHTML = _CPU.Yreg.toString(16).toUpperCase();
-            document.getElementById("cpuZF").innerHTML = _CPU.Zflag.toString(16).toUpperCase();
+        };
+        //load correct values into cpu table in index
+        //this is called in kernel and should update as programs run
+        Control.hostUpdateCPU = function () {
+            var cpuTable = document.getElementById('cpuTable');
+            cpuTable.deleteRow(0);
+            var row = cpuTable.insertRow(0);
+            var cell = row.insertCell(); //load in PC
+            cell.innerHTML = _CPU.PC.toString(16).toUpperCase();
+            cell = row.insertCell();
+            if (_CPU.isExecuting) { //load in IR if were running a program
+                var current = _ProcessManager.idCounter - 1;
+                cell.innerHTML = _ProcessManager.allPcbs[current].IR.toString(16).toUpperCase();
+            }
+            else { //else no IR
+                cell.innerHTML = "0";
+            }
+            cell = row.insertCell(); //load in Accumulator
+            cell.innerHTML = _CPU.Acc.toString(16).toUpperCase();
+            cell = row.insertCell(); //load in X register
+            cell.innerHTML = _CPU.Xreg.toString(16).toUpperCase();
+            cell = row.insertCell(); //load in Y register
+            cell.innerHTML = _CPU.Yreg.toString(16).toUpperCase();
+            cell = row.insertCell(); //load in Z flag
+            cell.innerHTML = _CPU.Zflag.toString(16).toUpperCase();
         };
         Control.hostBtnHaltOS_click = function (btn) {
             Control.hostLog("Emergency halt", "host");
@@ -110,10 +136,15 @@ var TSOS;
             // page from its cache, which is not what we want.
         };
         Control.hostBtnStartSingleStep_click = function (btn) {
-            //starts single stepping
-            //to do: make it so it can stop single stepping too
-            btn.disabled = true;
-            document.getElementById("btnStep").disabled = false;
+            //starts single stepping/stops single stepping
+            _SingleStep = !_SingleStep;
+            if (_SingleStep) {
+                document.getElementById("btnStep").disabled = false;
+                _CPU.isExecuting = false;
+            }
+            else {
+                _CPU.isExecuting = true;
+            }
         };
         Control.hostBtnStep_click = function (btn) {
             //to do: each time you click button you increase clock tick by 1
