@@ -49,8 +49,9 @@ module TSOS {
               _Memory.init();
               _MemoryAccessor	=	new	MemoryAccessor();
 
-              //load in clu table w zeroed values
+              //load in cpu table and memory table w zeroed values
               Control.hostInitCPU();
+              Control.hostMemInit();
 
 
             // Check for our testing and enrichment core, which
@@ -84,10 +85,29 @@ module TSOS {
         }
 
         public static hostMemInit(): void{
-           var table = (<HTMLTableElement>document.getElementById('tableMemory'));
+           var table = (<HTMLTableElement>document.getElementById('memoryTable'));
+           var row;
+           var cell;
+
+           //go through add rows of 8 bytes each all initialized to zero
+           var counter = 0;
+           for (var i = 0; i < _memSize; i++){
+             row = table.insertRow(i);
+             for (var j = 0; i < 9; j++){
+               counter++;
+              cell = row.insertCell();
+               if (j == 0){
+                 var label = "0" + counter.toString(16).toUpperCase();
+                 cell.innerHTML = label;
+               }else {
+                 cell.innerHTML = "00";
+               }
+             }
+           } 
         }
 
         public static hostMemUpdate(){
+          var table = (<HTMLTableElement>document.getElementById('memoryTable'));
 
         }
 

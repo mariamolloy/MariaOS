@@ -42,8 +42,9 @@ var TSOS;
             _Memory = new TSOS.Memory();
             _Memory.init();
             _MemoryAccessor = new TSOS.MemoryAccessor();
-            //load in clu table w zeroed values
+            //load in cpu table and memory table w zeroed values
             Control.hostInitCPU();
+            Control.hostMemInit();
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -68,9 +69,28 @@ var TSOS;
             // TODO in the future: Optionally update a log database or some streaming service.
         };
         Control.hostMemInit = function () {
-            var table = document.getElementById('tableMemory');
+            var table = document.getElementById('memoryTable');
+            var row;
+            var cell;
+            //go through add rows of 8 bytes each all initialized to zero
+            var counter = 0;
+            for (var i = 0; i < _memSize; i++) {
+                row = table.insertRow(i);
+                for (var j = 0; i < 9; j++) {
+                    counter++;
+                    cell = row.insertCell();
+                    if (j == 0) {
+                        var label = "0" + counter.toString(16).toUpperCase();
+                        cell.innerHTML = label;
+                    }
+                    else {
+                        cell.innerHTML = "00";
+                    }
+                }
+            }
         };
         Control.hostMemUpdate = function () {
+            var table = document.getElementById('memoryTable');
         };
         //
         // Host Events
