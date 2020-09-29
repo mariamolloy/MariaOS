@@ -56,7 +56,7 @@ var _ProcessManager: any; //creates a process manager to deal w PCBs
 
 //single stepping is default off
 var _SingleStep: boolean = false;
-
+var _NextStep: boolean = false;
 
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;

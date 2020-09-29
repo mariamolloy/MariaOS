@@ -388,9 +388,6 @@ var TSOS;
                     if (pcbToRun.Pid == inputPID) {
                         _ProcessManager.run(pcbToRun);
                     }
-                    else {
-                        _StdOut.putText("Sorry :( thats not a process id");
-                    }
                 }
             }
             else {

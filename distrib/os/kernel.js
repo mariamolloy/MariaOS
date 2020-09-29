@@ -68,7 +68,6 @@ var TSOS;
                that it has to look for interrupts and process them if it finds any.
             */
             //update cpu gui
-            TSOS.Control.hostUpdateCPU();
             // Check for an interrupt, if there are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
@@ -77,9 +76,20 @@ var TSOS;
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             }
             else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
-                _CPU.cycle();
+                if (_SingleStep) {
+                    if (_NextStep) {
+                        _CPU.cycle();
+                        TSOS.Control.hostUpdateCPU();
+                        _NextStep = false;
+                    }
+                    this.krnTrace("Idle");
+                }
+                else {
+                    _CPU.cycle();
+                }
             }
             else { // If there are no interrupts and there is nothing being executed then just be idle.
+                _NextStep = false;
                 this.krnTrace("Idle");
             }
         };

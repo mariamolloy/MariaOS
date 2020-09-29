@@ -110,7 +110,8 @@ module TSOS {
 
         public static hostMemUpdate(){
           var table = (<HTMLTableElement>document.getElementById('memoryTable'));
-
+          //to do: write function to update memory display table as memory updates
+          //but no point to doing it when initializing memory makes the website crash lmfao
         }
 
 
@@ -246,15 +247,17 @@ module TSOS {
           //starts single stepping/stops single stepping
           _SingleStep = !_SingleStep;
           if (_SingleStep){
+            //to do: disconnect clockpulse from call back
             (<HTMLButtonElement>document.getElementById("btnStep")).disabled = false;
             _CPU.isExecuting = false;
           }else{
+            (<HTMLButtonElement>document.getElementById("btnStep")).disabled = true;
             _CPU.isExecuting = true;
           }
         }
 
         public static hostBtnStep_click(btn): void {
-          //to do: each time you click button you increase clock tick by 1
+          _NextStep = true;
         }
 
 

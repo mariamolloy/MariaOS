@@ -90,6 +90,8 @@ var TSOS;
         };
         Control.hostMemUpdate = function () {
             var table = document.getElementById('memoryTable');
+            //to do: write function to update memory display table as memory updates
+            //but no point to doing it when initializing memory makes the website crash lmfao
         };
         //
         // Host Events
@@ -190,15 +192,17 @@ var TSOS;
             //starts single stepping/stops single stepping
             _SingleStep = !_SingleStep;
             if (_SingleStep) {
+                //to do: disconnect clockpulse from call back
                 document.getElementById("btnStep").disabled = false;
                 _CPU.isExecuting = false;
             }
             else {
+                document.getElementById("btnStep").disabled = true;
                 _CPU.isExecuting = true;
             }
         };
         Control.hostBtnStep_click = function (btn) {
-            //to do: each time you click button you increase clock tick by 1
+            _NextStep = true;
         };
         return Control;
     }());

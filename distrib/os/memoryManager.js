@@ -14,7 +14,7 @@ var TSOS;
                 if (val.length == 1) {
                     _MemoryAccessor.write(addy, val[0].toString());
                 } //if we are adding many bytes then go through array and add byte by byte
-                else if (val.length < _memSize) {
+                else if (val.length <= _memSize) {
                     for (var i = 0; i < val.length; i++) {
                         var bite = val[i].toString();
                         _MemoryAccessor.write(addy + i, bite);
