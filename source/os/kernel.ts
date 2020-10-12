@@ -89,14 +89,15 @@ module TSOS {
             } else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
                 if (_SingleStep){
                   if (_NextStep){
-                    _CPU.cycle();
                     TSOS.Control.hostUpdateCPU();
+                    _CPU.cycle();
+
                     _NextStep = false;
                   }
                   this.krnTrace("Idle");
                 } else {
+                  TSOS.Control.hostUpdateCPU();
                 _CPU.cycle();
-                TSOS.Control.hostUpdateCPU();
               }
             } else {       // If there are no interrupts and there is nothing being executed then just be idle.
                 _NextStep = false;

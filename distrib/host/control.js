@@ -164,13 +164,13 @@ var TSOS;
                  cell.innerHTML = "0";
                } */
             cell = row.insertCell(); //load in Accumulator
-            cell.innerHTML = _CPU.Acc.toString(16).toUpperCase();
+            cell.innerHTML = _CPU.Acc.toString(10).toUpperCase();
             cell = row.insertCell(); //load in X register
-            cell.innerHTML = _CPU.Xreg.toString(16).toUpperCase();
+            cell.innerHTML = _CPU.Xreg.toString(10).toUpperCase();
             cell = row.insertCell(); //load in Y register
-            cell.innerHTML = _CPU.Yreg.toString(16).toUpperCase();
+            cell.innerHTML = _CPU.Yreg.toString(10).toUpperCase();
             cell = row.insertCell(); //load in Z flag
-            cell.innerHTML = _CPU.Zflag.toString(16).toUpperCase();
+            cell.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
         };
         Control.hostBtnHaltOS_click = function (btn) {
             Control.hostLog("Emergency halt", "host");

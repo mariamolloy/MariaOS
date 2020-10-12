@@ -117,8 +117,8 @@ module TSOS {
                     this.PC = loc;
                   }
                   else {
-                    var diff = 256 - (this.PC + 2);
-                    this.PC = diff;
+                    var diff = amt - 256;
+                    this.PC = Math.abs(diff);
                   }
                 }else { //if z != 0 then we just skip and move on to the next op code
                   this.PC=this.PC + 2;
