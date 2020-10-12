@@ -9,7 +9,7 @@ module TSOS {
 //writingTime writes an array of strings to a specified address in memory
 public writingTime(addy: number, val: string[]): void{
   //check its a valid address
-  if ((addy >= 0) && (addy < _memSize)){
+  if ((addy >= 0) && (addy <= _memSize)){
     //check if we r adding just one byte or many bytes
     if (val.length == 1){
       _MemoryAccessor.write(addy, val[0].toString())

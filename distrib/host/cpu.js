@@ -108,14 +108,21 @@ var TSOS;
                     if (this.Zflag == 0) {
                         //branch to amt specified in next byte but if its > 255, then wrap around back to start
                         var amt = parseInt(_MemoryAccessor.read(this.PC + 1), 16);
-                        var loc = amt + this.PC;
-                        if (loc > 255) {
-                            var newLoc = loc - 255;
-                            this.PC = newLoc;
-                        }
-                        else {
+                        var loc = amt + (this.PC + 2);
+                        if (loc < 256) {
                             this.PC = loc;
                         }
+                        else {
+                            var diff = 256 - (this.PC + 2);
+                            this.PC = 0 + diff;
+                        }
+                        /*  if (loc > 255){
+                            var diff = 256 - loc;
+                            var newLoc = loc - 255;
+                            this.PC = newLoc;
+                          } else {
+                            this.PC = loc;
+                          } */
                     }
                     else { //if z != 0 then we just skip and move on to the next op code
                         this.PC = this.PC + 2;
