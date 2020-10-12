@@ -13,15 +13,17 @@
 var TSOS;
 (function (TSOS) {
     var Cpu = /** @class */ (function () {
-        function Cpu(PC, Acc, Xreg, Yreg, Zflag, isExecuting) {
+        function Cpu(PC, Acc, IR, Xreg, Yreg, Zflag, isExecuting) {
             if (PC === void 0) { PC = 0; }
             if (Acc === void 0) { Acc = 0; }
+            if (IR === void 0) { IR = ""; }
             if (Xreg === void 0) { Xreg = 0; }
             if (Yreg === void 0) { Yreg = 0; }
             if (Zflag === void 0) { Zflag = 0; }
             if (isExecuting === void 0) { isExecuting = false; }
             this.PC = PC;
             this.Acc = Acc;
+            this.IR = IR;
             this.Xreg = Xreg;
             this.Yreg = Yreg;
             this.Zflag = Zflag;
@@ -30,6 +32,7 @@ var TSOS;
         Cpu.prototype.init = function () {
             this.PC = 0;
             this.Acc = 0;
+            this.IR = "--";
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
@@ -37,6 +40,7 @@ var TSOS;
         };
         //inspired by piano + coding god KaiOS
         Cpu.prototype.cycle = function () {
+            //check if executing fetch decode execute, update state, update accounts pc counter is > than limit then set pc back to 0
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
             //fetch and decode
@@ -46,6 +50,7 @@ var TSOS;
             //execute
             _Kernel.krnTrace('CPU cycle: executing' + opCode);
             var ir = opCode;
+            this.IR = opCode;
             _ProcessManager.allPcbs[_ProcessManager.idCounter - 1].Pid = ir;
             switch (opCode) {
                 case "A9": //load the accumulator with a constant
@@ -114,15 +119,8 @@ var TSOS;
                         }
                         else {
                             var diff = 256 - (this.PC + 2);
-                            this.PC = 0 + diff;
+                            this.PC = diff;
                         }
-                        /*  if (loc > 255){
-                            var diff = 256 - loc;
-                            var newLoc = loc - 255;
-                            this.PC = newLoc;
-                          } else {
-                            this.PC = loc;
-                          } */
                     }
                     else { //if z != 0 then we just skip and move on to the next op code
                         this.PC = this.PC + 2;

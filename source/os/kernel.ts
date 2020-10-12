@@ -90,13 +90,13 @@ module TSOS {
                 if (_SingleStep){
                   if (_NextStep){
                     _CPU.cycle();
-                    Control.hostUpdateCPU();
+                    TSOS.Control.hostUpdateCPU();
                     _NextStep = false;
                   }
                   this.krnTrace("Idle");
                 } else {
                 _CPU.cycle();
-
+                TSOS.Control.hostUpdateCPU();
               }
             } else {       // If there are no interrupts and there is nothing being executed then just be idle.
                 _NextStep = false;

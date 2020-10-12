@@ -195,14 +195,14 @@ module TSOS {
 
         //load correct values into cpu table in index
         //this is called in kernel and should update as programs run
-        public static hostUpdateCPU(): void {
+       public static hostUpdateCPU(): void {
           var cpuTable = (<HTMLTableElement>document.getElementById('cpuTable'));
 
 
           cpuTable.deleteRow(1);
           var row = cpuTable.insertRow(1);
           var cell = row.insertCell(); //load in PC
-          cell.innerHTML = _CPU.PC.toString(16).toUpperCase();
+          cell.innerHTML = _CPU.PC.toString(10).toUpperCase();
 
           cell = row.insertCell();
           if (_CPU.isExecuting){ //load in IR if were running a program
@@ -223,7 +223,9 @@ module TSOS {
 
          cell = row.insertCell(); //load in Z flag
          cell.innerHTML = _CPU.Zflag.toString(16).toUpperCase();
-        }
+       }
+
+
 
         public static hostBtnHaltOS_click(btn): void {
             Control.hostLog("Emergency halt", "host");

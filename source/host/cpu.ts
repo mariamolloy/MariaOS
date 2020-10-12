@@ -17,6 +17,7 @@ module TSOS {
 
         constructor(public PC: number = 0,
                     public Acc: number = 0,
+                    public IR: string = "",
                     public Xreg: number = 0,
                     public Yreg: number = 0,
                     public Zflag: number = 0,
@@ -27,6 +28,7 @@ module TSOS {
         public init(): void {
             this.PC = 0;
             this.Acc = 0;
+            this.IR = "--";
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
@@ -35,6 +37,7 @@ module TSOS {
 
         //inspired by piano + coding god KaiOS
         public cycle(): void {
+          //check if executing fetch decode execute, update state, update accounts pc counter is > than limit then set pc back to 0
 
             // TODO: Accumulate CPU usage and profiling statistics here.
             // Do the real work here. Be sure to set this.isExecuting appropriately.
@@ -47,6 +50,7 @@ module TSOS {
             //execute
             _Kernel.krnTrace('CPU cycle: executing' + opCode);
             var ir = opCode;
+            this.IR = opCode;
             _ProcessManager.allPcbs[_ProcessManager.idCounter-1].Pid = ir;
             switch(opCode){
               case "A9":  //load the accumulator with a constant
@@ -114,7 +118,6 @@ module TSOS {
                   }
                   else {
                     var diff = 256 - (this.PC + 2);
-                    this.PC = 0;
                     this.PC = diff;
                   }
                 }else { //if z != 0 then we just skip and move on to the next op code
