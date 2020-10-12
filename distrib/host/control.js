@@ -156,13 +156,13 @@ var TSOS;
             var cell = row.insertCell(); //load in PC
             cell.innerHTML = _CPU.PC.toString(10).toUpperCase();
             cell = row.insertCell();
-            if (_CPU.isExecuting) { //load in IR if were running a program
-                var current = _ProcessManager.idCounter - 1;
-                cell.innerHTML = _ProcessManager.allPcbs[current].IR.toString(16).toUpperCase();
-            }
-            else { //else no IR
-                cell.innerHTML = "0";
-            }
+            cell.innerHTML = _CPU.IR.toString().toUpperCase();
+            /*    if (_CPU.isExecuting){ //load in IR if were running a program
+                  var current = _ProcessManager.idCounter - 1;
+                 cell.innerHTML = _ProcessManager.allPcbs[current].IR.toString(16).toUpperCase();
+               } else { //else no IR
+                 cell.innerHTML = "0";
+               } */
             cell = row.insertCell(); //load in Accumulator
             cell.innerHTML = _CPU.Acc.toString(16).toUpperCase();
             cell = row.insertCell(); //load in X register
