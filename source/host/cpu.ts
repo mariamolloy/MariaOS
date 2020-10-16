@@ -135,13 +135,13 @@ module TSOS {
                 //check if x reg is 1 or 2
                 //print y reg or print string at address in y reg, respectively
                 if (this.Xreg == 1){
-                  _StdOut.putText(this.Yreg);
+                  _StdOut.putText("" + this.Yreg);
                 } else if (this.Xreg == 2){
                   var addy = this.Yreg;
                   var print = "";
                   while (_MemoryAccessor.read(addy) != "00"){
-                    var data = _MemoryAccessor.read(addy);
-                     var decimal = parseInt(data.toString(), 16);
+                  //  var data = _MemoryAccessor.read(addy);
+                     var decimal = parseInt(_MemoryAccessor.read(addy), 16);
                      var letter = String.fromCharCode(decimal);
                      print += letter;
                      addy++;
