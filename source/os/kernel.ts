@@ -80,6 +80,7 @@ module TSOS {
             */
             //update cpu gui
 
+            TSOS.Control.hostUpdateMemory();
             // Check for an interrupt, if there are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
@@ -90,7 +91,6 @@ module TSOS {
                 if (_SingleStep){
                   if (_NextStep){
                     TSOS.Control.hostUpdateCPU();
-                    TSOS.Control.hostUpdateMemory();
                     _CPU.cycle();
 
                     _NextStep = false;
@@ -98,7 +98,6 @@ module TSOS {
                   this.krnTrace("Idle");
                 } else {
                   TSOS.Control.hostUpdateCPU();
-                  TSOS.Control.hostUpdateMemory();
                 _CPU.cycle();
               }
             } else {       // If there are no interrupts and there is nothing being executed then just be idle.
