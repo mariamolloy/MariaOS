@@ -399,7 +399,8 @@ var TSOS;
         };
         //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
         Shell.prototype.shellClearMem = function (args) {
-            _MemoryManager.clearAllMemory();
+            _MemoryManager.clearAll();
+            _StdOut.putText("Memory is cleared");
         };
         return Shell;
     }());

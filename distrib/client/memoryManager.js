@@ -6,7 +6,7 @@ var TSOS;
         }
         //to do i proj3: allocation and deallocation
         //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
-        MemoryManager.prototype.clearAllMemory = function () {
+        MemoryManager.prototype.clearAll = function () {
             //make sure we arent in the middle of a process
             if (!_CPU.isExecuting) {
                 for (var i = 0; i < _TotalMemorySize; i++) {

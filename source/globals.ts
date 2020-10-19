@@ -55,7 +55,7 @@ var	_Memory:	TSOS.Memory;
 var	_MemoryAccessor:	TSOS.MemoryAccessor;
 
 //	Software	(OS)
-var	_MemoryManager:	any;
+var	_MemoryManager:	TSOS.MemoryManager;
 var _ProcessManager: any; //creates a process manager to deal w PCBs
 
 //single stepping is default off
