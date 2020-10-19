@@ -6,6 +6,19 @@ module TSOS {
 
 //to do i proj3: allocation and deallocation
 
+//clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
+public clearAllMemory(): void {
+  //make sure we arent in the middle of a process
+  if (!_CPU.isExecuting) {
+    for (var i = 0; i < _TotalMemorySize; i++){
+      _MemoryAccessor.write(i, "00");
+    }
+  } else {
+    //error we are in the middle of a process or something
+    _StdOut.putText("Error: cannot clear all memory rn");
+  }
+}
+
 //writingTime writes an array of strings to a specified address in memory
 public writingTime(addy: number, val: string[]): void{
   //check its a valid address
@@ -43,18 +56,7 @@ public writingTime(addy: number, val: string[]): void{
     }
   }
 
-  //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
-  public clearAllMemory(): void {
-    //make sure we arent in the middle of a process
-    if (!_CPU.isExecuting) {
-      for (var i = 0; i < _TotalMemorySize; i++){
-        _MemoryAccessor.write(i, "00");
-      }
-    } else {
-      //error we are in the middle of a process or something
-      _StdOut.putText("Error: cannot clear all memory rn");
-    }
-  }
+
 
   }
 }
