@@ -7,7 +7,7 @@ module TSOS {
 //to do i proj3: allocation and deallocation
 
 //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
-public clearAll(): void {
+public clearAllMemory(): void {
   //make sure we arent in the middle of a process
   if (!_CPU.isExecuting) {
     for (var i = 0; i < _TotalMemorySize; i++){

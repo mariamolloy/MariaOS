@@ -123,6 +123,36 @@ module TSOS {
                                   "- Clears all memory");
             this.commandList[this.commandList.length] = sc;
 
+            //runs all the programs in memory
+            sc = new ShellCommand(this.shellRunAll,
+                                  "runall",
+                                  "- Runs all programs at once");
+            this.commandList[this.commandList.length] = sc;
+
+            //Displays the PID and state of all processes
+            sc = new ShellCommand(this.shellPS,
+                                  "ps",
+                                  "- Displays the PID and state of all processes");
+            this.commandList[this.commandList.length] = sc;
+
+            //kills specified process
+            sc = new ShellCommand(this.shellKill,
+                                  "ps",
+                                  "<pid> - kills corresponding process");
+            this.commandList[this.commandList.length] = sc;
+
+            //kills all processes
+            sc = new ShellCommand(this.shellKillAll,
+                                  "killall",
+                                  "Kills all processes");
+            this.commandList[this.commandList.length] = sc;
+
+            //kills all processes
+            sc = new ShellCommand(this.shellQuantum,
+                                  "quantum",
+                                  "<quantum> - Sets round robin quantum to specified integer");
+            this.commandList[this.commandList.length] = sc;
+
             //to do:
 
             //to do: run <pid> program in memory
@@ -464,7 +494,7 @@ module TSOS {
 
       //this takes the pid and looks for the pcb w that pid and then calls _ProcessManager.run w found pcb
       //args is the pid of the pcb u want to run
-      public shellRun(args) {
+      public shellRun(args: number) {
         if (args.length > 0){
           var inputPID = parseInt(args, 10);
           for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
@@ -480,8 +510,37 @@ module TSOS {
 
       //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
       public shellClearMem(args){
-        _MemoryManager.clearAll();
+        _MemoryManager.clearAllMemory();
         _StdOut.putText("Memory is cleared");
+      }
+
+      public shellRunAll(args){
+        //to do
+        //run all programs loaded in memory?
+        //when a program finishes do we delete it immediately?
+        //run all programs in ready queue
+      }
+
+      public shellPS(args){
+        //to do
+        //for (all processes){
+        //print PID and state
+        //}
+      }
+
+      public shellKill(args: number){
+        //to do
+        //kill process specified
+      }
+
+      public shellKillAll(args){
+        //to do
+        //kill all processes
+      }
+
+      public shellQuantum(args: number){
+        //to do
+        //set quantum to specified number
       }
 
 

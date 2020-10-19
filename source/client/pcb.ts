@@ -22,7 +22,7 @@ module TSOS {
     //initialize pcb
     //everything is 0
     public init(p: number): void{
-      this.State = "Let's goooo";
+      this.State = "ready";
       this.PC = 0;
       this.IR = 0;
       this.Acc = 0;
