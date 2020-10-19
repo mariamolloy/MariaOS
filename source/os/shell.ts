@@ -494,7 +494,7 @@ module TSOS {
 
       //this takes the pid and looks for the pcb w that pid and then calls _ProcessManager.run w found pcb
       //args is the pid of the pcb u want to run
-      public shellRun(args: number) {
+      public shellRun(args) {
         if (args.length > 0){
           var inputPID = parseInt(args, 10);
           for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
@@ -521,14 +521,17 @@ module TSOS {
         //run all programs in ready queue
       }
 
+      //prints out pid and state of each process
       public shellPS(args){
-        //to do
-        //for (all processes){
-        //print PID and state
-        //}
+        var all = _ProcessManager.allPcbs.length;
+        for (var i = 0; i < all; i++){
+          var current = _ProcessManager.allPcbs[i];
+          _StdOut.putText("Process " + current.Pid + " is " + current.State);
+          _StdOut.putText('<br/>');
+        }
       }
 
-      public shellKill(args: number){
+      public shellKill(args){
         //to do
         //kill process specified
       }

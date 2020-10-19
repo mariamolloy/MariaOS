@@ -69,6 +69,21 @@ var TSOS;
             //clears memory
             sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "- Clears all memory");
             this.commandList[this.commandList.length] = sc;
+            //runs all the programs in memory
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "- Runs all programs at once");
+            this.commandList[this.commandList.length] = sc;
+            //Displays the PID and state of all processes
+            sc = new TSOS.ShellCommand(this.shellPS, "ps", "- Displays the PID and state of all processes");
+            this.commandList[this.commandList.length] = sc;
+            //kills specified process
+            sc = new TSOS.ShellCommand(this.shellKill, "ps", "<pid> - kills corresponding process");
+            this.commandList[this.commandList.length] = sc;
+            //kills all processes
+            sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "Kills all processes");
+            this.commandList[this.commandList.length] = sc;
+            //kills all processes
+            sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<quantum> - Sets round robin quantum to specified integer");
+            this.commandList[this.commandList.length] = sc;
             //to do:
             //to do: run <pid> program in memory
             // ps  - list the running processes and their IDs
@@ -399,8 +414,33 @@ var TSOS;
         };
         //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
         Shell.prototype.shellClearMem = function (args) {
-            _MemoryManager.clearAll();
+            _MemoryManager.clearAllMemory();
             _StdOut.putText("Memory is cleared");
+        };
+        Shell.prototype.shellRunAll = function (args) {
+            //to do
+            //run all programs loaded in memory?
+            //when a program finishes do we delete it immediately?
+            //run all programs in ready queue
+        };
+        Shell.prototype.shellPS = function (args) {
+            var all = _ProcessManager.allPcbs.length;
+            for (var i = 0; i < all; i++) {
+                var current = _ProcessManager.allPcbs[i];
+                _StdOut.putText("Process " + current.Pid + " is " + current.State);
+            }
+        };
+        Shell.prototype.shellKill = function (args) {
+            //to do
+            //kill process specified
+        };
+        Shell.prototype.shellKillAll = function (args) {
+            //to do
+            //kill all processes
+        };
+        Shell.prototype.shellQuantum = function (args) {
+            //to do
+            //set quantum to specified number
         };
         return Shell;
     }());
