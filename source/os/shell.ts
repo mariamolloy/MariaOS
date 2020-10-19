@@ -117,11 +117,6 @@ module TSOS {
                                   "- Tests an error message");
             this.commandList[this.commandList.length] = sc;
 
-            // test
-            sc = new ShellCommand(this.shellTest,
-                                  "test",
-                                  "- Tests");
-            this.commandList[this.commandList.length] = sc;
 
             //to do:
 
@@ -478,9 +473,7 @@ module TSOS {
         }
       }
 
-      public shellTest(args: string[]){
-        _StdOut.putText("Hi does this work?");
-      }
+
 
 
 

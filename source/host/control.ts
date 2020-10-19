@@ -65,7 +65,8 @@ module TSOS {
                 _GLaDOS.init();
             }
 
-            _Memory = new Memory; //instantiate new memory
+            _Memory = new Memory;
+            _Memory.init();//instantiate new memory
 
         }
 
@@ -86,7 +87,7 @@ module TSOS {
             // TODO in the future: Optionally update a log database or some streaming service.
         }
 
-        public static hostMemInit(): void{
+      /*  public static hostMemInit(): void{
            var table = (<HTMLTableElement>document.getElementById('memoryTable'));
 
            //go through add rows of 8 bytes each all initialized to zero
@@ -106,13 +107,9 @@ module TSOS {
                  celll.innerHTML = "00";
                }
              }
-        }
+        } */
 
-        public static hostMemUpdate(){
-          var table = (<HTMLTableElement>document.getElementById('memoryTable'));
-          //to do: write function to update memory display table as memory updates
-          //but no point to doing it when initializing memory makes the website crash lmfao
-        }
+
 
 
         //
@@ -134,16 +131,13 @@ module TSOS {
             _CPU = new Cpu();  // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init();       //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
 
-
-
-
+            Control.hostUpdateMemory();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
             _Kernel = new Kernel();
             _Kernel.krnBootstrap();  // _GLaDOS.afterStartup() will get called in there, if configured.
 
-            //Control.hostMemInit();
         }
 
         //create cpu table and zero it on initialization
@@ -224,6 +218,33 @@ module TSOS {
 
          cell = row.insertCell(); //load in Z flag
          cell.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
+       }
+
+       public static hostUpdateMemory(): void{
+         var table = "<tbody>";
+         var rowLabel = "0x";
+         var rowNum = 0;
+         var current = "";
+         var index = 0;
+         for (var i = 0; i < _memSize / 8; i++){
+           table += "<tr>";
+           current = rowNum.toString(16);
+           while (current.length < 3){
+             current = "0" + current;
+           }
+           current = current.toUpperCase();
+           table += "<td style=\"font-weight:bold\">" + rowLabel + current + "</td>";
+           for (var j = 0; j < 8; j++){
+             table += "<td>" + _MemoryAccessor.read(index) + "</td>";
+             index++;
+           }
+           table += "</tr>";
+           rowNum = rowNum + 8;
+         }
+         table += "</tbody>";
+         document.getElementById("memoryTable").innerHTML = table;
+         //to do: write function to update memory display table as memory updates
+         //but no point to doing it when initializing memory makes the website crash lmfao
        }
 
 

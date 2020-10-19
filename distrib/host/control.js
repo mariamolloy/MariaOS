@@ -53,7 +53,8 @@ var TSOS;
                 _GLaDOS = new Glados();
                 _GLaDOS.init();
             }
-            _Memory = new TSOS.Memory; //instantiate new memory
+            _Memory = new TSOS.Memory;
+            _Memory.init(); //instantiate new memory
         };
         Control.hostLog = function (msg, source) {
             if (source === void 0) { source = "?"; }
@@ -68,31 +69,27 @@ var TSOS;
             taLog.value = str + taLog.value;
             // TODO in the future: Optionally update a log database or some streaming service.
         };
-        Control.hostMemInit = function () {
-            var table = document.getElementById('memoryTable');
-            //go through add rows of 8 bytes each all initialized to zero
-            var counter = 0;
-            for (var i = 0; i < (_memSize / 8); i++) {
-                var roww = table.insertRow(i);
-                var celll = roww.insertCell(0);
-                var addy = i * 8;
-                var label = "0x" + addy.toString(16);
-                for (var k = 0; k < 3 - addy.toString(16).length; k++) {
-                    label += "0";
-                }
-                label += addy.toString(16).toUpperCase();
-                celll.innerHTML = label;
-                for (var j = 1; i < 9; j++) {
-                    celll = roww.insertCell(j);
-                    celll.innerHTML = "00";
-                }
-            }
-        };
-        Control.hostMemUpdate = function () {
-            var table = document.getElementById('memoryTable');
-            //to do: write function to update memory display table as memory updates
-            //but no point to doing it when initializing memory makes the website crash lmfao
-        };
+        /*  public static hostMemInit(): void{
+             var table = (<HTMLTableElement>document.getElementById('memoryTable'));
+  
+             //go through add rows of 8 bytes each all initialized to zero
+             var counter = 0;
+             for (var i = 0; i < (_memSize/8); i++){
+               var roww = table.insertRow(i);
+               var celll = roww.insertCell(0);
+               var addy = i*8;
+               var label = "0x" + addy.toString(16);
+               for(var k=0; k<3-addy.toString(16).length; k++){
+                      label += "0";
+                  }
+                  label += addy.toString(16).toUpperCase();
+                  celll.innerHTML = label;
+               for (var j = 1; i < 9; j++){
+                celll = roww.insertCell(j);
+                   celll.innerHTML = "00";
+                 }
+               }
+          } */
         //
         // Host Events
         //
@@ -108,12 +105,12 @@ var TSOS;
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new TSOS.Cpu(); // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
+            Control.hostUpdateMemory();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
             _Kernel = new TSOS.Kernel();
             _Kernel.krnBootstrap(); // _GLaDOS.afterStartup() will get called in there, if configured.
-            //Control.hostMemInit();
         };
         //create cpu table and zero it on initialization
         Control.hostInitCPU = function () {
@@ -171,6 +168,32 @@ var TSOS;
             cell.innerHTML = _CPU.Yreg.toString(10).toUpperCase();
             cell = row.insertCell(); //load in Z flag
             cell.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
+        };
+        Control.hostUpdateMemory = function () {
+            var table = "<tbody>";
+            var rowLabel = "0x";
+            var rowNum = 0;
+            var current = "";
+            var index = 0;
+            for (var i = 0; i < _memSize / 8; i++) {
+                table += "<tr>";
+                current = rowNum.toString(16);
+                while (current.length < 3) {
+                    current = "0" + current;
+                }
+                current = current.toUpperCase();
+                table += "<td style=\"font-weight:bold\">" + rowLabel + current + "</td>";
+                for (var j = 0; j < 8; j++) {
+                    table += "<td>" + _MemoryAccessor.read(index) + "</td>";
+                    index++;
+                }
+                table += "</tr>";
+                rowNum = rowNum + 8;
+            }
+            table += "</tbody>";
+            document.getElementById("memoryTable").innerHTML = table;
+            //to do: write function to update memory display table as memory updates
+            //but no point to doing it when initializing memory makes the website crash lmfao
         };
         Control.hostBtnHaltOS_click = function (btn) {
             Control.hostLog("Emergency halt", "host");

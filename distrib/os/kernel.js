@@ -79,6 +79,7 @@ var TSOS;
                 if (_SingleStep) {
                     if (_NextStep) {
                         TSOS.Control.hostUpdateCPU();
+                        TSOS.Control.hostUpdateMemory();
                         _CPU.cycle();
                         _NextStep = false;
                     }
@@ -86,6 +87,7 @@ var TSOS;
                 }
                 else {
                     TSOS.Control.hostUpdateCPU();
+                    TSOS.Control.hostUpdateMemory();
                     _CPU.cycle();
                 }
             }
