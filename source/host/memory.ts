@@ -3,12 +3,12 @@ module TSOS {
   export class Memory {
 
 
-    constructor (private mem: string[] = new Array(_memSize)){
+    constructor (private mem: string[] = new Array(_TotalMemorySize)){
     }
 
     //initialize memory to 00000000...
     init(): void {
-      for (var i = 0; i < _memSize; i++){
+      for (var i = 0; i < _TotalMemorySize; i++){
         this.mem[i] = "00";
       }
     }
@@ -16,7 +16,7 @@ module TSOS {
     //returns a memory address
     public readMem(addy: number): string {
       //to do add to check its above 0
-      if (addy < _memSize){
+      if (addy < _TotalMemorySize){
         return this.mem[addy];
       } else {
         return "Error memory address out of bounds";

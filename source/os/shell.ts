@@ -117,6 +117,11 @@ module TSOS {
                                   "- Tests an error message");
             this.commandList[this.commandList.length] = sc;
 
+            //clears memory
+            sc = new ShellCommand(this.shellClearMem,
+                                  "clearmem",
+                                  "- Clears all memory");
+            this.commandList[this.commandList.length] = sc;
 
             //to do:
 
@@ -471,6 +476,11 @@ module TSOS {
         } else { //no argument
           _StdOut.putText("Error pls say run <pid>");
         }
+      }
+
+      //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
+      public shellClearMem(args: string[]){
+
       }
 
 

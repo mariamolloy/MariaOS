@@ -43,8 +43,9 @@ var _Trace: boolean = true;              // Default the OS trace to be on.
 var _Status: string = "[status]";					//Status set by the user
 
 
+
 var _PartitionSize: number = 256;
-var _memSize: number = 768; //just for proj 2 for proj3 it will be 768; //default memory size
+var _TotalMemorySize: number = 768; //just for proj 2 for proj3 it will be 768; //default memory size
 
 
 //Hardware (OS)
