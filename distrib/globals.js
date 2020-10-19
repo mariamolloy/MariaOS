@@ -31,7 +31,7 @@ var _FontHeightMargin = 4; // Additional space added to font size when advancing
 var _Trace = true; // Default the OS trace to be on.
 var _Status = "[status]"; //Status set by the user
 var _PartitionSize = 256;
-var _memSize = 768; //just for proj 2 for proj3 it will be 768; //default memory size
+var _TotalMemorySize = 768; //just for proj 2 for proj3 it will be 768; //default memory size
 //Hardware (OS)
 //var	_CPU:	TSOS.Cpu;
 var _Memory;

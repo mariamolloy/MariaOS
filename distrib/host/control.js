@@ -74,7 +74,7 @@ var TSOS;
   
              //go through add rows of 8 bytes each all initialized to zero
              var counter = 0;
-             for (var i = 0; i < (_memSize/8); i++){
+             for (var i = 0; i < (_TotalMemorySize/8); i++){
                var roww = table.insertRow(i);
                var celll = roww.insertCell(0);
                var addy = i*8;
@@ -175,7 +175,7 @@ var TSOS;
             var rowNum = 0;
             var current = "";
             var index = 0;
-            for (var i = 0; i < _memSize / 8; i++) {
+            for (var i = 0; i < _TotalMemorySize / 8; i++) {
                 table += "<tr>";
                 current = rowNum.toString(16);
                 while (current.length < 3) {

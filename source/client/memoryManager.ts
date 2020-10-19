@@ -47,7 +47,12 @@ public writingTime(addy: number, val: string[]): void{
   public clearAllMemory(): void{
     //make sure we arent in the middle of a process
     if (!_CPU.isExecuting){
-
+      for (var i = 0; i < _TotalMemorySize; i++){
+        _MemoryAccessor.write(i, "00");
+      }
+    } else {
+      //error we are in the middle of a process or something
+      _StdOut.putText("Error: cannot clear all memory rn");
     }
   }
 

@@ -66,6 +66,9 @@ var TSOS;
             //BSOD test
             sc = new TSOS.ShellCommand(this.shellBsod, "bsod", "- Tests an error message");
             this.commandList[this.commandList.length] = sc;
+            //clears memory
+            sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "- Clears all memory");
+            this.commandList[this.commandList.length] = sc;
             //to do:
             //to do: run <pid> program in memory
             // ps  - list the running processes and their IDs
@@ -393,6 +396,10 @@ var TSOS;
             else { //no argument
                 _StdOut.putText("Error pls say run <pid>");
             }
+        };
+        //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
+        Shell.prototype.shellClearMem = function (args) {
+            _MemoryManager.clearAllMemory();
         };
         return Shell;
     }());

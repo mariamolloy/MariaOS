@@ -2,23 +2,23 @@ var TSOS;
 (function (TSOS) {
     var Memory = /** @class */ (function () {
         function Memory(mem) {
-            if (mem === void 0) { mem = new Array(_memSize); }
+            if (mem === void 0) { mem = new Array(_TotalMemorySize); }
             this.mem = mem;
         }
         //initialize memory to 00000000...
         Memory.prototype.init = function () {
-            for (var i = 0; i < _memSize; i++) {
+            for (var i = 0; i < _TotalMemorySize; i++) {
                 this.mem[i] = "00";
             }
         };
         //returns a memory address
         Memory.prototype.readMem = function (addy) {
             //to do add to check its above 0
-            if (addy < _memSize) {
+            if (addy < _TotalMemorySize) {
                 return this.mem[addy];
             }
             else {
-                return "Error memory address out of bounds";
+                return "OUT OF BOUNDS ERROR";
                 _StdOut.putText("Error memory address out of bounds");
             }
         };

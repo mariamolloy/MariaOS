@@ -480,7 +480,7 @@ module TSOS {
 
       //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
       public shellClearMem(args: string[]){
-
+        _MemoryManager.clearAllMemory();
       }
 
 
