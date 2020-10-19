@@ -155,7 +155,7 @@ var TSOS;
                     break;
                 default: //terminates single process
                     this.isExecuting = false;
-                    _StdOut.putText("hmm i don't think thats an op code honey!");
+                    _StdOut.putText("sorry ur op code isnt valid :()");
             }
         };
         //method to get next two bytes from memory and swap them

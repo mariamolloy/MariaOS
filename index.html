@@ -36,18 +36,18 @@
    <!-- Other Routines -->
    <script type="text/javascript" src="distrib/utils.js"></script>
    <!-- Uncomment the line below to enable GLaDOS testing. -->
-  <!-- <script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip2.js"></script> -->
+   <script type="text/javascript" src="http://alanclasses.github.io/TSOS/test/glados-ip2.js"></script>
 
 
 </head>
 
 <body onload="onDocumentLoad()">
 
+<div class='panel'>
 <div id="divMain" style="width:100%;">
   <div id="statusbar" style="margin-right: 520px;">
-     <label>
-       Status
-       <br>
+
+       <div class='panel-body'>
        <p id="date"></p>
         <script>
           document.getElementById("date").innerHTML = Date();
@@ -57,19 +57,22 @@
          <script>
           // document.getElementById(_Status).innerHTML = _Status;
         </script> -->
-    </label>
+    </div>
   </div>
 
 
+
    <div id="statusBar" style="margin:4px;">
+     <div class='panel-body'>
     <p id="date"></p>
     <script> document.getElementById("date").innerHTML = Date(); </script>
-    <br>
     <p id="status"></p>
       <script>
         document.getElementById('status').innerHTML = _Status;
       </script>
+    </div>
    </div>
+ </div>
 
    <div id="divButtonBar" style="margin:4px;">
       <input type="button"
@@ -117,6 +120,7 @@
                onclick="TSOS.Control.hostBtnStep_click(this);">
    </div>
 
+   <div class = 'panel'>
    <div id="divConsole" style="margin:4px; max-width:500px; max-height:500px; float:left; overflow: scroll">
       <canvas id="display"
               width="5000px"
@@ -124,18 +128,61 @@
               tabindex="3">
       </canvas>
    </div>
+ </div>
 
+<div class = 'panel'>
    <div id="divCPU" style="margin-left:520px;">
-      <label>
-         CPU
-         <br>
+
+         <div class = 'panel-label'>CPU</div>
+         <div class = 'panel-body'>
          <table id="cpuTable" style="width:100%;">
             <tr>
             </tr>
         </table>
       </br></br>
-      </label>
+    </div>
+
    </div>
+ </div>
+
+ <div class = 'panel'>
+    <div id="divMemory" style="float: right; margin-right:100px;">
+      <div class = 'panel-label'>Memory</div>
+      <div class = 'panel-body'>
+                        <table id="memoryTable"></table>
+ 							</div>
+ 						</div>
+           </div>
+
+<div class = 'panel'>
+   <div id="divLog" style="margin-left:520px;">
+
+         <div class = 'panel-label'>Host Log</div>
+         <div class = 'panel-body'>
+           <textarea name="taHostLog"
+                   id  ="taHostLog"
+                   rows="26"
+                   cols="48"
+         ></textarea>
+      </div>
+   </div>
+ </div>
+
+
+
+<div class = 'panel'>
+   <div id="divUserProgramInput" style="margin-left:520px;">
+         <div class = 'panel-label'>User Program Input</div>
+         <div class = 'panel-body'>
+         <textarea name="taProgramInput"
+                   id  ="taProgramInput"
+                   rows="8"
+                   cols="48"
+         ></textarea>
+      </div>
+   </div>
+ </div>
+
 
 <!--   <div id="divMemory" style="margin-left:520px;">
          <br>
@@ -152,36 +199,9 @@
       </br></br>
    </div> -->
 
-   <div id="divMemory">
-							<label class="center-align">
-								<div class="label-header">Memory</div>
-                       <table id="memoryTable"></table>
-							</label>
-						</div>
 
-   <div id="divLog" style="margin-left:520px;">
-      <label>
-         Host Log
-         <br>
-         <textarea name="taHostLog"
-                   id  ="taHostLog"
-                   rows="26"
-                   cols="48"
-         ></textarea>
-      </label>
-   </div>
 
-   <div id="divUserProgramInput" style="margin-left:520px;">
-      <label>
-         User Program Input
-         <br>
-         <textarea name="taProgramInput"
-                   id  ="taProgramInput"
-                   rows="8"
-                   cols="48"
-         ></textarea>
-      </label>
-   </div>
+
 
 
 </div>
