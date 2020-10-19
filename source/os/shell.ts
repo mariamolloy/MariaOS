@@ -117,6 +117,12 @@ module TSOS {
                                   "- Tests an error message");
             this.commandList[this.commandList.length] = sc;
 
+            // test
+            sc = new ShellCommand(this.shellTest,
+                                  "test",
+                                  "- Tests");
+            this.commandList[this.commandList.length] = sc;
+
             //to do:
 
             //to do: run <pid> program in memory
@@ -470,6 +476,10 @@ module TSOS {
         } else { //no argument
           _StdOut.putText("Error pls say run <pid>");
         }
+      }
+
+      public shellTest(args: string[]){
+        _StdOut.putText("Hi does this work?");
       }
 
 
