@@ -19,7 +19,7 @@ module TSOS {
       if (addy < _TotalMemorySize){
         return this.mem[addy];
       } else {
-        return "Error memory address out of bounds";
+        return "OUT OF BOUNDS ERROR";
         _StdOut.putText("Error memory address out of bounds");
       }
     }

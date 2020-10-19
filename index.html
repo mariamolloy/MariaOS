@@ -44,7 +44,7 @@
 <body onload="onDocumentLoad()">
 
 <div class='panel'>
-<div id="divMain" style="width:100%;">
+<div id="divMain" style="width:75%;">
   <div id="statusbar" style="margin-right: 520px;">
 
        <div class='panel-body'>
@@ -62,7 +62,7 @@
 
 
 
-   <div id="statusBar" style="margin:4px;">
+   <div id="statusBar" style="margin:4px; width: 50%">
      <div class='panel-body'>
     <p id="date"></p>
     <script> document.getElementById("date").innerHTML = Date(); </script>
@@ -135,7 +135,7 @@
 
          <div class = 'panel-label'>CPU</div>
          <div class = 'panel-body'>
-         <table id="cpuTable" style="width:100%;">
+         <table id="cpuTable" style="width:125px;">
             <tr>
             </tr>
         </table>
@@ -149,14 +149,15 @@
     <div id="divMemory" style="float: right; margin-right:100px;">
       <div class = 'panel-label'>Memory</div>
       <div class = 'panel-body'>
-                        <table id="memoryTable"></table>
+                <div class = 'panel-body-memoryTable'>
+                  <table id="memoryTable"></table>
+                </div>
  							</div>
  						</div>
            </div>
 
 <div class = 'panel'>
    <div id="divLog" style="margin-left:520px;">
-
          <div class = 'panel-label'>Host Log</div>
          <div class = 'panel-body'>
            <textarea name="taHostLog"

@@ -65,6 +65,13 @@ table, th, td {
   border: 2px;
   resize: none;
   font-size: 10pt;
+    display:block;
+}
+
+.panel-body-memoryTable{
+  overflow-y:scroll;
+  height:250px;
+  width: 225px;
 }
 
 .panel {
