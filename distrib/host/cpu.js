@@ -47,11 +47,12 @@ var TSOS;
             var opCode = _MemoryAccessor.read(this.PC);
             //for testing
             //_StdOut.putText(opCode);
-            //execute
-            _Kernel.krnTrace('CPU cycle: executing' + opCode);
-            var ir = opCode;
+            _ProcessManager.running =
+                //execute
+                _Kernel.krnTrace('CPU cycle: executing' + opCode);
+            //var ir = opCode;
             this.IR = opCode;
-            _ProcessManager.allPcbs[_ProcessManager.idCounter - 1].Pid = ir;
+            //_ProcessManager.allPcbs[_ProcessManager.idCounter-1].Pid = ir;
             switch (opCode) {
                 case "A9": //load the accumulator with a constant
                     this.Acc = parseInt(_MemoryAccessor.read(this.PC + 1), 16);

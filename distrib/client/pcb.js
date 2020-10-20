@@ -23,6 +23,7 @@ var TSOS;
             this.Base = this.Partition * _PartitionSize;
             this.Limit = this.Base + _PartitionSize - 1;
         };
+        PCB.prototype.updatePCB = function () { };
         return PCB;
     }());
     TSOS.PCB = PCB;

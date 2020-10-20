@@ -16,14 +16,15 @@ var TSOS;
             //get the partition we are currently running in
             if (_ProcessManager.allPcbs.length > 0) {
                 var part = _ProcessManager.running.Partition;
-                var b = _ProcessManager.running.Base;
-                var l = _ProcessManager.running.Limit;
+                var b = part * _PartitionSize;
+                var l = b + _PartitionSize;
                 var physicalAddy = b + addy;
-                if (physicalAddy <= l) {
+                if (physicalAddy < l) {
                     _Memory.writeMem(physicalAddy, bite);
                     TSOS.Control.hostUpdateMemory();
                 }
                 else {
+                    //THIS IS WHERE ERROR IS
                     _StdOut.putText("Error: Writing to Memory Out of Bounds");
                 }
             }
@@ -35,9 +36,9 @@ var TSOS;
         MemoryAccessor.prototype.read = function (addy) {
             if (_ProcessManager.allPcbs.length > 0) {
                 //get the info for the partition we are currently in
-                var p = _ProcessManager.running.Partition;
-                var b = _ProcessManager.running.Base;
-                var l = _ProcessManager.running.Limit;
+                var part = _ProcessManager.running.Partition;
+                var b = part * _PartitionSize;
+                var l = b + _PartitionSize;
                 var physicalAddy = b + addy;
                 if (physicalAddy <= l) {
                     return _Memory.readMem(physicalAddy);
@@ -52,7 +53,7 @@ var TSOS;
             }
         };
         //to do for iProj 3
-        MemoryAccessor.prototype.mapAddress = function () {
+        MemoryAccessor.prototype.addressTranslator = function () {
         };
         MemoryAccessor.prototype.inBounds = function (addy) {
             //  if ()

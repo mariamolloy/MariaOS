@@ -43,5 +43,7 @@ module TSOS {
         this.Limit = this.Base + _PartitionSize - 1;
 
     }
+
+    public updatePCB(){}
   }
 }

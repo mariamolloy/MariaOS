@@ -21,13 +21,14 @@ module TSOS {
       //get the partition we are currently running in
       if (_ProcessManager.allPcbs.length > 0){
         var part = _ProcessManager.running.Partition;
-         var b = _ProcessManager.running.Base;
-        var l = _ProcessManager.running.Limit;
+        var b = part * _PartitionSize;
+        var l = b + _PartitionSize;
         var physicalAddy = b + addy;
-        if (physicalAddy <= l){
+        if (physicalAddy < l){
           _Memory.writeMem(physicalAddy, bite);
           TSOS.Control.hostUpdateMemory();
         } else {
+          //THIS IS WHERE ERROR IS
           _StdOut.putText("Error: Writing to Memory Out of Bounds");
         }
     }else {
@@ -39,9 +40,9 @@ module TSOS {
     read(addy: number): string {
       if (_ProcessManager.allPcbs.length > 0){
         //get the info for the partition we are currently in
-        var p = _ProcessManager.running.Partition;
-        var b = _ProcessManager.running.Base;
-        var l = _ProcessManager.running.Limit;
+        var part = _ProcessManager.running.Partition;
+        var b = part * _PartitionSize;
+        var l = b + _PartitionSize;
         var physicalAddy = b + addy;
         if (physicalAddy <= l){
           return _Memory.readMem(physicalAddy);
@@ -55,7 +56,7 @@ module TSOS {
     }
 
     //to do for iProj 3
-    mapAddress(): void{
+    addressTranslator(): void{
 
     }
 
