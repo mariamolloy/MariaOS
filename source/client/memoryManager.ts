@@ -1,21 +1,30 @@
 module TSOS {
   export class MemoryManager {
+
+    public partitions: Partition[] = new Array();
     constructor(){
-      //to do for iproj3: make partitions here
+      for (var i = 0; i < _NumOfPartitions; i++){
+        this.partitions[i] = new Partition(i);
+      }
     }
 
+public allocateMem(): void {}
 //to do i proj3: allocation and deallocation
 
 //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
 public clearAllMemory(): void {
   //make sure we arent in the middle of a process
   if (!_CPU.isExecuting) {
+    //make all memory 00000 and set all partitions to empty
     for (var i = 0; i < _TotalMemorySize; i++){
       _MemoryAccessor.write(i, "00");
     }
+    for (var j = 0; j < _NumOfPartitions; j++){
+      this.partitions[i].isEmpty = true;
+    }
   } else {
     //error we are in the middle of a process or something
-    _StdOut.putText("Error: cannot clear all memory rn");
+    _StdOut.putText("Error: cannot clear all memory rn. be patient.");
   }
 }
 
@@ -27,7 +36,7 @@ public writingTime(addy: number, val: string[]): void{
     if (val.length == 1){
       _MemoryAccessor.write(addy, val[0].toString())
     } //if we are adding many bytes then go through array and add byte by byte
-    else if (val.length <= _TotalMemorySize){
+    else if (val.length <= _PartitionSize){
         for (var i = 0; i < val.length; i++){
           var bite = val[i].toString();
           _MemoryAccessor.write(addy + i, bite);
@@ -58,5 +67,19 @@ public writingTime(addy: number, val: string[]): void{
 
 
 
+  }
+
+    class Partition {
+      public id: number;
+      public base: number;
+      public limit: number;
+      public isEmpty: boolean;
+
+      constructor(i: number){
+        this.id = i;
+        this.base = this.id * _PartitionSize;
+        this.limit = this.base + _PartitionSize - 1;
+        this.isEmpty = true;
+    }
   }
 }

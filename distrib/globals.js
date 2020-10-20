@@ -31,6 +31,7 @@ var _FontHeightMargin = 4; // Additional space added to font size when advancing
 var _Trace = true; // Default the OS trace to be on.
 var _Status = "[status]"; //Status set by the user
 var _PartitionSize = 256;
+var _NumOfPartitions = 3; //we only have 3 sections in our memory
 var _TotalMemorySize = 768; //default memory size
 var _memSize = 768;
 //Hardware (OS)
@@ -43,6 +44,8 @@ var _ProcessManager; //creates a process manager to deal w PCBs
 //single stepping is default off
 var _SingleStep = false;
 var _NextStep = false;
+//default quantum of 6 for round robin scheduling
+var _Quantum = 6;
 // The OS Kernel and its queues.
 var _Kernel;
 var _KernelInterruptQueue = null;

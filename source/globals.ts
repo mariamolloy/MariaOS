@@ -45,6 +45,7 @@ var _Status: string = "[status]";					//Status set by the user
 
 
 var _PartitionSize: number = 256;
+var _NumOfPartitions: number = 3; //we only have 3 sections in our memory
 var _TotalMemorySize: number = 768; //default memory size
 var _memSize: number = 768;
 
@@ -61,6 +62,9 @@ var _ProcessManager: any; //creates a process manager to deal w PCBs
 //single stepping is default off
 var _SingleStep: boolean = false;
 var _NextStep: boolean = false;
+
+//default quantum of 6 for round robin scheduling
+var _Quantum: number = 6;
 
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;

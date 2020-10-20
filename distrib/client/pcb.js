@@ -7,16 +7,22 @@ var TSOS;
             this.Pid = id;
         }
         //initialize pcb
-        //everything is 0
+        //everything is 0 except partition base and limit
         PCB.prototype.init = function (p) {
-            this.State = "ready";
+            this.State = "new";
             this.PC = 0;
             this.IR = 0;
             this.Acc = 0;
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
-            this.Partition = p;
+            this.turnaroundTime = 0;
+            this.waitTime = 0;
+            this.Partition = 0;
+            if (this.Partition < 3) {
+                this.Base = this.Partition * _PartitionSize;
+                this.Limit = this.Base + _PartitionSize - 1;
+            }
         };
         return PCB;
     }());
