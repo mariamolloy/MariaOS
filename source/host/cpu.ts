@@ -47,11 +47,13 @@ module TSOS {
             //for testing
             //_StdOut.putText(opCode);
 
+            _ProcessManager.running =
+
             //execute
             _Kernel.krnTrace('CPU cycle: executing' + opCode);
-            var ir = opCode;
+            //var ir = opCode;
             this.IR = opCode;
-            _ProcessManager.allPcbs[_ProcessManager.idCounter-1].Pid = ir;
+            //_ProcessManager.allPcbs[_ProcessManager.idCounter-1].Pid = ir;
             switch(opCode){
               case "A9":  //load the accumulator with a constant
                 this.Acc = parseInt(_MemoryAccessor.read(this.PC+1), 16);
@@ -97,7 +99,7 @@ module TSOS {
                 break;
               case "00":  //Break (which is really a system call)
                 this.isExecuting = false;
-                
+
                 break;
               case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
                 var bite = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);
