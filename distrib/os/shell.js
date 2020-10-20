@@ -375,16 +375,31 @@ var TSOS;
                         var newBite = userInp.substring(i, i + 2);
                         bytes.push(newBite);
                     }
-                    //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
-                    var processID = _ProcessManager.idCounter;
-                    var newPcb = new TSOS.PCB(processID);
-                    _ProcessManager.allPcbs.push(newPcb);
-                    _ProcessManager.idCounter++;
-                    newPcb.init(0); //to do for iProj3 once we have partitions, for now just set partition to 0
-                    //return	the	PID	to	the	console	and	display	it.
-                    _StdOut.putText("Loaded Process " + processID);
-                    //go through the array and load into memory at location $0000
-                    _MemoryManager.writingTime(0, bytes);
+                    //checks that input isn't too big for one partition
+                    if (bytes.length <= _PartitionSize) {
+                        //check to make sure there is an empty partition we can load this into
+                        if (_MemoryManager.checkEmptyPart()) {
+                            //finds the first empty partition to load input into
+                            var part = 0;
+                            part = _MemoryManager.getEmptyPart();
+                            //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
+                            var processID = _ProcessManager.idCounter;
+                            var newPcb = new TSOS.PCB(processID);
+                            _ProcessManager.allPcbs.push(newPcb);
+                            _ProcessManager.idCounter++;
+                            newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
+                            //return	the	PID	to	the	console	and	display	it.
+                            _StdOut.putText("Loaded Process " + processID);
+                            //go through the array and load into memory at location $0000
+                            _MemoryManager.writingTime(0, bytes, part);
+                        }
+                        else {
+                            _StdOut.putText("Memory full!!¡¡!! Please delete a loaded program before loading in a new one.");
+                        }
+                    }
+                    else {
+                        _StdOut.putText("Please enter shorter input, yours is over 256 bytes");
+                    }
                     //for testing
                     //_StdOut.putText(_MemoryManager.readingTime(0, 5, 0));
                 }

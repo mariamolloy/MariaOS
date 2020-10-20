@@ -2,12 +2,31 @@ var TSOS;
 (function (TSOS) {
     var MemoryManager = /** @class */ (function () {
         function MemoryManager() {
+            //array of partition Objects
+            //we will always have three partitions in the array
             this.partitions = new Array();
             for (var i = 0; i < _NumOfPartitions; i++) {
                 this.partitions[i] = new Partition(i);
             }
         }
-        MemoryManager.prototype.allocateMem = function () { };
+        //checks to see if there is an empty partition we can load input into
+        MemoryManager.prototype.checkEmptyPart = function () {
+            for (var i = 0; i < _NumOfPartitions; i++) {
+                if (this.partitions[i].isEmpty) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        //returns partition id of first availible empty partition
+        MemoryManager.prototype.getEmptyPart = function () {
+            for (var i = 0; i < _NumOfPartitions; i++) {
+                if (this.partitions[i].isEmpty) {
+                    return i;
+                }
+            }
+            return null;
+        };
         //to do i proj3: allocation and deallocation
         //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
         MemoryManager.prototype.clearAllMemory = function () {
@@ -18,7 +37,7 @@ var TSOS;
                     _MemoryAccessor.write(i, "00");
                 }
                 for (var j = 0; j < _NumOfPartitions; j++) {
-                    this.partitions[i].isEmpty = true;
+                    this.partitions[j].isEmpty = true;
                 }
             }
             else {
@@ -26,18 +45,23 @@ var TSOS;
                 _StdOut.putText("Error: cannot clear all memory rn. be patient.");
             }
         };
-        //writingTime writes an array of strings to a specified address in memory
-        MemoryManager.prototype.writingTime = function (addy, val) {
+        //writingTime writes an array of strings to a specified address in memory in a specified partition
+        MemoryManager.prototype.writingTime = function (logicalAddy, val, p) {
+            var currPart = this.partitions[p];
             //check its a valid address
-            if ((addy >= 0) && (addy <= _TotalMemorySize)) {
+            if ((logicalAddy >= 0) && (logicalAddy < _PartitionSize)) {
+                //translate logical address to phsyical address
+                var physicalAddy = logicalAddy + currPart.base;
                 //check if we r adding just one byte or many bytes
                 if (val.length == 1) {
-                    _MemoryAccessor.write(addy, val[0].toString());
+                    _MemoryAccessor.write(physicalAddy, val[0].toString());
+                    currPart.isEmpty = false;
                 } //if we are adding many bytes then go through array and add byte by byte
                 else if (val.length <= _PartitionSize) {
                     for (var i = 0; i < val.length; i++) {
                         var bite = val[i].toString();
-                        _MemoryAccessor.write(addy + i, bite);
+                        _MemoryAccessor.write(physicalAddy + i, bite);
+                        currPart.isEmpty = false;
                     }
                 }
                 else {
@@ -65,6 +89,7 @@ var TSOS;
         return MemoryManager;
     }());
     TSOS.MemoryManager = MemoryManager;
+    //class to create partitions
     var Partition = /** @class */ (function () {
         function Partition(i) {
             this.id = i;
