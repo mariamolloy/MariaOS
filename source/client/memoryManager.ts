@@ -79,10 +79,10 @@ module TSOS {
               currPart.isEmpty = false;
             }
           }else {
-          _StdOut.putText("ur not valid smh");
+          _StdOut.putText("ERROR: You are trying to write more bytes than possible");
         }
       } else {
-        _StdOut.putText("ur memory address isn't valid smh");
+        _StdOut.putText("ERROR: You did not provide a valid memory address");
       }
     }
 
@@ -91,15 +91,15 @@ module TSOS {
     //be able to read mutiple bytes w start end and PCB
     //but PCB is for proj 3
     //start = the memory address where we wanna start reading bytes and end is where we wanna end
-      public readingTime(start: number, end: number, maPcb: PCB): string {
-        var amtToRead = end - start;
-        if (amtToRead == 1){
-          return _MemoryAccessor.read(start);
-        } else {
-          for (var i = 0; i < amtToRead; i++){
-            return _MemoryAccessor.read(start + i);
+
+    //read everything in one memory partition
+    //p is the partition # we want to read from
+      public readPartition(p: number): string {
+        var b = this.partitions[p].base;
+        var l = this.partition[p].limit;
+          for (var i = b; i < l; i++){
+            return _MemoryAccessor.read(b + i);
           }
-        }
       }
 
 
