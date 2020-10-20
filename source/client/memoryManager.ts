@@ -43,7 +43,7 @@ module TSOS {
         for (var j = 0; j < _NumOfPartitions; j++){
           this.partitions[j].isEmpty = true;
         }
-                    TSOS.Control.hostUpdateMemory();
+        TSOS.Control.hostUpdateMemory();
       } else {
         //error we are in the middle of a process or something
         _StdOut.putText("Error: cannot clear all memory rn. be patient.");

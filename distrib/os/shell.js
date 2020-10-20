@@ -387,6 +387,7 @@ var TSOS;
                             _ProcessManager.allPcbs.push(newPcb);
                             _ProcessManager.idCounter++;
                             newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
+                            _ProcessManager.running = newPcb; //set this as current PCB to put into memory
                             //return	the	PID	to	the	console	and	display	it.
                             _StdOut.putText("Loaded Process " + processID);
                             //go through the array and load into memory at location $0000

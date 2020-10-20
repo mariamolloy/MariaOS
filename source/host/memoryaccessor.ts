@@ -19,30 +19,39 @@ module TSOS {
     //writes byte to memory
     write(addy: number, bite: string): void{
       //get the partition we are currently running in
-      var part = _ProcessManager.running.Partition;
-       var b = _ProcessManager.running.Base;
-      var l = _ProcessManager.running.Limit;
-      var physicalAddy = b + addy;
-      if (physicalAddy <= l){
-        _Memory.writeMem(physicalAddy, bite);
-      } else {
-        _StdOut.putText("Error: Writing to Memory Out of Bounds");
-      }
+      if (_ProcessManager.allPcbs.length > 0){
+        var part = _ProcessManager.running.Partition;
+         var b = _ProcessManager.running.Base;
+        var l = _ProcessManager.running.Limit;
+        var physicalAddy = b + addy;
+        if (physicalAddy <= l){
+          _Memory.writeMem(physicalAddy, bite);
+          TSOS.Control.hostUpdateMemory();
+        } else {
+          _StdOut.putText("Error: Writing to Memory Out of Bounds");
+        }
+    }else {
+      _Memory.writeMem(addy, bite);
+    }
     }
 
     //reads byte from memory
     read(addy: number): string {
-      //get the info for the partition we are currently in
-      var p = _ProcessManager.running.Partition;
-      var b = _ProcessManager.running.Base;
-      var l = _ProcessManager.running.Limit;
-      var physicalAddy = b + addy;
-      if (physicalAddy <= l){
-        return _Memory.readMem(physicalAddy);
+      if (_ProcessManager.allPcbs.length > 0){
+        //get the info for the partition we are currently in
+        var p = _ProcessManager.running.Partition;
+        var b = _ProcessManager.running.Base;
+        var l = _ProcessManager.running.Limit;
+        var physicalAddy = b + addy;
+        if (physicalAddy <= l){
+          return _Memory.readMem(physicalAddy);
       } else {
         return null;
         _StdOut.putText("Error: Trying to Access Memory out of bounds")
       }
+    }else {
+      return _Memory.readMem(addy);
+    }
     }
 
     //to do for iProj 3
@@ -50,8 +59,8 @@ module TSOS {
 
     }
 
-    inBounds(): boolean{
-        return true;
+    inBounds(addy:number):void{ //boolean{
+      //  if ()
     }
 
   }

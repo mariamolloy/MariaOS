@@ -14,37 +14,48 @@ var TSOS;
         //writes byte to memory
         MemoryAccessor.prototype.write = function (addy, bite) {
             //get the partition we are currently running in
-            var part = _ProcessManager.running.Partition;
-            var b = _ProcessManager.running.Base;
-            var l = _ProcessManager.running.Limit;
-            var physicalAddy = b + addy;
-            if (physicalAddy <= l) {
-                _Memory.writeMem(physicalAddy, bite);
+            if (_ProcessManager.allPcbs.length > 0) {
+                var part = _ProcessManager.running.Partition;
+                var b = _ProcessManager.running.Base;
+                var l = _ProcessManager.running.Limit;
+                var physicalAddy = b + addy;
+                if (physicalAddy <= l) {
+                    _Memory.writeMem(physicalAddy, bite);
+                    TSOS.Control.hostUpdateMemory();
+                }
+                else {
+                    _StdOut.putText("Error: Writing to Memory Out of Bounds");
+                }
             }
             else {
-                _StdOut.putText("Error: Writing to Memory Out of Bounds");
+                _Memory.writeMem(addy, bite);
             }
         };
         //reads byte from memory
         MemoryAccessor.prototype.read = function (addy) {
-            //get the info for the partition we are currently in
-            var p = _ProcessManager.running.Partition;
-            var b = _ProcessManager.running.Base;
-            var l = _ProcessManager.running.Limit;
-            var physicalAddy = b + addy;
-            if (physicalAddy <= l) {
-                return _Memory.readMem(physicalAddy);
+            if (_ProcessManager.allPcbs.length > 0) {
+                //get the info for the partition we are currently in
+                var p = _ProcessManager.running.Partition;
+                var b = _ProcessManager.running.Base;
+                var l = _ProcessManager.running.Limit;
+                var physicalAddy = b + addy;
+                if (physicalAddy <= l) {
+                    return _Memory.readMem(physicalAddy);
+                }
+                else {
+                    return null;
+                    _StdOut.putText("Error: Trying to Access Memory out of bounds");
+                }
             }
             else {
-                return null;
-                _StdOut.putText("Error: Trying to Access Memory out of bounds");
+                return _Memory.readMem(addy);
             }
         };
         //to do for iProj 3
         MemoryAccessor.prototype.mapAddress = function () {
         };
-        MemoryAccessor.prototype.inBounds = function () {
-            return true;
+        MemoryAccessor.prototype.inBounds = function (addy) {
+            //  if ()
         };
         return MemoryAccessor;
     }());
