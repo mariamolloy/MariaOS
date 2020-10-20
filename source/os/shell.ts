@@ -537,8 +537,12 @@ module TSOS {
       }
 
       public shellKillAll(args){
-        //to do
-        //kill all processes
+        _CPU.isExecuting = false;
+        var all = _ProcessManager.allPcbs.length;
+        for (var i = 0; i < all; i++){
+          var current = _ProcessManager.allPcbs[i];
+          current.State = "terminated";
+        }
       }
 
       public shellQuantum(args: number){

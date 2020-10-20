@@ -423,11 +423,13 @@ var TSOS;
             //when a program finishes do we delete it immediately?
             //run all programs in ready queue
         };
+        //prints out pid and state of each process
         Shell.prototype.shellPS = function (args) {
             var all = _ProcessManager.allPcbs.length;
             for (var i = 0; i < all; i++) {
                 var current = _ProcessManager.allPcbs[i];
                 _StdOut.putText("Process " + current.Pid + " is " + current.State);
+                _StdOut.putText('<br/>');
             }
         };
         Shell.prototype.shellKill = function (args) {
@@ -435,8 +437,12 @@ var TSOS;
             //kill process specified
         };
         Shell.prototype.shellKillAll = function (args) {
-            //to do
-            //kill all processes
+            _CPU.isExecuting = false;
+            var all = _ProcessManager.allPcbs.length;
+            for (var i = 0; i < all; i++) {
+                var current = _ProcessManager.allPcbs[i];
+                current.State = "terminated";
+            }
         };
         Shell.prototype.shellQuantum = function (args) {
             //to do
