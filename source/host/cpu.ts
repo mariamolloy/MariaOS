@@ -97,7 +97,7 @@ module TSOS {
                 break;
               case "00":  //Break (which is really a system call)
                 this.isExecuting = false;
-                //this.PC++;
+                
                 break;
               case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
                 var bite = parseInt(_MemoryAccessor.read(this.lilEndianTranslator()), 16);

@@ -49,6 +49,16 @@ module TSOS {
       }
     }
 
+    //function to clear a single partition in memory and mark as empty
+    public clearPart(p: number): void {
+      var b = this.partitions[p].base;
+      var l = this.partition[p].limit;
+      for (var i = b; i < l; i++){
+        _MemoryAccessor.write(i, "00");
+      }
+      this.partition[p].isEmpty = true;
+    }
+
     //writingTime writes an array of strings to a specified address in memory in a specified partition
     public writingTime(logicalAddy: number, val: string[], p: number): void{
       var currPart = this.partitions[p];

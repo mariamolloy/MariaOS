@@ -11,15 +11,15 @@ module TSOS {
     public allPcbs: PCB[] = new Array(); //all processes
 
     public running = PCB;
-constructor(){
-  this.resident = new Queue();
-  this.ready = new Queue();
-}
+      constructor(){
+        this.resident = new Queue();
+        this.ready = new Queue();
+      }
 
 
     public run(process: PCB): void{
       //to do: scheduling and priorities and all that fun stuff
-
+      this.running = process;
       //take all pcb stuff and make it cpu stuff
       _CPU.PC = process.PC;
       _CPU.Acc = process.Acc;
