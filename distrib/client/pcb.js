@@ -8,6 +8,7 @@ var TSOS;
         }
         //initialize pcb
         //everything is 0 except partition base and limit
+        //p = partition pcb is in
         PCB.prototype.init = function (p) {
             this.State = "new";
             this.PC = 0;
@@ -18,11 +19,9 @@ var TSOS;
             this.Zflag = 0;
             this.turnaroundTime = 0;
             this.waitTime = 0;
-            this.Partition = 0;
-            if (this.Partition < 3) {
-                this.Base = this.Partition * _PartitionSize;
-                this.Limit = this.Base + _PartitionSize - 1;
-            }
+            this.Partition = p;
+            this.Base = this.Partition * _PartitionSize;
+            this.Limit = this.Base + _PartitionSize - 1;
         };
         return PCB;
     }());

@@ -380,8 +380,7 @@ var TSOS;
                         //check to make sure there is an empty partition we can load this into
                         if (_MemoryManager.checkEmptyPart()) {
                             //finds the first empty partition to load input into
-                            var part = 0;
-                            part = _MemoryManager.getEmptyPart();
+                            var part = _MemoryManager.getEmptyPart();
                             //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
                             var processID = _ProcessManager.idCounter;
                             var newPcb = new TSOS.PCB(processID);

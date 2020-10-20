@@ -13,14 +13,38 @@ var TSOS;
         };
         //writes byte to memory
         MemoryAccessor.prototype.write = function (addy, bite) {
-            _Memory.writeMem(addy, bite);
+            //get the partition we are currently running in
+            var part = _ProcessManager.running.Partition;
+            var b = _ProcessManager.running.Base;
+            var l = _ProcessManager.running.Limit;
+            var physicalAddy = b + addy;
+            if (physicalAddy <= l) {
+                _Memory.writeMem(physicalAddy, bite);
+            }
+            else {
+                _StdOut.putText("Error: Writing to Memory Out of Bounds");
+            }
         };
         //reads byte from memory
         MemoryAccessor.prototype.read = function (addy) {
-            return _Memory.readMem(addy);
+            //get the info for the partition we are currently in
+            var p = _ProcessManager.running.Partition;
+            var b = _ProcessManager.running.Base;
+            var l = _ProcessManager.running.Limit;
+            var physicalAddy = b + addy;
+            if (physicalAddy <= l) {
+                return _Memory.readMem(physicalAddy);
+            }
+            else {
+                return null;
+                _StdOut.putText("Error: Trying to Access Memory out of bounds");
+            }
         };
         //to do for iProj 3
         MemoryAccessor.prototype.mapAddress = function () {
+        };
+        MemoryAccessor.prototype.inBounds = function () {
+            return true;
         };
         return MemoryAccessor;
     }());

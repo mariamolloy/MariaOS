@@ -25,6 +25,7 @@ module TSOS {
 
     //initialize pcb
     //everything is 0 except partition base and limit
+    //p = partition pcb is in
     public init(p: number): void{
       this.State = "new";
       this.PC = 0;
@@ -36,12 +37,10 @@ module TSOS {
       this.turnaroundTime = 0;
       this.waitTime = 0;
 
-      this.Partition = 0;
+      this.Partition = p;
 
-      if (this.Partition < 3){
         this.Base = this.Partition * _PartitionSize ;
         this.Limit = this.Base + _PartitionSize - 1;
-      }
 
     }
   }

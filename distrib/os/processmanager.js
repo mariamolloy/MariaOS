@@ -6,12 +6,12 @@ var TSOS;
             //array of all of the pcbs
             this.idCounter = 0;
             this.allPcbs = new Array(); //all processes
-            this.running = TSOS.PCB;
             this.resident = new TSOS.Queue();
             this.ready = new TSOS.Queue();
         }
         ProcessManager.prototype.run = function (process) {
             //to do: scheduling and priorities and all that fun stuff
+            this.running = process;
             //take all pcb stuff and make it cpu stuff
             _CPU.PC = process.PC;
             _CPU.Acc = process.Acc;

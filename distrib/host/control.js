@@ -45,6 +45,7 @@ var TSOS;
             //load in cpu values
             //load in cpu table and memory table w zeroed values
             Control.hostInitCPU();
+            Control.hostInitMemory();
             // Check for our testing and enrichment core, which
             // may be referenced here (from index.html) as function Glados().
             if (typeof Glados === "function") {
@@ -69,27 +70,6 @@ var TSOS;
             taLog.value = str + taLog.value;
             // TODO in the future: Optionally update a log database or some streaming service.
         };
-        /*  public static hostMemInit(): void{
-             var table = (<HTMLTableElement>document.getElementById('memoryTable'));
-  
-             //go through add rows of 8 bytes each all initialized to zero
-             var counter = 0;
-             for (var i = 0; i < (_TotalMemorySize/8); i++){
-               var roww = table.insertRow(i);
-               var celll = roww.insertCell(0);
-               var addy = i*8;
-               var label = "0x" + addy.toString(16);
-               for(var k=0; k<3-addy.toString(16).length; k++){
-                      label += "0";
-                  }
-                  label += addy.toString(16).toUpperCase();
-                  celll.innerHTML = label;
-               for (var j = 1; i < 9; j++){
-                celll = roww.insertCell(j);
-                   celll.innerHTML = "00";
-                 }
-               }
-          } */
         //
         // Host Events
         //
@@ -105,7 +85,6 @@ var TSOS;
             // ... Create and initialize the CPU (because it's part of the hardware)  ...
             _CPU = new TSOS.Cpu(); // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init(); //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
-            Control.hostUpdateMemory();
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(TSOS.Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
             // .. and call the OS Kernel Bootstrap routine.
@@ -169,6 +148,30 @@ var TSOS;
             cell = row.insertCell(); //load in Z flag
             cell.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
         };
+        Control.hostInitMemory = function () {
+            var table = "<tbody>";
+            var rowLabel = "0x";
+            var rowNum = 0;
+            var current = "";
+            var index = 0;
+            for (var i = 0; i < _TotalMemorySize / 8; i++) {
+                table += "<tr>";
+                current = rowNum.toString(16);
+                while (current.length < 3) {
+                    current = "0" + current;
+                }
+                current = current.toUpperCase();
+                table += "<td style=\"font-weight:bold\">" + rowLabel + current + "</td>";
+                for (var j = 0; j < 8; j++) {
+                    table += "<td> 00 </td>";
+                    index++;
+                }
+                table += "</tr>";
+                rowNum = rowNum + 8;
+            }
+            table += "</tbody>";
+            document.getElementById("memoryTable").innerHTML = table;
+        };
         Control.hostUpdateMemory = function () {
             var table = "<tbody>";
             var rowLabel = "0x";
@@ -192,8 +195,6 @@ var TSOS;
             }
             table += "</tbody>";
             document.getElementById("memoryTable").innerHTML = table;
-            //to do: write function to update memory display table as memory updates
-            //but no point to doing it when initializing memory makes the website crash lmfao
         };
         Control.hostBtnHaltOS_click = function (btn) {
             Control.hostLog("Emergency halt", "host");

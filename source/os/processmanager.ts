@@ -10,11 +10,11 @@ module TSOS {
     public idCounter: number = 0;
     public allPcbs: PCB[] = new Array(); //all processes
 
-    public running = PCB;
-      constructor(){
+    public running: PCB;
+    constructor(){
         this.resident = new Queue();
         this.ready = new Queue();
-      }
+    }
 
 
     public run(process: PCB): void{

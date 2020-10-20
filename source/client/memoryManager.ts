@@ -43,6 +43,7 @@ module TSOS {
         for (var j = 0; j < _NumOfPartitions; j++){
           this.partitions[j].isEmpty = true;
         }
+                    TSOS.Control.hostUpdateMemory();
       } else {
         //error we are in the middle of a process or something
         _StdOut.putText("Error: cannot clear all memory rn. be patient.");
@@ -52,11 +53,12 @@ module TSOS {
     //function to clear a single partition in memory and mark as empty
     public clearPart(p: number): void {
       var b = this.partitions[p].base;
-      var l = this.partition[p].limit;
+      var l = this.partitions[p].limit;
       for (var i = b; i < l; i++){
         _MemoryAccessor.write(i, "00");
       }
-      this.partition[p].isEmpty = true;
+      this.partitions[p].isEmpty = true;
+                  TSOS.Control.hostUpdateMemory();
     }
 
     //writingTime writes an array of strings to a specified address in memory in a specified partition
@@ -96,7 +98,7 @@ module TSOS {
     //p is the partition # we want to read from
       public readPartition(p: number): string {
         var b = this.partitions[p].base;
-        var l = this.partition[p].limit;
+        var l = this.partitions[p].limit;
           for (var i = b; i < l; i++){
             return _MemoryAccessor.read(b + i);
           }
