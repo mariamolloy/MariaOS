@@ -53,7 +53,6 @@ var TSOS;
             */
         //writes byte to memory
         MemoryAccessor.prototype.write = function (addy, bite) {
-            //var physical = _MemoryAccessor.addressTranslator(addy, )
             _Memory.writeMem(addy, bite);
         };
         //reads byte from memory
@@ -61,6 +60,7 @@ var TSOS;
             return _Memory.readMem(addy);
         };
         //call function with a logical address and it returns a physical address
+        //same as one in cpu... which to delete?
         MemoryAccessor.prototype.addressTranslator = function (logicalAddy, part) {
             var base = _PartitionSize * part;
             var physicalAddy = base + logicalAddy;

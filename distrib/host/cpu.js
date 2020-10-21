@@ -98,6 +98,7 @@ var TSOS;
                     break;
                 case "00": //Break (which is really a system call)
                     this.isExecuting = false;
+                    _ProcessManager.terminate(_ProcessManager.running);
                     break;
                 case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
                     var bite = parseInt(_MemoryAccessor.read(this.getPhysicalAddress(this.lilEndianTranslator(), _CurrentPartition)), 16);
@@ -165,10 +166,13 @@ var TSOS;
             var addy = parseInt(memAdd, 16);
             return addy;
         };
-        //
+        //method to translate a logical address to a physical address
+        //input is logical address and partition
+        //output is physical address
         Cpu.prototype.getPhysicalAddress = function (logicalAddy, part) {
             var base = _PartitionSize * part;
             var physicalAddy = base + logicalAddy;
+            //checks if memory is in bounds
             if (_MemoryAccessor.inBounds(physicalAddy, part)) {
                 return physicalAddy;
             }
@@ -181,4 +185,3 @@ var TSOS;
     }());
     TSOS.Cpu = Cpu;
 })(TSOS || (TSOS = {}));
-//_MemoryAccessor.read(this.getPhysicalAddress(this.lilEndianTranslator(), _CurrentPartition))

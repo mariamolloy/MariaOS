@@ -18,8 +18,15 @@ var TSOS;
             _CPU.Xreg = process.Xreg;
             _CPU.Yreg = process.Yreg;
             _CPU.Zflag = process.Zflag;
-            _CPU.isExecuting = true; //starts program essentially
+            process.State = "running";
+            this.ready.enqueue(process);
             _CurrentPartition = process.Partition;
+            _CPU.isExecuting = true; //starts program essentially
+        };
+        ProcessManager.prototype.terminate = function (process) {
+            this.ready.dequeue();
+            _MemoryManager.clearPart(process.Partition);
+            process.State = "terminated";
         };
         ProcessManager.prototype.trackStats = function () {
             //to do

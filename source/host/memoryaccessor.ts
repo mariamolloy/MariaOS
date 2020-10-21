@@ -58,7 +58,6 @@ module TSOS {
 
     //writes byte to memory
     write(addy: number, bite: string): void{
-      //var physical = _MemoryAccessor.addressTranslator(addy, )
       _Memory.writeMem(addy, bite);
     }
 
@@ -68,6 +67,7 @@ module TSOS {
     }
 
     //call function with a logical address and it returns a physical address
+    //same as one in cpu... which to delete?
     addressTranslator(logicalAddy: number, part: number): number{
       var base = _PartitionSize * part;
       var physicalAddy = base + logicalAddy;

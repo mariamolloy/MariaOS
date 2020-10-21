@@ -99,7 +99,7 @@ module TSOS {
                 break;
               case "00":  //Break (which is really a system call)
                 this.isExecuting = false;
-
+                _ProcessManager.terminate(_ProcessManager.running);
                 break;
               case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
                 var bite = parseInt(_MemoryAccessor.read(this.getPhysicalAddress(this.lilEndianTranslator(), _CurrentPartition)), 16);
@@ -166,10 +166,13 @@ module TSOS {
           return addy;
         }
 
-        //
+        //method to translate a logical address to a physical address
+        //input is logical address and partition
+        //output is physical address
         private getPhysicalAddress(logicalAddy: number, part: number): number {
           var base = _PartitionSize * part;
           var physicalAddy = base + logicalAddy;
+          //checks if memory is in bounds
           if (_MemoryAccessor.inBounds(physicalAddy, part)){
             return physicalAddy;
           } else {
@@ -181,5 +184,3 @@ module TSOS {
     }
 
 }
-
-//_MemoryAccessor.read(this.getPhysicalAddress(this.lilEndianTranslator(), _CurrentPartition))

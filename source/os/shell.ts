@@ -550,18 +550,35 @@ module TSOS {
         }
       }
 
+      //to do: check resident queue not allPcbs
+      //to do: else messahge that the rp
       public shellKill(args){
-        //to do
-        //kill process specified
+        if (args.length > 0){
+          var input = parseInt(args, 10);
+          for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
+            var current = _ProcessManager.allPcbs[i];
+            if (current.Pid == input){
+              _ProcessManager.terminate(current);
+              _StdOut.putText("Process " + current.Pid + " was terminated.")
+            } else {
+              _StdOut.putText("Process " + current.Pid + " could not be terminated.")
+            }
+          }
+        } else {
+          _StdOut.putText("Error please specify which process you want to kill");
+        }
       }
 
+      //kills all loaded / running processes
+      //to do: fix so it kills everything in resident queue not everything in allPcbs
       public shellKillAll(args){
         _CPU.isExecuting = false;
         var all = _ProcessManager.allPcbs.length;
         for (var i = 0; i < all; i++){
           var current = _ProcessManager.allPcbs[i];
-          current.State = "terminated";
+          _ProcessManager.terminate(current);
         }
+        _StdOut.putText("All processes were terminated.");
       }
 
       public shellQuantum(args: number){
