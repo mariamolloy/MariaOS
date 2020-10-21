@@ -15,9 +15,9 @@ module TSOS {
       return true;
     }
 
-
+/**
     //writes byte to memory
-    write(addy: number, bite: string): void{
+    write(addy: number, bite: string, part: number): void{
       //get the partition we are currently running in
       if (_ProcessManager.allPcbs.length > 0){
         var part = _ProcessManager.running.Partition;
@@ -54,14 +54,42 @@ module TSOS {
       return _Memory.readMem(addy);
     }
     }
+    */
 
-    //to do for iProj 3
-    addressTranslator(): void{
-
+    //writes byte to memory
+    write(addy: number, bite: string): void{
+      //var physical = _MemoryAccessor.addressTranslator(addy, )
+      _Memory.writeMem(addy, bite);
     }
 
-    inBounds(addy:number):void{ //boolean{
-      //  if ()
+    //reads byte from memory
+    read(addy: number): string {
+      return _Memory.readMem(addy);
+    }
+
+    //call function with a logical address and it returns a physical address
+    addressTranslator(logicalAddy: number, part: number): number{
+      var base = _PartitionSize * part;
+      var physicalAddy = base + logicalAddy;
+      if (this.inBounds(physicalAddy, part)){
+        return physicalAddy;
+      } else {
+        _StdOut.putText("ERROR: ADDRESS NOT IN BOUNDS");
+        return null;
+      }
+    }
+
+    //function to check that an address we will write to is in bounds
+    inBounds(physicalAddy: number, p: number): boolean{
+      var base = _PartitionSize * p;
+      var limit = base + _PartitionSize;
+      //if the physical address is between the base and limit we should be good
+      if ((physicalAddy >= base) && (physicalAddy < limit)){
+        return true;
+      } else {
+        _StdOut.putText("ERROR: MEM OUT OF BOUNDS");
+        return false;
+      }
     }
 
   }

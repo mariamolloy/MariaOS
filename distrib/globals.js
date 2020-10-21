@@ -32,6 +32,7 @@ var _Trace = true; // Default the OS trace to be on.
 var _Status = "[status]"; //Status set by the user
 var _PartitionSize = 256;
 var _NumOfPartitions = 3; //we only have 3 sections in our memory
+var _CurrentPartition = 0; //start at 0x000 in memory
 var _TotalMemorySize = 768; //default memory size
 var _memSize = 768;
 //Hardware (OS)

@@ -19,6 +19,7 @@ var TSOS;
             _CPU.Yreg = process.Yreg;
             _CPU.Zflag = process.Zflag;
             _CPU.isExecuting = true; //starts program essentially
+            _CurrentPartition = process.Partition;
         };
         ProcessManager.prototype.trackStats = function () {
             //to do

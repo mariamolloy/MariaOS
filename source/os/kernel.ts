@@ -79,6 +79,7 @@ module TSOS {
                that it has to look for interrupts and process them if it finds any.
             */
             //update memory gui
+            TSOS.Control.hostUpdateMemory();
 
 
 
