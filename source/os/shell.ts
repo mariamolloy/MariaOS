@@ -552,7 +552,7 @@ module TSOS {
 
       //to do: check resident queue not allPcbs
       //to do: else messahge that the rp
-      public shellKill(args){
+      public shellKill(args: string){
         if (args.length > 0){
           var input = parseInt(args, 10);
           for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
@@ -581,9 +581,15 @@ module TSOS {
         _StdOut.putText("All processes were terminated.");
       }
 
-      public shellQuantum(args: number){
-        //to do
-        //set quantum to specified number
+      //sets the quantum to the specified amount
+      public shellQuantum(args: string){
+        if (args.length > 0){
+          var inputQ = parseInt(args, 10);
+          _Quantum = inputQ;
+          _StdOut.putText("The quantum is now " + _Quantum);
+        } else {
+          _StdOut.putText("Please specify what you want to set the quantum to");
+        }
       }
 
 

@@ -479,9 +479,16 @@ var TSOS;
             }
             _StdOut.putText("All processes were terminated.");
         };
+        //sets the quantum to the specified amount
         Shell.prototype.shellQuantum = function (args) {
-            //to do
-            //set quantum to specified number
+            if (args.length > 0) {
+                var inputQ = parseInt(args, 10);
+                _Quantum = inputQ;
+                _StdOut.putText("The quantum is now " + _Quantum);
+            }
+            else {
+                _StdOut.putText("Please specify what you want to set the quantum to");
+            }
         };
         return Shell;
     }());
