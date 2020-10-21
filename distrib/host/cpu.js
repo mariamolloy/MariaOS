@@ -66,7 +66,7 @@ var TSOS;
                     //save contents of accumulator
                     var accStr = this.Acc.toString(16);
                     //save it in memory at specified location
-                    _MemoryAccessor.write(this.lilEndianTranslator(), accStr);
+                    _MemoryAccessor.write(this.getPhysicalAddress(this.lilEndianTranslator(), _CurrentPartition), accStr);
                     this.PC = this.PC + 3;
                     break;
                 case "6D": //Add with carry:  Adds contents of an address to the contents of the accumulator and keeps the result in the accumulator
@@ -130,7 +130,7 @@ var TSOS;
                     var bite = parseInt(_MemoryAccessor.read(this.getPhysicalAddress(this.lilEndianTranslator(), _CurrentPartition)), 16);
                     bite++;
                     var bight = bite.toString(16);
-                    _MemoryAccessor.write(this.lilEndianTranslator(), bight);
+                    _MemoryAccessor.write(this.getPhysicalAddress(this.lilEndianTranslator(), _CurrentPartition), bight);
                     this.PC = this.PC + 3;
                     break;
                 case "FF": //System Call: #$01 in X reg = print the integer stored in the Y register. #$02 in X reg = print the 00-terminated string stored at the address in the Y register.
