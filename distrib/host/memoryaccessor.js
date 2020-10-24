@@ -2,6 +2,9 @@ var TSOS;
 (function (TSOS) {
     var MemoryAccessor = /** @class */ (function () {
         function MemoryAccessor() {
+            this.base = 0;
+            this.limit = _PartitionSize;
+            this.par = 0;
         }
         //request checks what block to write mem in
         //to do for proj 3
@@ -62,9 +65,9 @@ var TSOS;
         //call function with a logical address and it returns a physical address
         //same as one in cpu... which to delete?
         MemoryAccessor.prototype.addressTranslator = function (logicalAddy, part) {
-            var base = _PartitionSize * part;
-            var physicalAddy = base + logicalAddy;
-            if (this.inBounds(physicalAddy, part)) {
+            this.base = _PartitionSize * this.par;
+            var physicalAddy = this.base + logicalAddy;
+            if (this.inBounds(physicalAddy, this.par)) {
                 return physicalAddy;
             }
             else {
@@ -74,10 +77,10 @@ var TSOS;
         };
         //function to check that an address we will write to is in bounds
         MemoryAccessor.prototype.inBounds = function (physicalAddy, p) {
-            var base = _PartitionSize * p;
-            var limit = base + _PartitionSize;
+            this.base = _PartitionSize * this.par;
+            this.limit = this.base + _PartitionSize;
             //if the physical address is between the base and limit we should be good
-            if ((physicalAddy >= base) && (physicalAddy < limit)) {
+            if ((physicalAddy >= this.base) && (physicalAddy < this.limit)) {
                 return true;
             }
             else {

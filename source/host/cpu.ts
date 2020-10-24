@@ -21,6 +21,7 @@ module TSOS {
                     public Xreg: number = 0,
                     public Yreg: number = 0,
                     public Zflag: number = 0,
+                    //public Pcb: TSOS.PCB,
                     public isExecuting: boolean = false) {
 
         }
@@ -45,9 +46,6 @@ module TSOS {
             //fetch and decode
             var opCode: string = _MemoryAccessor.read(this.getPhysicalAddress(this.PC, _CurrentPartition));
             //for testing
-            //_StdOut.putText(opCode);
-
-          //  _ProcessManager.running =
 
             //execute
             _Kernel.krnTrace('CPU cycle: executing' + opCode);

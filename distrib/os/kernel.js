@@ -81,7 +81,7 @@ var TSOS;
                     if (_NextStep) {
                         _CPU.cycle();
                         TSOS.Control.hostUpdateCPU();
-                        TSOS.Control.hostUpdateMemory();
+                        TSOS.Control.hostInitReadyQueue();
                         _NextStep = false;
                     }
                     this.krnTrace("Idle");
@@ -89,7 +89,7 @@ var TSOS;
                 else {
                     _CPU.cycle();
                     TSOS.Control.hostUpdateCPU();
-                    TSOS.Control.hostUpdateMemory();
+                    TSOS.Control.hostInitReadyQueue();
                 }
             }
             else { // If there are no interrupts and there is nothing being executed then just be idle.

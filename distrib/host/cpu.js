@@ -13,7 +13,9 @@
 var TSOS;
 (function (TSOS) {
     var Cpu = /** @class */ (function () {
-        function Cpu(PC, Acc, IR, Xreg, Yreg, Zflag, isExecuting) {
+        function Cpu(PC, Acc, IR, Xreg, Yreg, Zflag, 
+        //public Pcb: TSOS.PCB,
+        isExecuting) {
             if (PC === void 0) { PC = 0; }
             if (Acc === void 0) { Acc = 0; }
             if (IR === void 0) { IR = ""; }
@@ -46,8 +48,6 @@ var TSOS;
             //fetch and decode
             var opCode = _MemoryAccessor.read(this.getPhysicalAddress(this.PC, _CurrentPartition));
             //for testing
-            //_StdOut.putText(opCode);
-            //  _ProcessManager.running =
             //execute
             _Kernel.krnTrace('CPU cycle: executing' + opCode);
             //var ir = opCode;

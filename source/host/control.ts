@@ -54,6 +54,7 @@ module TSOS {
               //load in cpu table and memory table w zeroed values
               Control.hostInitCPU();
               Control.hostInitMemory();
+              Control.hostInitReadyQueue();
 
 
 
@@ -246,6 +247,84 @@ module TSOS {
          }
          table += "</tbody>";
          document.getElementById("memoryTable").innerHTML = table;
+       }
+
+       public static hostInitReadyQueue(): void {
+         var readyTable = (<HTMLTableElement>document.getElementById('readyQueueTable'));
+
+         //first row is labels
+         var row = readyTable.insertRow(0);
+         var cell = row.insertCell();
+         cell.innerHTML = "PID";
+
+         cell = row.insertCell();
+         cell.innerHTML = "STATE";
+
+         cell = row.insertCell();
+         cell.innerHTML = "PART";
+
+         cell = row.insertCell();
+         cell.innerHTML = "BASE";
+
+         cell = row.insertCell();
+         cell.innerHTML = "LIMIT";
+
+         cell = row.insertCell();
+         cell.innerHTML = "PC";
+
+         cell = row.insertCell();
+         cell.innerHTML = "IR";
+
+         cell = row.insertCell();
+         cell.innerHTML = "ACC";
+
+         cell = row.insertCell();
+         cell.innerHTML = "X";
+
+         cell = row.insertCell();
+         cell.innerHTML = "Y";
+
+         cell = row.insertCell();
+         cell.innerHTML = "Z";
+
+         //second row is all zeros
+         row = readyTable.insertRow(1);
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+
+         cell = row.insertCell();
+         cell.innerHTML = "--";
+       }
+
+       public static hostUpdateReadyQueue(): void{
+
        }
 
 

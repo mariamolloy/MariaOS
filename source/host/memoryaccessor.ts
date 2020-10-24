@@ -1,12 +1,18 @@
 module TSOS {
   export class MemoryAccessor {
+    public base: number;
+    public limit: number;
+    public par: number;
 
     constructor(){
+      this.base = 0;
+      this.limit = _PartitionSize;
+      this.par = 0;
     }
 
     //request checks what block to write mem in
     //to do for proj 3
-    public requestMem(){
+    public requestMem(): void{
 
     }
 
@@ -68,10 +74,10 @@ module TSOS {
 
     //call function with a logical address and it returns a physical address
     //same as one in cpu... which to delete?
-    addressTranslator(logicalAddy: number, part: number): number{
-      var base = _PartitionSize * part;
-      var physicalAddy = base + logicalAddy;
-      if (this.inBounds(physicalAddy, part)){
+    public addressTranslator(logicalAddy: number, part: number): number{
+      this.base = _PartitionSize * this.par;
+      var physicalAddy = this.base + logicalAddy;
+      if (this.inBounds(physicalAddy, this.par)){
         return physicalAddy;
       } else {
         _StdOut.putText("ERROR: ADDRESS NOT IN BOUNDS");
@@ -80,11 +86,11 @@ module TSOS {
     }
 
     //function to check that an address we will write to is in bounds
-    inBounds(physicalAddy: number, p: number): boolean{
-      var base = _PartitionSize * p;
-      var limit = base + _PartitionSize;
+  public inBounds(physicalAddy: number, p: number): boolean{
+      this.base = _PartitionSize * this.par;
+      this.limit = this.base + _PartitionSize;
       //if the physical address is between the base and limit we should be good
-      if ((physicalAddy >= base) && (physicalAddy < limit)){
+      if ((physicalAddy >= this.base) && (physicalAddy < this.limit)){
         return true;
       } else {
         _StdOut.putText("ERROR: MEM OUT OF BOUNDS");
