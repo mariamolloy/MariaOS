@@ -62,6 +62,7 @@ module TSOS {
     }
     */
 
+    //never call this without calling addressTranslator first except when we are printing to the gui
     //writes byte to memory
     write(addy: number, bite: string): void{
       _Memory.writeMem(addy, bite);
@@ -74,7 +75,8 @@ module TSOS {
 
     //call function with a logical address and it returns a physical address
     //same as one in cpu... which to delete?
-    public addressTranslator(logicalAddy: number, part: number): number{
+    public addressTranslator(logicalAddy: number, par: number): number{
+      this.par = par;
       this.base = _PartitionSize * this.par;
       var physicalAddy = this.base + logicalAddy;
       if (this.inBounds(physicalAddy, this.par)){
@@ -86,7 +88,8 @@ module TSOS {
     }
 
     //function to check that an address we will write to is in bounds
-  public inBounds(physicalAddy: number, p: number): boolean{
+  public inBounds(physicalAddy: number, par: number): boolean{
+      this.par = par;
       this.base = _PartitionSize * this.par;
       this.limit = this.base + _PartitionSize;
       //if the physical address is between the base and limit we should be good

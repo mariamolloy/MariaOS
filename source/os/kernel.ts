@@ -94,7 +94,7 @@ module TSOS {
                   if (_NextStep){
                     _CPU.cycle();
                     TSOS.Control.hostUpdateCPU();
-                    TSOS.Control.hostInitReadyQueue();
+                    TSOS.Control.hostUpdateReadyQueue();
 
                     _NextStep = false;
                   }
@@ -102,7 +102,7 @@ module TSOS {
                 } else {
                   _CPU.cycle();
                   TSOS.Control.hostUpdateCPU();
-                  TSOS.Control.hostInitReadyQueue();
+                  TSOS.Control.hostUpdateReadyQueue();
               }
             } else {       // If there are no interrupts and there is nothing being executed then just be idle.
                 _NextStep = false;

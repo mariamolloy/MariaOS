@@ -18,6 +18,7 @@ var TSOS;
             _CPU.Xreg = process.Xreg;
             _CPU.Yreg = process.Yreg;
             _CPU.Zflag = process.Zflag;
+            _CPU.Pcb = process;
             process.State = "running";
             this.ready.enqueue(process);
             _CurrentPartition = process.Partition;

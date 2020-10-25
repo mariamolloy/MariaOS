@@ -2,7 +2,7 @@
 
 body {
   background: #f781b8;
-  font-family: Helvetica, Verdana, Arial, sans-serif;
+  font-family: "Lucida Console", Monaco, monospace;
   font-size: 12pt;
   font-weight: normal;
   font-style: normal;
@@ -24,7 +24,7 @@ h2 {
 }
 
 h3 {
-  font-family: Helvetica, Verdana, Arial, sans-serif;
+  font-family: "Lucida Console", Monaco, monospace;
   font-size: 16pt;
   font-weight: normal;
   font-style: normal;
@@ -91,5 +91,5 @@ table, th, td {
   padding-left: 10px;
   background-color: rgba(255,255,255,0.7);
   font-weight: bold;
-  color: rgba(0,0,0,0.5);
+
 }

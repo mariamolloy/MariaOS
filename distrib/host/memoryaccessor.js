@@ -54,6 +54,7 @@ var TSOS;
             }
             }
             */
+        //never call this without calling addressTranslator first except when we are printing to the gui
         //writes byte to memory
         MemoryAccessor.prototype.write = function (addy, bite) {
             _Memory.writeMem(addy, bite);
@@ -64,7 +65,8 @@ var TSOS;
         };
         //call function with a logical address and it returns a physical address
         //same as one in cpu... which to delete?
-        MemoryAccessor.prototype.addressTranslator = function (logicalAddy, part) {
+        MemoryAccessor.prototype.addressTranslator = function (logicalAddy, par) {
+            this.par = par;
             this.base = _PartitionSize * this.par;
             var physicalAddy = this.base + logicalAddy;
             if (this.inBounds(physicalAddy, this.par)) {
@@ -76,7 +78,8 @@ var TSOS;
             }
         };
         //function to check that an address we will write to is in bounds
-        MemoryAccessor.prototype.inBounds = function (physicalAddy, p) {
+        MemoryAccessor.prototype.inBounds = function (physicalAddy, par) {
+            this.par = par;
             this.base = _PartitionSize * this.par;
             this.limit = this.base + _PartitionSize;
             //if the physical address is between the base and limit we should be good

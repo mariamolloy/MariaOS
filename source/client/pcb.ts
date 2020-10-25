@@ -39,8 +39,8 @@ module TSOS {
 
       this.Partition = p;
 
-        this.Base = this.Partition * _PartitionSize ;
-        this.Limit = this.Base + _PartitionSize - 1;
+      this.Base = this.Partition * _PartitionSize ;
+      this.Limit = this.Base + _PartitionSize - 1;
 
     }
 

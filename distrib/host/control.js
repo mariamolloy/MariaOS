@@ -223,7 +223,7 @@ var TSOS;
             cell.innerHTML = "Y";
             cell = row.insertCell();
             cell.innerHTML = "Z";
-            //second row is all zeros
+            //second row is empty
             row = readyTable.insertRow(1);
             cell = row.insertCell();
             cell.innerHTML = "--";
@@ -249,6 +249,31 @@ var TSOS;
             cell.innerHTML = "--";
         };
         Control.hostUpdateReadyQueue = function () {
+            var readyTable = document.getElementById('readyQueueTable');
+            readyTable.deleteRow(1);
+            var row = readyTable.insertRow(1);
+            var cell = row.insertCell(); //load in Pid
+            cell.innerHTML = _CPU.Pcb.Pid.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in state
+            cell.innerHTML = _CPU.Pcb.State.toString().toUpperCase();
+            cell = row.insertCell(); //load in partition
+            cell.innerHTML = _CPU.Pcb.Partition.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in base
+            cell.innerHTML = _CPU.Pcb.Base.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in limit
+            cell.innerHTML = _CPU.Pcb.Limit.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in PC
+            cell.innerHTML = _CPU.PC.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in IR
+            cell.innerHTML = _CPU.IR.toString().toUpperCase();
+            cell = row.insertCell(); //load in Accumulator
+            cell.innerHTML = _CPU.Acc.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in xreg
+            cell.innerHTML = _CPU.Xreg.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in yreg
+            cell.innerHTML = _CPU.Yreg.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in z flag
+            cell.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
         };
         Control.hostBtnHaltOS_click = function (btn) {
             Control.hostLog("Emergency halt", "host");
