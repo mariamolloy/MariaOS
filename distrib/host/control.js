@@ -250,30 +250,34 @@ var TSOS;
         };
         Control.hostUpdateReadyQueue = function () {
             var readyTable = document.getElementById('readyQueueTable');
-            readyTable.deleteRow(1);
-            var row = readyTable.insertRow(1);
-            var cell = row.insertCell(); //load in Pid
-            cell.innerHTML = _CPU.Pcb.Pid.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in state
-            cell.innerHTML = _CPU.Pcb.State.toString().toUpperCase();
-            cell = row.insertCell(); //load in partition
-            cell.innerHTML = _CPU.Pcb.Partition.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in base
-            cell.innerHTML = _CPU.Pcb.Base.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in limit
-            cell.innerHTML = _CPU.Pcb.Limit.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in PC
-            cell.innerHTML = _CPU.PC.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in IR
-            cell.innerHTML = _CPU.IR.toString().toUpperCase();
-            cell = row.insertCell(); //load in Accumulator
-            cell.innerHTML = _CPU.Acc.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in xreg
-            cell.innerHTML = _CPU.Xreg.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in yreg
-            cell.innerHTML = _CPU.Yreg.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in z flag
-            cell.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
+            for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
+                var process = _ProcessManager.ready.dequeue();
+                readyTable.deleteRow(i + 1);
+                var row = readyTable.insertRow(i + 1);
+                var cell = row.insertCell(); //load in Pid
+                cell.innerHTML = process.Pid.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in state
+                cell.innerHTML = process.State.toString().toUpperCase();
+                cell = row.insertCell(); //load in partition
+                cell.innerHTML = process.Partition.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in base
+                cell.innerHTML = process.Base.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in limit
+                cell.innerHTML = process.Limit.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in PC
+                cell.innerHTML = process.PC.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in IR
+                cell.innerHTML = process.IR.toString().toUpperCase();
+                cell = row.insertCell(); //load in Accumulator
+                cell.innerHTML = process.Acc.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in xreg
+                cell.innerHTML = process.Xreg.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in yreg
+                cell.innerHTML = process.Yreg.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in z flag
+                cell.innerHTML = process.Zflag.toString(10).toUpperCase();
+                _ProcessManager.ready.enqueue(process);
+            }
         };
         Control.hostBtnHaltOS_click = function (btn) {
             Control.hostLog("Emergency halt", "host");

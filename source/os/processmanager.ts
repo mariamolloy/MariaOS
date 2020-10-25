@@ -59,7 +59,7 @@ module TSOS {
       _CPU.Zflag = process.Zflag;
       _CPU.Pcb = process;
 
-      process.State = "running";
+      process.State = "ready";
 
       this.ready.enqueue(process);
       _CurrentPartition = process.Partition;

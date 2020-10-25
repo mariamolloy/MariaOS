@@ -39,20 +39,24 @@ var TSOS;
             var part = this.Pcb.Partition;
             //fetch and decode
             var opCode = _MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.PC, part));
-            //for testing
+            //set pcb state
+            this.Pcb.State = "running";
             //execute
             _Kernel.krnTrace('CPU cycle: executing' + opCode);
             //var ir = opCode;
             this.IR = opCode;
+            //update pcb
             //_ProcessManager.allPcbs[_ProcessManager.idCounter-1].Pid = ir;
             switch (opCode) {
                 case "A9": //load the accumulator with a constant
                     this.Acc = parseInt(_MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.PC + 1, part)), 16);
                     this.PC = this.PC + 2;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "AD": //Load the accumulator from memory
                     this.Acc = parseInt(_MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.lilEndianTranslator(), part)), 16);
                     this.PC = this.PC + 3;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "8D": //Store the accumulator in memory
                     //save contents of accumulator
@@ -60,6 +64,7 @@ var TSOS;
                     //save it in memory at specified location
                     _MemoryAccessor.write(_MemoryAccessor.addressTranslator(this.lilEndianTranslator(), part), accStr);
                     this.PC = this.PC + 3;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "6D": //Add with carry:  Adds contents of an address to the contents of the accumulator and keeps the result in the accumulator
                     //get value stored at address in memory
@@ -67,28 +72,35 @@ var TSOS;
                     //add to accumulator
                     this.Acc = this.Acc + addend;
                     this.PC = this.PC + 3;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "A2": //Load the X register with a constant
                     this.Xreg = parseInt(_MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.PC + 1, part)), 16);
                     this.PC = this.PC + 2;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "AE": //Load the X register from memory
                     //read content from memory address specified into xreg
                     this.Xreg = parseInt(_MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.lilEndianTranslator(), part)), 16);
                     this.PC = this.PC + 3;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "A0": //Load the Y register with a constant
                     this.Yreg = parseInt(_MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.PC + 1, part)), 16);
                     this.PC = this.PC + 2;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "AC": //Load the Y register from memory
                     this.Yreg = parseInt(_MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.lilEndianTranslator(), part)), 16);
                     this.PC = this.PC + 3;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "EA": //No Operation do nothing lol
                     this.PC++;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "00": //Break (which is really a system call)
+                    //this.updatePcb(); //save registers in pcb
                     this.isExecuting = false;
                     _ProcessManager.terminate(_ProcessManager.running);
                     break;
@@ -101,6 +113,7 @@ var TSOS;
                         this.Zflag = 0;
                     }
                     this.PC = this.PC + 3;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "D0": //Branch n bytes if Z flag = 0
                     if (this.Zflag == 0) {
@@ -118,6 +131,7 @@ var TSOS;
                     else { //if z != 0 then we just skip and move on to the next op code
                         this.PC = this.PC + 2;
                     }
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "EE": //Increment the value of a byte
                     var bite = parseInt(_MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.lilEndianTranslator(), part)), 16);
@@ -125,6 +139,7 @@ var TSOS;
                     var bight = bite.toString(16);
                     _MemoryAccessor.write(_MemoryAccessor.addressTranslator(this.lilEndianTranslator(), part), bight);
                     this.PC = this.PC + 3;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 case "FF": //System Call: #$01 in X reg = print the integer stored in the Y register. #$02 in X reg = print the 00-terminated string stored at the address in the Y register.
                     //check if x reg is 1 or 2
@@ -145,6 +160,7 @@ var TSOS;
                         _StdOut.putText(print);
                     }
                     this.PC++;
+                    this.updatePcb(); //save registers in pcb
                     break;
                 default: //terminates single process
                     this.isExecuting = false;
@@ -161,16 +177,33 @@ var TSOS;
         //method to translate a logical address to a physical address
         //input is logical address and partition
         //output is physical address
-        Cpu.prototype.getPhysicalAddress = function (logicalAddy, part) {
-            var base = _PartitionSize * part;
-            var physicalAddy = base + logicalAddy;
-            //checks if memory is in bounds
-            if (_MemoryAccessor.inBounds(physicalAddy, part)) {
+        /*    private getPhysicalAddress(logicalAddy: number, part: number): number {
+              var base = _PartitionSize * part;
+              var physicalAddy = base + logicalAddy;
+              //checks if memory is in bounds
+              if (_MemoryAccessor.inBounds(physicalAddy, part)){
                 return physicalAddy;
-            }
-            else {
+              } else {
                 _StdOut.putText("ERROR: ADDRESS NOT IN BOUNDS");
                 return null;
+              }
+            } */
+        //method to update the pcb were on at the end of each cpu cycle so we can save it while context switching
+        Cpu.prototype.updatePcb = function () {
+            var currentPid = this.Pcb.Pid;
+            for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
+                var currentPcb = _ProcessManager.ready.dequeue();
+                //if current element in the ready queue has the pid we want, update its pcb to current cpu data
+                if (currentPcb.Pid == currentPid) {
+                    currentPcb.PC = this.PC;
+                    currentPcb.IR = this.IR;
+                    currentPcb.Acc = this.Acc;
+                    currentPcb.Xreg = this.Xreg;
+                    currentPcb.Yreg = this.Yreg;
+                    currentPcb.Zflag = this.Zflag;
+                }
+                else {
+                }
             }
         };
         return Cpu;

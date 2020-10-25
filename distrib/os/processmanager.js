@@ -33,6 +33,8 @@ var TSOS;
                 _StdOut.putText("Memory full!!¡¡!! Please delete a loaded program before loading in a new one.");
             }
         };
+        //make this generic to run through ready queue
+        //in run shell command make it go through resident queue to find proper element to add to ready enqueue
         ProcessManager.prototype.run = function (process) {
             //to do: scheduling and priorities and all that fun stuff
             this.running = process;
@@ -43,7 +45,7 @@ var TSOS;
             _CPU.Yreg = process.Yreg;
             _CPU.Zflag = process.Zflag;
             _CPU.Pcb = process;
-            process.State = "running";
+            process.State = "ready";
             this.ready.enqueue(process);
             _CurrentPartition = process.Partition;
             _CPU.isExecuting = true; //starts program essentially
