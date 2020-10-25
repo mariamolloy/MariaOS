@@ -377,13 +377,7 @@ var TSOS;
                     }
                     //checks that input isn't too big for one partition
                     if (bytes.length <= _PartitionSize) {
-                        //check to make sure there is an empty partition we can load this into
-                        if (_MemoryManager.checkEmptyPart()) {
-                            _ProcessManager.load(bytes);
-                        }
-                        else {
-                            _StdOut.putText("Memory full!!¡¡!! Please delete a loaded program before loading in a new one.");
-                        }
+                        _ProcessManager.load(bytes); // load into memory
                     }
                     else {
                         _StdOut.putText("Please enter shorter input, yours is over 256 bytes");

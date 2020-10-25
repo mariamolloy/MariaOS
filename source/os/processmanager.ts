@@ -18,28 +18,31 @@ module TSOS {
 
     //put all ur shell load code in here
     public load(input: string[]): void{
+      //check to make sure there is an empty partition we can load this into
+      if (_MemoryManager.checkEmptyPart()){
+        //finds the first empty partition to load input into
+        var part = _MemoryManager.getEmptyPart();
+        _CurrentPartition = part;
 
-      //finds the first empty partition to load input into
-      var part = _MemoryManager.getEmptyPart();
-      _CurrentPartition = part;
+        //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
+        var processID = this.idCounter;
+        var newPcb = new PCB(processID);
+        this.allPcbs.push(newPcb);
+        this.resident.enqueue(newPcb);
+        this.idCounter++;
 
-      //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
-      var processID = this.idCounter;
-      var newPcb = new PCB(processID);
-      this.allPcbs.push(newPcb);
-      this.resident.enqueue(newPcb);
-      this.idCounter++;
-
-      newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
-    //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
+        newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
+      //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
 
 
-      //go through the array and load into memory at location $0000
-      _MemoryManager.writingTime(0, input, part);
+        //go through the array and load into memory at location $0000
+        _MemoryManager.writingTime(0, input, part);
 
-      //return	the	PID	to	the	console	and	display	it.
-      _StdOut.putText("Loaded Process " + processID);
-
+        //return	the	PID	to	the	console	and	display	it.
+        _StdOut.putText("Loaded Process " + processID);
+      } else {
+        _StdOut.putText("Memory full!!¡¡!! Please delete a loaded program before loading in a new one.");
+      }
     }
 
     public run(process: PCB): void{
