@@ -342,7 +342,7 @@ var TSOS;
             //and create an array of input bytes to pass on to memory
             var userInp = (document.getElementById("taProgramInput")).value.trim().toUpperCase();
             var inp = new Array();
-            var bytes = new Array();
+            var bytes = new Array(); //this will be the array w proper input
             //remove allllllll whitespace from input
             userInp = userInp.replace(/\s+/g, '');
             for (var i = 0; i < userInp.length; i++) {
@@ -379,20 +379,7 @@ var TSOS;
                     if (bytes.length <= _PartitionSize) {
                         //check to make sure there is an empty partition we can load this into
                         if (_MemoryManager.checkEmptyPart()) {
-                            //finds the first empty partition to load input into
-                            var part = _MemoryManager.getEmptyPart();
-                            _CurrentPartition = part;
-                            //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
-                            var processID = _ProcessManager.idCounter;
-                            var newPcb = new TSOS.PCB(processID);
-                            _ProcessManager.allPcbs.push(newPcb);
-                            _ProcessManager.idCounter++;
-                            newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
-                            _ProcessManager.running = newPcb; //set this as current PCB to put into memory
-                            //go through the array and load into memory at location $0000
-                            _MemoryManager.writingTime(0, bytes, part);
-                            //return	the	PID	to	the	console	and	display	it.
-                            _StdOut.putText("Loaded Process " + processID);
+                            _ProcessManager.load(bytes);
                         }
                         else {
                             _StdOut.putText("Memory full!!¡¡!! Please delete a loaded program before loading in a new one.");
