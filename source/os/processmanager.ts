@@ -45,7 +45,10 @@ module TSOS {
       }
     }
 
+    //make this generic to run through ready queue
+    //in run shell command make it go through resident queue to find proper element to add to ready enqueue
     public run(process: PCB): void{
+
       //to do: scheduling and priorities and all that fun stuff
       this.running = process;
       //take all pcb stuff and make it cpu stuff
