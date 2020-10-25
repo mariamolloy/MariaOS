@@ -250,8 +250,9 @@ var TSOS;
         };
         Control.hostUpdateReadyQueue = function () {
             var readyTable = document.getElementById('readyQueueTable');
-            for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
-                var process = _ProcessManager.ready.dequeue();
+            var elements = _ProcessManager.ready.getSize();
+            for (var i = 0; i < elements; i++) {
+                var process = _ProcessManager.ready.look(i);
                 readyTable.deleteRow(i + 1);
                 var row = readyTable.insertRow(i + 1);
                 var cell = row.insertCell(); //load in Pid
@@ -276,7 +277,6 @@ var TSOS;
                 cell.innerHTML = process.Yreg.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in z flag
                 cell.innerHTML = process.Zflag.toString(10).toUpperCase();
-                _ProcessManager.ready.enqueue(process);
             }
         };
         Control.hostBtnHaltOS_click = function (btn) {

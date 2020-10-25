@@ -49,7 +49,7 @@ var _NextStep = false;
 var _Quantum = 6;
 // The OS Kernel and its queues.
 var _Kernel;
-var _KernelInterruptQueue = null;
+var _KernelInterruptQueue = null; //idk what other type to make these tbh
 var _KernelInputQueue = null;
 var _KernelBuffers = null;
 // Standard input and output

@@ -190,11 +190,11 @@ var TSOS;
             } */
         //method to update the pcb were on at the end of each cpu cycle so we can save it while context switching
         Cpu.prototype.updatePcb = function () {
-            var currentPid = this.Pcb.Pid;
+            var currentPid = this.Pcb.getPid();
             for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
-                var currentPcb = _ProcessManager.ready.dequeue();
+                var currentPcb = _ProcessManager.ready.look(i);
                 //if current element in the ready queue has the pid we want, update its pcb to current cpu data
-                if (currentPcb.Pid == currentPid) {
+                if (currentPcb.getPid() == currentPid) {
                     currentPcb.PC = this.PC;
                     currentPcb.IR = this.IR;
                     currentPcb.Acc = this.Acc;

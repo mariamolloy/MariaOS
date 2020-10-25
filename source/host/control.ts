@@ -326,10 +326,9 @@ module TSOS {
        public static hostUpdateReadyQueue(): void{
          var readyTable = (<HTMLTableElement>document.getElementById('readyQueueTable'));
 
-
-
-         for (var i = 0; i < _ProcessManager.ready.getSize(); i++){
-             var process = _ProcessManager.ready.dequeue();
+         var elements = _ProcessManager.ready.getSize();
+         for (var i = 0; i < elements; i++){
+             var process = _ProcessManager.ready.look(i);
 
              readyTable.deleteRow(i + 1);
              var row = readyTable.insertRow(i + 1);
@@ -365,7 +364,6 @@ module TSOS {
 
             cell = row.insertCell(); //load in z flag
             cell.innerHTML = process.Zflag.toString(10).toUpperCase();
-            _ProcessManager.ready.enqueue(process);
           }
        }
 

@@ -37,6 +37,10 @@ var TSOS;
             }
             return retVal;
         };
+        //returns an element of queue without removing or adding
+        Queue.prototype.look = function (index) {
+            return (this.q[index]);
+        };
         return Queue;
     }());
     TSOS.Queue = Queue;

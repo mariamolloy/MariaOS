@@ -69,8 +69,8 @@ var _Quantum: number = 6;
 
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;
-var _KernelInterruptQueue: TSOS.Queue = null;
-var _KernelInputQueue: TSOS.Queue = null;
+var _KernelInterruptQueue: TSOS.Queue<any> = null; //idk what other type to make these tbh
+var _KernelInputQueue: TSOS.Queue<any> = null;
 var _KernelBuffers = null;
 
 // Standard input and output

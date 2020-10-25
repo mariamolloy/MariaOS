@@ -44,6 +44,9 @@ module TSOS {
 
     }
 
-    public updatePCB(){}
+    public getPid(): number{
+      return this.Pid;
+    }
+    
   }
 }

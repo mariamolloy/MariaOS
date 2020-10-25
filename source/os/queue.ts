@@ -9,8 +9,8 @@
    ------------ */
 
 module TSOS {
-    export class Queue {
-        constructor(public q = new Array()) {
+    export class Queue <Type> {
+        constructor(public q = new Array<Type>()) {
         }
 
         public getSize() {
@@ -21,11 +21,11 @@ module TSOS {
             return (this.q.length == 0);
         }
 
-        public enqueue(element) {
+        public enqueue(element: Type) {
             this.q.push(element);
         }
 
-        public dequeue() {
+        public dequeue(): Type {
             var retVal = null;
             if (this.q.length > 0) {
                 retVal = this.q.shift();
@@ -39,6 +39,11 @@ module TSOS {
                 retVal += "[" + this.q[i] + "] ";
             }
             return retVal;
+        }
+
+        //returns an element of queue without removing or adding
+        public look(index: number): Type{
+          return(this.q[index]);
         }
     }
 }

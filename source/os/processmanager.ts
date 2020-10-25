@@ -12,8 +12,8 @@ module TSOS {
 
     public running: PCB;
     constructor(){
-        this.resident = new Queue();
-        this.ready = new Queue();
+        this.resident = new Queue<PCB>();
+        this.ready = new Queue<PCB>();
     }
 
     //put all ur shell load code in here
