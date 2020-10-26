@@ -234,6 +234,18 @@ module TSOS {
           _ProcessManager.running.IR = this.IR;
         }
 
+        //method to set cpu to correct values during context switches
+        public setCPU(process: PCB): void{
+          console.log("Setting CPU to process " + process.Pid);
+          this.PC = process.PC;
+          this.IR = process.IR;
+          this.Acc = process.Acc;
+          this.Xreg = process.Xreg;
+          this.Yreg = process.Yreg;
+          this.Zflag = process.Zflag;
+          this.Pcb = process;
+        }
+
     }
 
 }

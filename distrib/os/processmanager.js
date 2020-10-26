@@ -5,7 +5,6 @@ var TSOS;
             //counter to create processIDs starting with 0
             //array of all of the pcbs
             this.idCounter = 0;
-            this.allPcbs = new Array(); //all processes
             this.resident = new TSOS.Queue();
             this.ready = new TSOS.Queue();
         }

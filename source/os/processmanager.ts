@@ -1,20 +1,18 @@
 module TSOS {
   export class ProcessManager {
-    //to do for iproj3:
-    //add queue stuff so we can do multiple processes
+
     public resident: any; //loaded and ready processes
     public ready: any; //running processes
 
     //counter to create processIDs starting with 0
-    //array of all of the pcbs
     public idCounter: number = 0;
-    public allPcbs: PCB[] = new Array(); //all processes
 
     public running: PCB;
 
     constructor(){
         this.resident = new Queue<PCB>();
         this.ready = new Queue<PCB>();
+        this.running = null;
     }
 
     //put all ur shell load code in here
