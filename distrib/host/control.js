@@ -250,11 +250,36 @@ var TSOS;
         };
         Control.hostUpdateReadyQueue = function () {
             var readyTable = document.getElementById('readyQueueTable');
-            var elements = _ProcessManager.ready.getSize();
-            for (var i = 0; i < elements; i++) {
+            //first row is the running process
+            readyTable.deleteRow(1);
+            var row = readyTable.insertRow(1);
+            var cell = row.insertCell(); //load in Pid
+            cell.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in state
+            cell.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
+            cell = row.insertCell(); //load in partition
+            cell.innerHTML = _ProcessManager.running.Partition.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in base
+            cell.innerHTML = _ProcessManager.running.Base.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in limit
+            cell.innerHTML = _ProcessManager.running.Limit.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in PC
+            cell.innerHTML = _ProcessManager.running.PC.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in IR
+            cell.innerHTML = _ProcessManager.running.IR.toString().toUpperCase();
+            cell = row.insertCell(); //load in Accumulator
+            cell.innerHTML = _ProcessManager.running.Acc.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in xreg
+            cell.innerHTML = _ProcessManager.running.Xreg.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in yreg
+            cell.innerHTML = _ProcessManager.running.Yreg.toString(10).toUpperCase();
+            cell = row.insertCell(); //load in z flag
+            cell.innerHTML = _ProcessManager.running.Zflag.toString(10).toUpperCase();
+            //go through ready queue and print that (if there)
+            for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
                 var process = _ProcessManager.ready.look(i);
-                readyTable.deleteRow(i + 1);
-                var row = readyTable.insertRow(i + 1);
+                readyTable.deleteRow(i + 2);
+                var row = readyTable.insertRow(i + 2);
                 var cell = row.insertCell(); //load in Pid
                 cell.innerHTML = process.Pid.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in state

@@ -39,7 +39,7 @@ module TSOS {
             _MemoryManager	=	new	MemoryManager();
 
             _ProcessManager = new ProcessManager();
-            //
+            _Scheduler = new Scheduler();
             // ... more?
             //
 
@@ -82,7 +82,6 @@ module TSOS {
             TSOS.Control.hostUpdateMemory();
 
 
-
             // Check for an interrupt, if there are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {
                 // Process the first interrupt on the interrupt queue.
@@ -107,6 +106,7 @@ module TSOS {
             } else {       // If there are no interrupts and there is nothing being executed then just be idle.
                 _NextStep = false;
                 this.krnTrace("Idle");
+                _ProcessManager.checkReady(); //check if theres anything in the ready queue
             }
         }
 

@@ -19,11 +19,12 @@ var TSOS;
                 //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
                 var processID = this.idCounter;
                 var newPcb = new TSOS.PCB(processID);
-                this.allPcbs.push(newPcb);
-                this.resident.enqueue(newPcb);
-                this.idCounter++;
+                //this.allPcbs.push(newPcb);
                 newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
                 //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
+                //add to resident queue now that it is loaded
+                this.resident.enqueue(newPcb);
+                this.idCounter++; //increment pcb id counter
                 //go through the array and load into memory at location $0000
                 _MemoryManager.writingTime(0, input, part);
                 //return	the	PID	to	the	console	and	display	it.
@@ -33,29 +34,37 @@ var TSOS;
                 _StdOut.putText("Memory full!!¡¡!! Please delete a loaded program before loading in a new one.");
             }
         };
-        //make this generic to run through ready queue
         //in run shell command make it go through resident queue to find proper element to add to ready enqueue
-        ProcessManager.prototype.run = function (process) {
+        ProcessManager.prototype.run = function () {
             //to do: scheduling and priorities and all that fun stuff
-            this.running = process;
+            this.running = this.ready.dequeue();
             //take all pcb stuff and make it cpu stuff
-            _CPU.PC = process.PC;
-            _CPU.Acc = process.Acc;
-            _CPU.Xreg = process.Xreg;
-            _CPU.Yreg = process.Yreg;
-            _CPU.Zflag = process.Zflag;
-            _CPU.Pcb = process;
-            process.State = "running";
-            this.ready.enqueue(process);
-            _CurrentPartition = process.Partition;
+            _CPU.PC = this.running.PC;
+            _CPU.Acc = this.running.Acc;
+            _CPU.Xreg = this.running.Xreg;
+            _CPU.Yreg = this.running.Yreg;
+            _CPU.Zflag = this.running.Zflag;
+            _CPU.Pcb = this.running;
+            this.running.State = "running";
+            _CurrentPartition = this.running.Partition;
             _CPU.isExecuting = true; //starts program essentially
             // Update host log
-            TSOS.Control.hostLog("Running process " + this.running.Pid, "os");
+            TSOS.Control.hostLog("Running process " + this.running.Pid, "OS");
         };
         ProcessManager.prototype.terminate = function (process) {
             this.ready.dequeue();
             _MemoryManager.clearPart(process.Partition);
             process.State = "terminated";
+        };
+        //function to check if anything is in the ready queues
+        //--> to check if we
+        ProcessManager.prototype.checkReady = function () {
+            if (!this.ready.isEmpty()) {
+                this.run();
+            }
+            else {
+                //  _CPU.isExecuting
+            }
         };
         ProcessManager.prototype.trackStats = function () {
             //to do

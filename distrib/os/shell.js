@@ -81,8 +81,14 @@ var TSOS;
             //kills all processes
             sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "Kills all processes");
             this.commandList[this.commandList.length] = sc;
-            //kills all processes
+            //sets quantum
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<quantum> - Sets round robin quantum to specified integer");
+            this.commandList[this.commandList.length] = sc;
+            //sets scheduler algorithm
+            sc = new TSOS.ShellCommand(this.shellSetScheduler, "setscheduler", "<algorithm> - Sets the scheduler algorithm to round robin or first come first serve (enter rr or fcfs)");
+            this.commandList[this.commandList.length] = sc;
+            //prints current scheduler algorithm
+            sc = new TSOS.ShellCommand(this.shellGetScheduler, "getscheduler", "Returns current scheduler algorithm");
             this.commandList[this.commandList.length] = sc;
             //to do:
             //to do: run <pid> program in memory
@@ -398,10 +404,14 @@ var TSOS;
         Shell.prototype.shellRun = function (args) {
             if (args.length > 0) {
                 var inputPID = parseInt(args, 10);
-                for (var i = 0; i < _ProcessManager.allPcbs.length; i++) {
-                    var pcbToRun = _ProcessManager.allPcbs[i];
+                //go through resident queue, find pcb we are looking for
+                for (var i = 0; i < _ProcessManager.resident.getSize(); i++) {
+                    var pcbToRun = _ProcessManager.resident.dequeue();
                     if (pcbToRun.Pid == inputPID) {
-                        _ProcessManager.run(pcbToRun);
+                        _ProcessManager.ready.enqueue(pcbToRun);
+                    }
+                    else { //if it isnt the right pcb we put it back in the resident qeueue
+                        _ProcessManager.resident.enqueue(pcbToRun);
                     }
                 }
             }
@@ -464,11 +474,29 @@ var TSOS;
         Shell.prototype.shellQuantum = function (args) {
             if (args.length > 0) {
                 var inputQ = parseInt(args, 10);
-                _Quantum = inputQ;
-                _StdOut.putText("The quantum is now " + _Quantum);
+                _Scheduler.setQuantum(inputQ);
+                _StdOut.putText("The quantum is now " + _Scheduler.quantum);
             }
             else {
                 _StdOut.putText("Please specify what you want to set the quantum to");
+            }
+        };
+        Shell.prototype.shellGetScheduler = function () {
+            _StdOut.putText("The scheduler algorithm is currently set to " + _Scheduler.alg);
+        };
+        Shell.prototype.shellSetScheduler = function (args) {
+            if (args.length > 0) {
+                var input = args[0];
+                switch (input) {
+                    case "ROUND_ROBIN":
+                        break;
+                    case "FCFS":
+                        break;
+                    case "PRIORITY":
+                        break;
+                    default:
+                        break;
+                }
             }
         };
         return Shell;

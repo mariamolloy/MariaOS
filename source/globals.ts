@@ -65,7 +65,8 @@ var _SingleStep: boolean = false;
 var _NextStep: boolean = false;
 
 //default quantum of 6 for round robin scheduling
-var _Quantum: number = 6;
+var _DefaultQuantum: number = 6;
+var _Scheduler: TSOS.Scheduler;
 
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;

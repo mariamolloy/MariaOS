@@ -1,17 +1,36 @@
 var TSOS;
 (function (TSOS) {
-    var scheduler = /** @class */ (function () {
-        function scheduler() {
-            //to do add cpu, quantum etc
+    var Scheduler = /** @class */ (function () {
+        function Scheduler() {
+            this.quantum = _DefaultQuantum;
+            this.rrCounter = 0;
+            this.alg = "ROUND_ROBIN";
         }
-        scheduler.prototype.algorithm = function () {
+        Scheduler.prototype.setAlg = function (a) {
+            switch (a) {
+                case "ROUND_ROBIN":
+                    this.alg = "ROUND_ROBIN";
+                    break;
+                case "FCFS":
+                    this.alg = "FCFS";
+                    this.setQuantum(500000);
+                    break;
+                case "PRIORITY":
+                    this.alg = "PRIORITY";
+                    break;
+                default:
+                    return false;
+            }
+            return true;
         };
-        scheduler.prototype.roundRobin = function () {
+        Scheduler.prototype.roundRobin = function () {
         };
-        scheduler.prototype.fcfs = function () {
-            this.quantum = 5000;
+        Scheduler.prototype.fcfs = function () {
         };
-        return scheduler;
+        Scheduler.prototype.setQuantum = function (q) {
+            this.quantum = q;
+        };
+        return Scheduler;
     }());
-    TSOS.scheduler = scheduler;
+    TSOS.Scheduler = Scheduler;
 })(TSOS || (TSOS = {}));

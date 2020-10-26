@@ -34,7 +34,7 @@ var TSOS;
             //create the memory manager
             _MemoryManager = new TSOS.MemoryManager();
             _ProcessManager = new TSOS.ProcessManager();
-            //
+            _Scheduler = new TSOS.Scheduler();
             // ... more?
             //
             // Enable the OS Interrupts.  (Not the CPU clock interrupt, as that is done in the hardware sim.)
@@ -95,6 +95,7 @@ var TSOS;
             else { // If there are no interrupts and there is nothing being executed then just be idle.
                 _NextStep = false;
                 this.krnTrace("Idle");
+                _ProcessManager.checkReady(); //check if theres anything in the ready queue
             }
         };
         //

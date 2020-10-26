@@ -197,15 +197,21 @@ var TSOS;
                 var currentPcb = _ProcessManager.ready.look(i);
                 //if current element in the ready queue has the pid we want, update its pcb to current cpu data
                 if (currentPcb.getPid() == currentPid) {
-                    currentPcb.PC = this.PC;
-                    currentPcb.IR = this.IR;
-                    currentPcb.Acc = this.Acc;
-                    currentPcb.Xreg = this.Xreg;
-                    currentPcb.Yreg = this.Yreg;
-                    currentPcb.Zflag = this.Zflag;
-                    currentPcb.TurnAroundTime++;
+                    /*    currentPcb.PC = this.PC;
+                        currentPcb.IR = this.IR;
+                        currentPcb.Acc = this.Acc;
+                        currentPcb.Xreg = this.Xreg;
+                        currentPcb.Yreg = this.Yreg;
+                        currentPcb.Zflag = this.Zflag;
+                        currentPcb.TurnAroundTime++; */
                 }
             }
+            _ProcessManager.running.PC = this.PC;
+            _ProcessManager.running.Acc = this.Acc;
+            _ProcessManager.running.Xreg = this.Xreg;
+            _ProcessManager.running.Yreg = this.Yreg;
+            _ProcessManager.running.Zflag = this.Zflag;
+            _ProcessManager.running.IR = this.IR;
         };
         return Cpu;
     }());

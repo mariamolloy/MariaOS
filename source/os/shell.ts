@@ -147,11 +147,24 @@ module TSOS {
                                   "Kills all processes");
             this.commandList[this.commandList.length] = sc;
 
-            //kills all processes
+            //sets quantum
             sc = new ShellCommand(this.shellQuantum,
                                   "quantum",
                                   "<quantum> - Sets round robin quantum to specified integer");
             this.commandList[this.commandList.length] = sc;
+
+            //sets scheduler algorithm
+            sc = new ShellCommand(this.shellSetScheduler,
+                                  "setscheduler",
+                                  "<algorithm> - Sets the scheduler algorithm to round robin or first come first serve (enter rr or fcfs)");
+            this.commandList[this.commandList.length] = sc;
+
+            //prints current scheduler algorithm
+            sc = new ShellCommand(this.shellGetScheduler,
+                                  "getscheduler",
+                                  "Returns current scheduler algorithm");
+            this.commandList[this.commandList.length] = sc;
+
 
             //to do:
 
@@ -473,7 +486,7 @@ module TSOS {
               if (bytes.length <= _PartitionSize){
 
                 _ProcessManager.load(bytes); // load into memory
-                
+
             } else {
                 _StdOut.putText("Please enter shorter input, yours is over 256 bytes");
             }
@@ -494,10 +507,13 @@ module TSOS {
       public shellRun(args) {
         if (args.length > 0){
           var inputPID = parseInt(args, 10);
-          for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
-            var pcbToRun = _ProcessManager.allPcbs[i];
+          //go through resident queue, find pcb we are looking for
+          for (var i = 0; i < _ProcessManager.resident.getSize(); i++){
+            var pcbToRun = _ProcessManager.resident.dequeue();
             if (pcbToRun.Pid == inputPID){
-              _ProcessManager.run(pcbToRun);
+              _ProcessManager.ready.enqueue(pcbToRun);
+            } else { //if it isnt the right pcb we put it back in the resident qeueue
+              _ProcessManager.resident.enqueue(pcbToRun);
             }
           }
         } else { //no argument
@@ -563,10 +579,30 @@ module TSOS {
       public shellQuantum(args: string){
         if (args.length > 0){
           var inputQ = parseInt(args, 10);
-          _Quantum = inputQ;
-          _StdOut.putText("The quantum is now " + _Quantum);
+          _Scheduler.setQuantum(inputQ);
+          _StdOut.putText("The quantum is now " + _Scheduler.quantum);
         } else {
           _StdOut.putText("Please specify what you want to set the quantum to");
+        }
+      }
+
+      public shellGetScheduler(){
+        _StdOut.putText("The scheduler algorithm is currently set to " + _Scheduler.alg);
+      }
+
+      public shellSetScheduler(args: string){
+        if (args.length > 0){
+          var input = args[0];
+          switch (input) {
+            case "ROUND_ROBIN":
+              break;
+            case "FCFS":
+              break;
+            case "PRIORITY":
+              break;
+            default:
+              break;
+          }
         }
       }
 

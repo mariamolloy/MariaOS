@@ -28,13 +28,15 @@ module TSOS {
         //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
         var processID = this.idCounter;
         var newPcb = new PCB(processID);
-        this.allPcbs.push(newPcb);
-        this.resident.enqueue(newPcb);
-        this.idCounter++;
+        //this.allPcbs.push(newPcb);
+
 
         newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
       //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
 
+      //add to resident queue now that it is loaded
+      this.resident.enqueue(newPcb);
+      this.idCounter++; //increment pcb id counter
 
         //go through the array and load into memory at location $0000
         _MemoryManager.writingTime(0, input, part);
@@ -61,7 +63,7 @@ module TSOS {
 
       this.running.State = "running";
 
-      _CurrentPartition = process.Partition;
+      _CurrentPartition = this.running.Partition;
 
       _CPU.isExecuting = true; //starts program essentially
 
@@ -82,9 +84,10 @@ module TSOS {
         this.run();
       }
       else {
-        _CPU.isExecuting
+      //  _CPU.isExecuting
       }
     }
+
 
     public trackStats(): void{
       //to do
