@@ -8,20 +8,17 @@ var TSOS;
         }
         //main process that runs every cpu cycle
         Scheduler.prototype.schedule = function () {
-            //idt we need to do anything if theres nothing in da ready qeueueueue
-            if (!_ProcessManager.ready.isEmpty()) {
-                switch (this.alg) {
-                    case "rr":
-                        this.roundRobin();
-                        break;
-                    case "fcfs":
-                        this.setQuantum(500000);
-                        this.fcfs();
-                        break;
-                    case "priority":
-                        this.priority();
-                        break;
-                }
+            switch (this.alg) {
+                case "rr":
+                    this.roundRobin();
+                    break;
+                case "fcfs":
+                    this.setQuantum(500000);
+                    this.fcfs();
+                    break;
+                case "priority":
+                    this.priority();
+                    break;
             }
         };
         Scheduler.prototype.setAlg = function (a) {
@@ -44,10 +41,30 @@ var TSOS;
         Scheduler.prototype.contextSwitch = function () {
             //no need to do anything if ready queue is isEmpty
             if (!_ProcessManager.ready.isEmpty()) {
+                //if current process isnt done running, add it to the back of the queue
+                if (_ProcessManager.running.State !== "terminated") {
+                    _ProcessManager.running.State = "ready";
+                    console.log("Enqueuing Process " + _ProcessManager.running.Pid);
+                    _ProcessManager.ready.enqueue(_ProcessManager.running);
+                }
+                //get next process and run it
+                _ProcessManager.running = _ProcessManager.ready.dequeue();
+                _CPU.setCPU(_ProcessManager.running);
+                console.log("Switching to process " + _ProcessManager.running.Pid);
+                if (_CPU.isExecuting) {
+                    this.schedule();
+                }
+            }
+            else {
+                this.schedule();
             }
         };
         Scheduler.prototype.roundRobin = function () {
-            this.rrCounter++;
+            if (this.rrCounter == this.quantum) {
+                console.log("Performing Context Switch");
+                this.rrCounter = 0;
+                //  _KernelInterruptQueue.enqueue(new Interrupt(CONTEXT_SWITCH, "time 4 a context switch"));
+            }
         };
         //to do for project 4
         Scheduler.prototype.fcfs = function () {

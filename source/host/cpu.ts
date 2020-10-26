@@ -238,7 +238,7 @@ module TSOS {
         public setCPU(process: PCB): void{
           console.log("Setting CPU to process " + process.Pid);
           this.PC = process.PC;
-          this.IR = process.IR;
+          this.IR = process.IR.toString();
           this.Acc = process.Acc;
           this.Xreg = process.Xreg;
           this.Yreg = process.Yreg;

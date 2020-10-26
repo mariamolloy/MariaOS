@@ -219,6 +219,17 @@ var TSOS;
             _ProcessManager.running.Zflag = this.Zflag;
             _ProcessManager.running.IR = this.IR;
         };
+        //method to set cpu to correct values during context switches
+        Cpu.prototype.setCPU = function (process) {
+            console.log("Setting CPU to process " + process.Pid);
+            this.PC = process.PC;
+            this.IR = process.IR.toString();
+            this.Acc = process.Acc;
+            this.Xreg = process.Xreg;
+            this.Yreg = process.Yreg;
+            this.Zflag = process.Zflag;
+            this.Pcb = process;
+        };
         return Cpu;
     }());
     TSOS.Cpu = Cpu;

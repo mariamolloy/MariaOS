@@ -3,10 +3,10 @@ var TSOS;
     var ProcessManager = /** @class */ (function () {
         function ProcessManager() {
             //counter to create processIDs starting with 0
-            //array of all of the pcbs
             this.idCounter = 0;
             this.resident = new TSOS.Queue();
             this.ready = new TSOS.Queue();
+            this.running = null;
         }
         //put all ur shell load code in here
         ProcessManager.prototype.load = function (input) {

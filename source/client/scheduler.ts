@@ -70,7 +70,7 @@ module TSOS {
       if (this.rrCounter == this.quantum){
         console.log("Performing Context Switch");
         this.rrCounter = 0;
-        _KernelInterruptQueue.enqueue(new Interrupt(CONTEXT_SWITCH, "time 4 a context switch"));
+      //  _KernelInterruptQueue.enqueue(new Interrupt(CONTEXT_SWITCH, "time 4 a context switch"));
       }
     }
 
