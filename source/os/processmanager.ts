@@ -11,6 +11,7 @@ module TSOS {
     public allPcbs: PCB[] = new Array(); //all processes
 
     public running: PCB;
+
     constructor(){
         this.resident = new Queue<PCB>();
         this.ready = new Queue<PCB>();
@@ -45,26 +46,27 @@ module TSOS {
       }
     }
 
-    //make this generic to run through ready queue
     //in run shell command make it go through resident queue to find proper element to add to ready enqueue
-    public run(process: PCB): void{
+    public run(): void{
 
       //to do: scheduling and priorities and all that fun stuff
-      this.running = process;
+      this.running = this.ready.dequeue();
       //take all pcb stuff and make it cpu stuff
-      _CPU.PC = process.PC;
-      _CPU.Acc = process.Acc;
-      _CPU.Xreg = process.Xreg;
-      _CPU.Yreg = process.Yreg;
-      _CPU.Zflag = process.Zflag;
-      _CPU.Pcb = process;
+      _CPU.PC = this.running.PC;
+      _CPU.Acc = this.running.Acc;
+      _CPU.Xreg = this.running.Xreg;
+      _CPU.Yreg = this.running.Yreg;
+      _CPU.Zflag = this.running.Zflag;
+      _CPU.Pcb = this.running;
 
-      process.State = "ready";
+      this.running.State = "running";
 
-      this.ready.enqueue(process);
       _CurrentPartition = process.Partition;
 
       _CPU.isExecuting = true; //starts program essentially
+
+      // Update host log
+      Control.hostLog("Running process " + this.running.Pid, "OS");
     }
 
     public terminate(process: PCB){
@@ -73,9 +75,27 @@ module TSOS {
       process.State = "terminated";
     }
 
+    //function to check if anything is in the ready queues
+    //--> to check if we
+    public checkReady(): void {
+      if(!this.ready.isEmpty()){
+        this.run();
+      }
+      else {
+        _CPU.isExecuting
+      }
+    }
+
     public trackStats(): void{
       //to do
       //increment turnaround time and wait time when appropriate
+    //  this.running.TurnAroundTime++;
+      for (var i = 0; i < this.ready.getSize(); i++){
+        //if ()
+        var currentPCB = this.ready.dequeue();
+        currentPCB.TurnAroundTime++;
+
+      }
     }
 
   }

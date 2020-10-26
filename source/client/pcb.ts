@@ -16,8 +16,8 @@ module TSOS {
     public Partition: number;
 
     //stats
-    public turnaroundTime: number;
-    public waitTime: number;
+    public TurnAroundTime: number;
+    public WaitTime: number;
 
     constructor(public id: number){
       this.Pid = id;
@@ -34,8 +34,9 @@ module TSOS {
       this.Xreg = 0;
       this.Yreg = 0;
       this.Zflag = 0;
-      this.turnaroundTime = 0;
-      this.waitTime = 0;
+
+      this.TurnAroundTime = 0;
+      this.WaitTime = 0;
 
       this.Partition = p;
 
@@ -44,9 +45,10 @@ module TSOS {
 
     }
 
+    //returns pid of current process control block
     public getPid(): number{
       return this.Pid;
     }
-    
+
   }
 }

@@ -17,12 +17,13 @@ var TSOS;
             this.Xreg = 0;
             this.Yreg = 0;
             this.Zflag = 0;
-            this.turnaroundTime = 0;
-            this.waitTime = 0;
+            this.TurnAroundTime = 0;
+            this.WaitTime = 0;
             this.Partition = p;
             this.Base = this.Partition * _PartitionSize;
             this.Limit = this.Base + _PartitionSize - 1;
         };
+        //returns pid of current process control block
         PCB.prototype.getPid = function () {
             return this.Pid;
         };

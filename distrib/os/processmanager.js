@@ -45,10 +45,12 @@ var TSOS;
             _CPU.Yreg = process.Yreg;
             _CPU.Zflag = process.Zflag;
             _CPU.Pcb = process;
-            process.State = "ready";
+            process.State = "running";
             this.ready.enqueue(process);
             _CurrentPartition = process.Partition;
             _CPU.isExecuting = true; //starts program essentially
+            // Update host log
+            TSOS.Control.hostLog("Running process " + this.running.Pid, "os");
         };
         ProcessManager.prototype.terminate = function (process) {
             this.ready.dequeue();
@@ -58,6 +60,12 @@ var TSOS;
         ProcessManager.prototype.trackStats = function () {
             //to do
             //increment turnaround time and wait time when appropriate
+            //  this.running.TurnAroundTime++;
+            for (var i = 0; i < this.ready.getSize(); i++) {
+                //if ()
+                var currentPCB = this.ready.dequeue();
+                currentPCB.TurnAroundTime++;
+            }
         };
         return ProcessManager;
     }());

@@ -52,11 +52,17 @@ table, th, td {
   border-collapse: collapse;
 }
 
+.panel {
+  background-color: rgba(0,0,0,0);
+  max-width: 100%;
+  /*background-color: rgba(0,0,0,0);*/
+}
 
 .panel-body {
   padding-top: 2px;
   padding: 10px;
   background-color: rgba(255,255,255,0.7);
+  max-width: 100%;
 
 }
 
@@ -68,7 +74,7 @@ table, th, td {
   resize: none;
   font-size: 10pt;
 
-  max-width:50%;
+max-width:50%;
   height:auto;
 
   font-family: "Courier New", Courier, monospace;
@@ -81,10 +87,7 @@ table, th, td {
   font-family: "Courier New", Courier, monospace;
 }
 
-.panel {
-  background-color: rgba(0,0,0,0);
-  /*background-color: rgba(0,0,0,0);*/
-}
+
 
 .panel-label {
   padding-top: 10px;

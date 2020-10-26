@@ -41,6 +41,7 @@ var TSOS;
             var opCode = _MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.PC, part));
             //set pcb state
             this.Pcb.State = "running";
+            //    _ProcessManager.running = this.Pcb;
             //execute
             _Kernel.krnTrace('CPU cycle: executing' + opCode);
             //var ir = opCode;
@@ -188,7 +189,8 @@ var TSOS;
                 return null;
               }
             } */
-        //method to update the pcb were on at the end of each cpu cycle so we can save it while context switching
+        //SHOULD WE CALL THIS AT THE START OF EACH CPU CYCLE OR AT THE END OF EACH OPCODE CALL??????
+        //method to update the pcb were on at the end of each cpu cycle so we can save it b4 context switching
         Cpu.prototype.updatePcb = function () {
             var currentPid = this.Pcb.getPid();
             for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
@@ -201,8 +203,7 @@ var TSOS;
                     currentPcb.Xreg = this.Xreg;
                     currentPcb.Yreg = this.Yreg;
                     currentPcb.Zflag = this.Zflag;
-                }
-                else {
+                    currentPcb.TurnAroundTime++;
                 }
             }
         };
