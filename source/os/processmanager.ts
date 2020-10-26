@@ -28,7 +28,6 @@ module TSOS {
         //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
         var processID = this.idCounter;
         var newPcb = new PCB(processID);
-        //this.allPcbs.push(newPcb);
 
 
         newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier

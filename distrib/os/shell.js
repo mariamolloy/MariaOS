@@ -430,17 +430,24 @@ var TSOS;
             //when a program finishes do we delete it immediately?
             //run all programs in ready queue
         };
-        //prints out pid and state of each process
+        //prints out pid and state of each running process
         Shell.prototype.shellPS = function (args) {
-            var all = _ProcessManager.allPcbs.length;
-            for (var i = 0; i < all; i++) {
-                var current = _ProcessManager.allPcbs[i];
-                _StdOut.putText("Process " + current.Pid + " is " + current.State);
-                _StdOut.putText('<br/>');
+            //check if we have any running processes
+            if ((_ProcessManager.ready.isEmpty()) && (_CPU.isExecuting == false)) {
+                _StdOut.putText("No processes are currently running.");
+            }
+            else {
+                _StdOut.putText("Active Processes:");
+                _StdOut.advanceLine();
+                _StdOut.putText("Process " + _ProcessManager.running.Pid + " is " + _ProcessManager.running.State);
+                for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
+                    var current = _ProcessManager.ready.look(i);
+                    _StdOut.advanceLine();
+                    _StdOut.putText("Process " + current.Pid + " is " + current.State);
+                }
             }
         };
-        //to do: check resident queue not allPcbs
-        //to do: else messahge that the rp
+        //shell command to kill a specified process (can be running waiting or ready)
         Shell.prototype.shellKill = function (args) {
             var foundKill = false;
             if (args.length > 0) {
@@ -478,8 +485,8 @@ var TSOS;
                 if (foundKill) {
                     _StdOut.putText("Process " + input + " was terminated.");
                 }
-                else {
-                    _StdOut.putText("Error process could not be found");
+                else { //no process running, in resident queue, or in ready queue was found w that pid
+                    _StdOut.putText("Error process could not be found to be killed");
                 }
             }
             else { //no input
@@ -487,13 +494,23 @@ var TSOS;
             }
         };
         //kills all loaded / running processes
-        //to do: fix so it kills everything in resident queue not everything in allPcbs
         Shell.prototype.shellKillAll = function (args) {
-            _CPU.isExecuting = false;
-            var all = _ProcessManager.allPcbs.length;
-            for (var i = 0; i < all; i++) {
-                var current = _ProcessManager.allPcbs[i];
-                _ProcessManager.terminate(current);
+            _StdOut.putText("there r " + _ProcessManager.resident.getSize());
+            //kill everything in resident queue
+            var amt = _ProcessManager.resident.getSize();
+            for (var i = 0; i < amt; i++) {
+                var curr = _ProcessManager.resident.dequeue();
+                _ProcessManager.terminate(curr);
+            }
+            //kill everything in ready queue
+            for (var j = 0; j < _ProcessManager.ready.getSize(); j++) {
+                var curr = _ProcessManager.ready.dequeue();
+                _ProcessManager.terminate(curr);
+            }
+            //if there is a process running... KILL IT!
+            if (_CPU.isExecuting) {
+                _ProcessManager.terminate(_ProcessManager.running);
+                _CPU.isExecuting = false;
             }
             _StdOut.putText("All processes were terminated.");
         };

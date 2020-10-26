@@ -19,7 +19,6 @@ var TSOS;
                 //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
                 var processID = this.idCounter;
                 var newPcb = new TSOS.PCB(processID);
-                //this.allPcbs.push(newPcb);
                 newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
                 //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
                 //add initalized PCB to resident queue now that it is loaded

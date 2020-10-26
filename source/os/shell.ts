@@ -534,18 +534,24 @@ module TSOS {
         //run all programs in ready queue
       }
 
-      //prints out pid and state of each process
+      //prints out pid and state of each running process
       public shellPS(args){
-        var all = _ProcessManager.allPcbs.length;
-        for (var i = 0; i < all; i++){
-          var current = _ProcessManager.allPcbs[i];
-          _StdOut.putText("Process " + current.Pid + " is " + current.State);
-          _StdOut.putText('<br/>');
+        //check if we have any running processes
+        if ((_ProcessManager.ready.isEmpty()) && (_CPU.isExecuting == false)){
+          _StdOut.putText("No processes are currently running.");
+        } else {
+          _StdOut.putText("Active Processes:");
+          _StdOut.advanceLine();
+          _StdOut.putText("Process " + _ProcessManager.running.Pid + " is " + _ProcessManager.running.State);
+          for (var i = 0; i < _ProcessManager.ready.getSize(); i++){
+            var current = _ProcessManager.ready.look(i);
+            _StdOut.advanceLine();
+            _StdOut.putText("Process " + current.Pid + " is " + current.State);
+          }
         }
       }
 
-      //to do: check resident queue not allPcbs
-      //to do: else messahge that the rp
+      //shell command to kill a specified process (can be running waiting or ready)
       public shellKill(args: string){
         var foundKill = false;
         if (args.length > 0){
@@ -556,8 +562,10 @@ module TSOS {
             _CPU.isExecuting = false;
             foundKill = true;
           } else {
+            var resSize = _ProcessManager.resident.getSize();
+            var readSize = _ProcessManager.ready.getSize();
             //check if process is in resident queue
-            for (var i = 0; i < _ProcessManager.resident.getSize(); i++){
+            for (var i = 0; i < resSize; i++){
               var current = _ProcessManager.resident.dequeue();
               if (current.Pid == input){
                 _ProcessManager.terminate(current);
@@ -567,7 +575,7 @@ module TSOS {
               }
             }
             //check if process is in ready queue
-            for (var j = 0; j < _ProcessManager.ready.getSize(); j++){
+            for (var j = 0; j < readSize; j++){
               var current = _ProcessManager.ready.dequeue();
               if (current.Pid == input){
                 _ProcessManager.terminate(current);
@@ -579,8 +587,8 @@ module TSOS {
           }
           if (foundKill){
             _StdOut.putText("Process " + input + " was terminated.");
-          } else {
-            _StdOut.putText("Error process could not be found");
+          } else { //no process running, in resident queue, or in ready queue was found w that pid
+            _StdOut.putText("Error process could not be found to be killed");
           }
         } else { //no input
           _StdOut.putText("Error please specify which process you want to kill");
@@ -588,13 +596,23 @@ module TSOS {
       }
 
       //kills all loaded / running processes
-      //to do: fix so it kills everything in resident queue not everything in allPcbs
       public shellKillAll(args){
-        _CPU.isExecuting = false;
-        var all = _ProcessManager.allPcbs.length;
-        for (var i = 0; i < all; i++){
-          var current = _ProcessManager.allPcbs[i];
-          _ProcessManager.terminate(current);
+        var resSize = _ProcessManager.resident.getSize();
+        var readSize = _ProcessManager.ready.getSize();
+        //kill everything in resident queue
+        for (var i = 0; i < resSize; i++){
+          var curr = _ProcessManager.resident.dequeue();
+          _ProcessManager.terminate(curr);
+        }
+        //kill everything in ready queue
+        for (var j = 0; j < readSize; j++){
+          var curr = _ProcessManager.ready.dequeue();
+          _ProcessManager.terminate(curr);
+        }
+        //if there is a process running... KILL IT!
+        if (_CPU.isExecuting){
+          _ProcessManager.terminate(_ProcessManager.running);
+          _CPU.isExecuting = false;
         }
         _StdOut.putText("All processes were terminated.");
       }
