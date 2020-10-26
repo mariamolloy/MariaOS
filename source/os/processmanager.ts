@@ -34,7 +34,7 @@ module TSOS {
         newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
       //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
 
-      //add to resident queue now that it is loaded
+      //add initalized PCB to resident queue now that it is loaded
       this.resident.enqueue(newPcb);
       this.idCounter++; //increment pcb id counter
 
@@ -85,6 +85,9 @@ module TSOS {
       //reset cursor to new line
       _StdOut.advanceLine();
       _OsShell.putPrompt();
+
+      //clear out prev running prog
+      this.running = null;
     }
 
     //function to check if anything is in the ready queues
