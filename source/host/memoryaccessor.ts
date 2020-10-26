@@ -10,17 +10,6 @@ module TSOS {
       this.par = 0;
     }
 
-    //request checks what block to write mem in
-    //to do for proj 3
-    public requestMem(): void{
-
-    }
-
-    //to do for proj3
-    public releaseMem(): boolean{
-      return true;
-    }
-
 /**
     //writes byte to memory
     write(addy: number, bite: string, part: number): void{
