@@ -42,6 +42,9 @@ var TSOS;
             return true;
         };
         Scheduler.prototype.contextSwitch = function () {
+            //no need to do anything if ready queue is isEmpty
+            if (!_ProcessManager.ready.isEmpty()) {
+            }
         };
         Scheduler.prototype.roundRobin = function () {
             this.rrCounter++;

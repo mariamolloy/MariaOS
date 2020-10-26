@@ -459,8 +459,10 @@ var TSOS;
                     foundKill = true;
                 }
                 else {
+                    var resSize = _ProcessManager.resident.getSize();
+                    var readSize = _ProcessManager.ready.getSize();
                     //check if process is in resident queue
-                    for (var i = 0; i < _ProcessManager.resident.getSize(); i++) {
+                    for (var i = 0; i < resSize; i++) {
                         var current = _ProcessManager.resident.dequeue();
                         if (current.Pid == input) {
                             _ProcessManager.terminate(current);
@@ -471,7 +473,7 @@ var TSOS;
                         }
                     }
                     //check if process is in ready queue
-                    for (var j = 0; j < _ProcessManager.ready.getSize(); j++) {
+                    for (var j = 0; j < readSize; j++) {
                         var current = _ProcessManager.ready.dequeue();
                         if (current.Pid == input) {
                             _ProcessManager.terminate(current);
@@ -495,15 +497,15 @@ var TSOS;
         };
         //kills all loaded / running processes
         Shell.prototype.shellKillAll = function (args) {
-            _StdOut.putText("there r " + _ProcessManager.resident.getSize());
+            var resSize = _ProcessManager.resident.getSize();
+            var readSize = _ProcessManager.ready.getSize();
             //kill everything in resident queue
-            var amt = _ProcessManager.resident.getSize();
-            for (var i = 0; i < amt; i++) {
+            for (var i = 0; i < resSize; i++) {
                 var curr = _ProcessManager.resident.dequeue();
                 _ProcessManager.terminate(curr);
             }
             //kill everything in ready queue
-            for (var j = 0; j < _ProcessManager.ready.getSize(); j++) {
+            for (var j = 0; j < readSize; j++) {
                 var curr = _ProcessManager.ready.dequeue();
                 _ProcessManager.terminate(curr);
             }

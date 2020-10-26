@@ -92,18 +92,11 @@ module TSOS {
                 if (_SingleStep){
                   if (_NextStep){
                     _CPU.cycle(); //call cpu cycle
-                    TSOS.Control.hostUpdateCPU(); //update cpu display
-                    TSOS.Control.hostUpdateReadyQueue(); //update ready queue display
-                    _ProcessManager.trackStats(); //increment wait time / turn around time as needed
-
                     _NextStep = false;
                   }
                   this.krnTrace("Idle");
                 } else {
                   _CPU.cycle(); //call cpu cycle
-                  TSOS.Control.hostUpdateCPU(); //update cpu display
-                  TSOS.Control.hostUpdateReadyQueue(); //update ready queue display
-                  _ProcessManager.trackStats(); //increment wait time / turn around time as needed
               }
             } else {       // If there are no interrupts and there is nothing being executed then just be idle.
                 _NextStep = false;
@@ -146,7 +139,7 @@ module TSOS {
                     _StdIn.handleInput();
                     break;
                 case CONTEXT_SWITCH:
-                  _Scheduler.contextSwitch();
+                  _Scheduler.contextSwitch(); //call scheduler context switch
                   break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
