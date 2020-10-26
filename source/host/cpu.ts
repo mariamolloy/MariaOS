@@ -115,7 +115,7 @@ module TSOS {
               case "00":  //Break (which is really a system call)
                 //this.updatePcb(); //save registers in pcb
                 this.isExecuting = false;
-                _ProcessManager.terminate(_ProcessManager.running);
+                _ProcessManager.terminate();
                 break;
               case "EC": //Compare a byte in memory to the X reg, Sets the Z (zero) flag if equal
                 var bite = parseInt(_MemoryAccessor.read(_MemoryAccessor.addressTranslator(this.lilEndianTranslator(), part)), 16);
@@ -173,6 +173,7 @@ module TSOS {
                 this.updatePcb(); //save registers in pcb
                 break;
               default: //terminates single process
+                _ProcessManager.terminate();
                 this.isExecuting = false;
                 _StdOut.putText("sorry ur op code isnt valid :()");
             }

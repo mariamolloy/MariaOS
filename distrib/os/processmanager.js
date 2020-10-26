@@ -51,10 +51,20 @@ var TSOS;
             // Update host log
             TSOS.Control.hostLog("Running process " + this.running.Pid, "OS");
         };
-        ProcessManager.prototype.terminate = function (process) {
-            this.ready.dequeue();
-            _MemoryManager.clearPart(process.Partition);
-            process.State = "terminated";
+        ProcessManager.prototype.terminate = function () {
+            //this.ready.dequeue();
+            _MemoryManager.clearPart(this.running.Partition);
+            this.running.State = "terminated";
+            TSOS.Control.hostLog("Exiting process" + this.running.Pid, "OS");
+            _StdOut.advanceLine();
+            //print stats
+            _StdOut.putText("Process ID: " + this.running.Pid);
+            _StdOut.advanceLine();
+            _StdOut.putText("Turnaround time: " + this.running.TurnAroundTime + " cycles, wait time: "
+                + this.running.WaitTime + " cycles.");
+            //reset cursor to new line
+            _StdOut.advanceLine();
+            _OsShell.putPrompt();
         };
         //function to check if anything is in the ready queues
         //--> to check if we
@@ -68,12 +78,14 @@ var TSOS;
         };
         ProcessManager.prototype.trackStats = function () {
             //to do
-            //increment turnaround time and wait time when appropriate
-            //  this.running.TurnAroundTime++;
+            //increment turnaround time of running prog
+            this.running.TurnAroundTime++;
             for (var i = 0; i < this.ready.getSize(); i++) {
-                //if ()
+                //increment turnaround time and wait time of everything in ready queue
                 var currentPCB = this.ready.dequeue();
                 currentPCB.TurnAroundTime++;
+                currentPCB.WaitTime++;
+                this.ready.enqueue(currentPCB);
             }
         };
         return ProcessManager;

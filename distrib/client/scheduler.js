@@ -6,6 +6,11 @@ var TSOS;
             this.rrCounter = 0;
             this.alg = "ROUND_ROBIN";
         }
+        //the eyes of the scheduler are always watching and waiting
+        Scheduler.prototype.schedulerEyes = function () {
+            if (!_ProcessManager.ready.isEmpty()) {
+            }
+        };
         Scheduler.prototype.setAlg = function (a) {
             switch (a) {
                 case "ROUND_ROBIN":
