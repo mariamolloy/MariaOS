@@ -76,19 +76,19 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellPS, "ps", "- Displays the PID and state of all processes");
             this.commandList[this.commandList.length] = sc;
             //kills specified process
-            sc = new TSOS.ShellCommand(this.shellKill, "ps", "<pid> - kills corresponding process");
+            sc = new TSOS.ShellCommand(this.shellKill, "kill", "<pid> - Kills corresponding process");
             this.commandList[this.commandList.length] = sc;
             //kills all processes
-            sc = new TSOS.ShellCommand(this.shellKillAll, "killall", "Kills all processes");
+            sc = new TSOS.ShellCommand(this.shellKillAll, "killall", " – Kills all processes");
             this.commandList[this.commandList.length] = sc;
             //sets quantum
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<quantum> - Sets round robin quantum to specified integer");
             this.commandList[this.commandList.length] = sc;
             //sets scheduler algorithm
-            sc = new TSOS.ShellCommand(this.shellSetScheduler, "setscheduler", "<algorithm> - Sets the scheduler algorithm to round robin or first come first serve (enter rr or fcfs)");
+            sc = new TSOS.ShellCommand(this.shellSetScheduler, "setscheduler", "<algorithm> - Sets the scheduler algorithm: rr, fcfs, or priority");
             this.commandList[this.commandList.length] = sc;
             //prints current scheduler algorithm
-            sc = new TSOS.ShellCommand(this.shellGetScheduler, "getscheduler", "Returns current scheduler algorithm");
+            sc = new TSOS.ShellCommand(this.shellGetScheduler, "getscheduler", "– Returns current scheduler algorithm");
             this.commandList[this.commandList.length] = sc;
             //to do:
             //to do: run <pid> program in memory
@@ -442,20 +442,47 @@ var TSOS;
         //to do: check resident queue not allPcbs
         //to do: else messahge that the rp
         Shell.prototype.shellKill = function (args) {
+            var foundKill = false;
             if (args.length > 0) {
                 var input = parseInt(args, 10);
-                for (var i = 0; i < _ProcessManager.allPcbs.length; i++) {
-                    var current = _ProcessManager.allPcbs[i];
-                    if (current.Pid == input) {
-                        _ProcessManager.terminate(current);
-                        _StdOut.putText("Process " + current.Pid + " was terminated.");
+                //check if its the running process
+                if ((_CPU.isExecuting) && (input == _ProcessManager.running.Pid)) {
+                    _ProcessManager.terminate(_ProcessManager.running);
+                    _CPU.isExecuting = false;
+                    foundKill = true;
+                }
+                else {
+                    //check if process is in resident queue
+                    for (var i = 0; i < _ProcessManager.resident.getSize(); i++) {
+                        var current = _ProcessManager.resident.dequeue();
+                        if (current.Pid == input) {
+                            _ProcessManager.terminate(current);
+                            foundKill = true;
+                        }
+                        else {
+                            _ProcessManager.resident.enqueue(current);
+                        }
                     }
-                    else {
-                        _StdOut.putText("Process " + current.Pid + " could not be terminated.");
+                    //check if process is in ready queue
+                    for (var j = 0; j < _ProcessManager.ready.getSize(); j++) {
+                        var current = _ProcessManager.ready.dequeue();
+                        if (current.Pid == input) {
+                            _ProcessManager.terminate(current);
+                            foundKill = true;
+                        }
+                        else {
+                            _ProcessManager.ready.enqueue(current);
+                        }
                     }
                 }
+                if (foundKill) {
+                    _StdOut.putText("Process " + input + " was terminated.");
+                }
+                else {
+                    _StdOut.putText("Error process could not be found");
+                }
             }
-            else {
+            else { //no input
                 _StdOut.putText("Error please specify which process you want to kill");
             }
         };
@@ -486,16 +513,18 @@ var TSOS;
         };
         Shell.prototype.shellSetScheduler = function (args) {
             if (args.length > 0) {
-                var input = args[0];
-                switch (input) {
-                    case "ROUND_ROBIN":
-                        break;
-                    case "FCFS":
-                        break;
-                    case "PRIORITY":
-                        break;
-                    default:
-                        break;
+                var input = args[0].toLowerCase();
+                if (_Scheduler.setAlg(input)) {
+                    _StdOut.putText("The scheduler algorithm has been set to " + input);
+                }
+                else {
+                    _StdOut.putText("Please enter a valid scheduler algorithm:");
+                    _StdOut.advanceLine();
+                    _StdOut.putText("rr: Round Robin");
+                    _StdOut.advanceLine();
+                    _StdOut.putText("fcfs: First Come First Serve");
+                    _StdOut.advanceLine();
+                    _StdOut.putText("priority: Priority");
                 }
             }
         };

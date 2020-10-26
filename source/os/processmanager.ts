@@ -71,17 +71,17 @@ module TSOS {
       Control.hostLog("Running process " + this.running.Pid, "OS");
     }
 
-    public terminate(){
+    public terminate(process: PCB){
       //this.ready.dequeue();
-      _MemoryManager.clearPart(this.running.Partition);
-      this.running.State = "terminated";
-      Control.hostLog("Exiting process" + this.running.Pid, "OS");
+      _MemoryManager.clearPart(process.Partition);
+      process.State = "terminated";
+      Control.hostLog("Exiting process" + process.Pid, "OS");
       _StdOut.advanceLine();
       //print stats
-      _StdOut.putText("Process ID: " + this.running.Pid);
+      _StdOut.putText("Process ID: " + process.Pid);
       _StdOut.advanceLine();
-      _StdOut.putText("Turnaround time: " + this.running.TurnAroundTime + " cycles, wait time: "
-          + this.running.WaitTime + " cycles.");
+      _StdOut.putText("Turnaround time: " + process.TurnAroundTime + " cycles, wait time: "
+          + process.WaitTime + " cycles.");
       //reset cursor to new line
       _StdOut.advanceLine();
       _OsShell.putPrompt();

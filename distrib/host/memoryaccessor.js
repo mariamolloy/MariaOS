@@ -6,14 +6,6 @@ var TSOS;
             this.limit = _PartitionSize;
             this.par = 0;
         }
-        //request checks what block to write mem in
-        //to do for proj 3
-        MemoryAccessor.prototype.requestMem = function () {
-        };
-        //to do for proj3
-        MemoryAccessor.prototype.releaseMem = function () {
-            return true;
-        };
         /**
             //writes byte to memory
             write(addy: number, bite: string, part: number): void{

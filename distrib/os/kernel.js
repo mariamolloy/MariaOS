@@ -129,14 +129,15 @@ var TSOS;
                     _krnKeyboardDriver.isr(params); // Kernel mode device driver
                     _StdIn.handleInput();
                     break;
+                case CONTEXT_SWITCH:
+                    _Scheduler.contextSwitch();
+                    break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }
         };
         Kernel.prototype.krnTimerISR = function () {
-            // The built-in TIMER (not clock) Interrupt Service Routine (as opposed to an ISR coming from a device driver). {
-            // Check multiprogramming parameters and enforce quanta here. Call the scheduler / context switch here if necessary.
-            // Or do it elsewhere in the Kernel. We don't really need this.
+            _Scheduler.schedule();
         };
         //
         // System Calls... that generate software interrupts via tha Application Programming Interface library routines.

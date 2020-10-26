@@ -22,7 +22,7 @@ var TSOS;
                 //this.allPcbs.push(newPcb);
                 newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
                 //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
-                //add to resident queue now that it is loaded
+                //add initalized PCB to resident queue now that it is loaded
                 this.resident.enqueue(newPcb);
                 this.idCounter++; //increment pcb id counter
                 //go through the array and load into memory at location $0000
@@ -51,20 +51,22 @@ var TSOS;
             // Update host log
             TSOS.Control.hostLog("Running process " + this.running.Pid, "OS");
         };
-        ProcessManager.prototype.terminate = function () {
+        ProcessManager.prototype.terminate = function (process) {
             //this.ready.dequeue();
-            _MemoryManager.clearPart(this.running.Partition);
-            this.running.State = "terminated";
-            TSOS.Control.hostLog("Exiting process" + this.running.Pid, "OS");
+            _MemoryManager.clearPart(process.Partition);
+            process.State = "terminated";
+            TSOS.Control.hostLog("Exiting process" + process.Pid, "OS");
             _StdOut.advanceLine();
             //print stats
-            _StdOut.putText("Process ID: " + this.running.Pid);
+            _StdOut.putText("Process ID: " + process.Pid);
             _StdOut.advanceLine();
-            _StdOut.putText("Turnaround time: " + this.running.TurnAroundTime + " cycles, wait time: "
-                + this.running.WaitTime + " cycles.");
+            _StdOut.putText("Turnaround time: " + process.TurnAroundTime + " cycles, wait time: "
+                + process.WaitTime + " cycles.");
             //reset cursor to new line
             _StdOut.advanceLine();
             _OsShell.putPrompt();
+            //clear out prev running prog
+            this.running = null;
         };
         //function to check if anything is in the ready queues
         //--> to check if we

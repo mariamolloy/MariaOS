@@ -137,14 +137,14 @@ module TSOS {
 
             //kills specified process
             sc = new ShellCommand(this.shellKill,
-                                  "ps",
-                                  "<pid> - kills corresponding process");
+                                  "kill",
+                                  "<pid> - Kills corresponding process");
             this.commandList[this.commandList.length] = sc;
 
             //kills all processes
             sc = new ShellCommand(this.shellKillAll,
                                   "killall",
-                                  "Kills all processes");
+                                  " – Kills all processes");
             this.commandList[this.commandList.length] = sc;
 
             //sets quantum
@@ -156,13 +156,13 @@ module TSOS {
             //sets scheduler algorithm
             sc = new ShellCommand(this.shellSetScheduler,
                                   "setscheduler",
-                                  "<algorithm> - Sets the scheduler algorithm to round robin or first come first serve (enter rr or fcfs)");
+                                  "<algorithm> - Sets the scheduler algorithm: rr, fcfs, or priority");
             this.commandList[this.commandList.length] = sc;
 
             //prints current scheduler algorithm
             sc = new ShellCommand(this.shellGetScheduler,
                                   "getscheduler",
-                                  "Returns current scheduler algorithm");
+                                  "– Returns current scheduler algorithm");
             this.commandList[this.commandList.length] = sc;
 
 
@@ -547,18 +547,42 @@ module TSOS {
       //to do: check resident queue not allPcbs
       //to do: else messahge that the rp
       public shellKill(args: string){
+        var foundKill = false;
         if (args.length > 0){
           var input = parseInt(args, 10);
-          for (var i = 0; i < _ProcessManager.allPcbs.length; i++){
-            var current = _ProcessManager.allPcbs[i];
-            if (current.Pid == input){
-              _ProcessManager.terminate(current);
-              _StdOut.putText("Process " + current.Pid + " was terminated.")
-            } else {
-              _StdOut.putText("Process " + current.Pid + " could not be terminated.")
+          //check if its the running process
+          if ((_CPU.isExecuting) && (input == _ProcessManager.running.Pid)){
+            _ProcessManager.terminate(_ProcessManager.running);
+            _CPU.isExecuting = false;
+            foundKill = true;
+          } else {
+            //check if process is in resident queue
+            for (var i = 0; i < _ProcessManager.resident.getSize(); i++){
+              var current = _ProcessManager.resident.dequeue();
+              if (current.Pid == input){
+                _ProcessManager.terminate(current);
+                foundKill = true;
+              } else {
+                _ProcessManager.resident.enqueue(current);
+              }
+            }
+            //check if process is in ready queue
+            for (var j = 0; j < _ProcessManager.ready.getSize(); j++){
+              var current = _ProcessManager.ready.dequeue();
+              if (current.Pid == input){
+                _ProcessManager.terminate(current);
+                foundKill = true;
+              } else {
+                _ProcessManager.ready.enqueue(current);
+              }
             }
           }
-        } else {
+          if (foundKill){
+            _StdOut.putText("Process " + input + " was terminated.");
+          } else {
+            _StdOut.putText("Error process could not be found");
+          }
+        } else { //no input
           _StdOut.putText("Error please specify which process you want to kill");
         }
       }
@@ -592,16 +616,17 @@ module TSOS {
 
       public shellSetScheduler(args: string){
         if (args.length > 0){
-          var input = args[0];
-          switch (input) {
-            case "ROUND_ROBIN":
-              break;
-            case "FCFS":
-              break;
-            case "PRIORITY":
-              break;
-            default:
-              break;
+          var input = args[0].toLowerCase();
+          if(_Scheduler.setAlg(input)){
+            _StdOut.putText("The scheduler algorithm has been set to " + input);
+          } else {
+            _StdOut.putText("Please enter a valid scheduler algorithm:");
+            _StdOut.advanceLine();
+            _StdOut.putText("rr: Round Robin");
+            _StdOut.advanceLine();
+            _StdOut.putText("fcfs: First Come First Serve");
+            _StdOut.advanceLine();
+            _StdOut.putText("priority: Priority");
           }
         }
       }
