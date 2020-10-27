@@ -64,8 +64,9 @@ module TSOS {
 
       _CPU.isExecuting = true; //starts program essentially
 
-      // Update host log
+      // Update host log and console log
       Control.hostLog("Running process " + this.running.Pid, "OS");
+      console.log("running process " + this.running.Pid);
     }
 
     public terminate(process: PCB){
@@ -87,6 +88,7 @@ module TSOS {
       this.running = null;
     }
 
+    //  WE MAY NOT EVEN NEED THIS????
     //function to check if anything is in the ready queues
     //--> to check if we
     public checkReady(): void {

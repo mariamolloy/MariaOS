@@ -46,8 +46,9 @@ var TSOS;
             this.running.State = "running";
             _CurrentPartition = this.running.Partition;
             _CPU.isExecuting = true; //starts program essentially
-            // Update host log
+            // Update host log and console log
             TSOS.Control.hostLog("Running process " + this.running.Pid, "OS");
+            console.log("running process " + this.running.Pid);
         };
         ProcessManager.prototype.terminate = function (process) {
             //this.ready.dequeue();
@@ -66,6 +67,7 @@ var TSOS;
             //clear out prev running prog
             this.running = null;
         };
+        //  WE MAY NOT EVEN NEED THIS????
         //function to check if anything is in the ready queues
         //--> to check if we
         ProcessManager.prototype.checkReady = function () {

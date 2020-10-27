@@ -79,13 +79,13 @@ var TSOS;
             else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
                 if (_SingleStep) {
                     if (_NextStep) {
-                        _CPU.cycle(); //call cpu cycle
+                        this.krnTimerISR(); //increment wait time / turn around time as needed
                         _NextStep = false;
                     }
                     this.krnTrace("Idle");
                 }
                 else {
-                    _CPU.cycle(); //call cpu cycle
+                    this.krnTimerISR();
                 }
             }
             else { // If there are no interrupts and there is nothing being executed then just be idle.
@@ -125,6 +125,7 @@ var TSOS;
                     break;
                 case CONTEXT_SWITCH:
                     _Scheduler.contextSwitch(); //call scheduler context switch
+                    TSOS.Control.hostUpdateReadyQueue(); //update ready queue display
                     break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");

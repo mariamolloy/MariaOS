@@ -50,7 +50,7 @@ var _PartitionSize: number = 256;
 var _NumOfPartitions: number = 3; //we only have 3 sections in our memory
 var _CurrentPartition: number = 0; //start at 0x000 in memory
 var _TotalMemorySize: number = 768; //default memory size
-var _memSize: number = 768;
+//var _memSize: number = 768;
 
 
 //Hardware (OS)

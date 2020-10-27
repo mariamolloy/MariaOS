@@ -621,8 +621,12 @@ module TSOS {
       public shellQuantum(args: string){
         if (args.length > 0){
           var inputQ = parseInt(args, 10);
-          _Scheduler.setQuantum(inputQ);
-          _StdOut.putText("The quantum is now " + _Scheduler.quantum);
+          if (inputQ > 0){
+            _Scheduler.setQuantum(inputQ);
+            _StdOut.putText("The quantum is now " + _Scheduler.quantum);
+          } else {
+            _StdOut.putText("Invalid input. Please enter a natural number.");
+          }
         } else {
           _StdOut.putText("Please specify what you want to set the quantum to");
         }

@@ -46,9 +46,6 @@ var TSOS;
             _Kernel.krnTrace('CPU cycle: executing' + opCode);
             //var ir = opCode;
             this.IR = opCode;
-            TSOS.Control.hostUpdateCPU(); //update cpu display
-            TSOS.Control.hostUpdateReadyQueue(); //update ready queue display
-            _ProcessManager.trackStats(); //increment wait time / turn around time as needed
             //update pcb
             //_ProcessManager.allPcbs[_ProcessManager.idCounter-1].Pid = ir;
             switch (opCode) {
@@ -149,7 +146,6 @@ var TSOS;
                     //check if x reg is 1 or 2
                     //print y reg or print string at address in y reg, respectively
                     if (this.Xreg == 1) {
-                        console.log("Printing Y reg int: " + this.Yreg);
                         _StdOut.putText("" + this.Yreg);
                     }
                     else if (this.Xreg == 2) {
@@ -162,7 +158,6 @@ var TSOS;
                             print += letter;
                             addy++;
                         }
-                        console.log("Printing string: " + print);
                         _StdOut.putText(print);
                     }
                     this.PC++;

@@ -57,10 +57,6 @@ module TSOS {
             //var ir = opCode;
             this.IR = opCode;
 
-            Control.hostUpdateCPU(); //update cpu display
-            Control.hostUpdateReadyQueue(); //update ready queue display
-            _ProcessManager.trackStats(); //increment wait time / turn around time as needed
-
             //update pcb
 
             //_ProcessManager.allPcbs[_ProcessManager.idCounter-1].Pid = ir;
@@ -160,7 +156,6 @@ module TSOS {
                 //check if x reg is 1 or 2
                 //print y reg or print string at address in y reg, respectively
                 if (this.Xreg == 1){
-                   console.log("Printing Y reg int: " + this.Yreg);
                   _StdOut.putText("" + this.Yreg);
                 } else if (this.Xreg == 2){
                   var addy = this.Yreg;
@@ -172,7 +167,6 @@ module TSOS {
                      print += letter;
                      addy++;
                   }
-                   console.log("Printing string: " + print);
                   _StdOut.putText(print);
                 }
                 this.PC++;
