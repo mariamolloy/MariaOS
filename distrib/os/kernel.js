@@ -77,6 +77,8 @@ var TSOS;
                 this.krnInterruptHandler(interrupt.irq, interrupt.params);
             }
             else if (_CPU.isExecuting) { // If there are no interrupts then run one CPU cycle if there is anything being processed.
+                //i broke single step
+                //TO DO::::: FIX SINGLE STEP
                 if (_SingleStep) {
                     if (_NextStep) {
                         this.krnTimerISR(); //increment wait time / turn around time as needed
@@ -85,7 +87,7 @@ var TSOS;
                     this.krnTrace("Idle");
                 }
                 else {
-                    this.krnTimerISR();
+                    this.krnTimerISR(); //scheduling ... always
                 }
             }
             else { // If there are no interrupts and there is nothing being executed then just be idle.
@@ -132,7 +134,7 @@ var TSOS;
             }
         };
         Kernel.prototype.krnTimerISR = function () {
-            _Scheduler.schedule();
+            _Scheduler.schedule(); //always scheduling it never stops
         };
         //
         // System Calls... that generate software interrupts via tha Application Programming Interface library routines.

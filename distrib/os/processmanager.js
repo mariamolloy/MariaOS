@@ -32,7 +32,7 @@ var TSOS;
                 _StdOut.putText("Memory full!!¡¡!! Please delete a loaded program before loading in a new one.");
             }
         };
-        //in run shell command make it go through resident queue to find proper element to add to ready enqueue
+        //runs a new process from reaedy queue
         ProcessManager.prototype.run = function () {
             //to do: scheduling and priorities and all that fun stuff
             this.running = this.ready.dequeue();
@@ -49,6 +49,7 @@ var TSOS;
             TSOS.Control.hostLog("Running process " + this.running.Pid, "OS");
             console.log("running process " + this.running.Pid);
         };
+        //exits a running process
         ProcessManager.prototype.terminate = function (process) {
             //this.ready.dequeue();
             console.log("process " + process.Pid + " is over");
@@ -65,10 +66,12 @@ var TSOS;
             _StdOut.advanceLine();
             _OsShell.putPrompt();
             this.running = null;
+            //check if we have to turn off cpu or not
             if (this.ready.isEmpty()) {
                 _CPU.isExecuting = false;
             }
         };
+        //kills a process (only called w shell command)
         ProcessManager.prototype.kill = function (process) {
             console.log("killing process " + process.Pid);
             _MemoryManager.clearPart(process.Partition);
@@ -83,24 +86,22 @@ var TSOS;
             //reset cursor to new line
             _StdOut.advanceLine();
             _OsShell.putPrompt();
+            //check if we need to set running to null
             if (process.Pid == this.running.Pid) {
                 this.running = null;
             }
         };
-        //  WE MAY NOT EVEN NEED THIS????
-        //function to check if anything is in the ready queues
-        //--> to check if we
-        ProcessManager.prototype.checkReady = function () {
-            if (!this.ready.isEmpty()) {
-                this.run();
-            }
-            else {
-                //  _CPU.isExecuting
-            }
-        };
+        /*
+        public checkReady(): void {
+          if(!this.ready.isEmpty()){
+            this.run();
+          }
+          else {
+          //  _CPU.isExecuting
+          }
+        }*/
+        //tracks wait time and turn around time of running processes
         ProcessManager.prototype.trackStats = function () {
-            //to do
-            //increment turnaround time of running prog
             this.running.TurnAroundTime++;
             for (var i = 0; i < this.ready.getSize(); i++) {
                 //increment turnaround time and wait time of everything in ready queue

@@ -423,8 +423,9 @@ var TSOS;
         };
         //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
         Shell.prototype.shellClearMem = function (args) {
-            _MemoryManager.clearAllMemory();
-            _StdOut.putText("Memory is cleared");
+            if (_MemoryManager.clearAllMemory()) {
+                _StdOut.putText("Memory is cleared");
+            }
         };
         //runs all programs loaded in
         Shell.prototype.shellRunAll = function (args) {
@@ -544,9 +545,11 @@ var TSOS;
                 _StdOut.putText("Please specify what you want to set the quantum to");
             }
         };
+        //prints current scheduling algorithm
         Shell.prototype.shellGetScheduler = function () {
             _StdOut.putText("The scheduler algorithm is currently set to " + _Scheduler.alg);
         };
+        //sets the scheduling algorithm to provided input
         Shell.prototype.shellSetScheduler = function (args) {
             if (args.length > 0) {
                 var input = args[0].toLowerCase();

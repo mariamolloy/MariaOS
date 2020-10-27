@@ -525,8 +525,9 @@ module TSOS {
 
       //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
       public shellClearMem(args){
-        _MemoryManager.clearAllMemory();
-        _StdOut.putText("Memory is cleared");
+        if (_MemoryManager.clearAllMemory()){
+          _StdOut.putText("Memory is cleared");
+        }
       }
 
       //runs all programs loaded in
@@ -643,10 +644,12 @@ module TSOS {
         }
       }
 
+      //prints current scheduling algorithm
       public shellGetScheduler(){
         _StdOut.putText("The scheduler algorithm is currently set to " + _Scheduler.alg);
       }
 
+      //sets the scheduling algorithm to provided input
       public shellSetScheduler(args: string){
         if (args.length > 0){
           var input = args[0].toLowerCase();

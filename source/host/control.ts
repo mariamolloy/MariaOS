@@ -243,6 +243,7 @@ module TSOS {
          document.getElementById("memoryTable").innerHTML = table;
        }
 
+       //initiaize ready queue: call at start
        public static hostInitReadyQueue(): void {
          var readyTable = (<HTMLTableElement>document.getElementById('readyQueueTable'));
 
@@ -317,12 +318,15 @@ module TSOS {
          cell.innerHTML = "--";
        }
 
+       //call whenever theres something in ready qeueueeueueueue
        public static hostUpdateReadyQueue(): void{
          var readyTable = (<HTMLTableElement>document.getElementById('readyQueueTable'));
 
          //see if we are currently running anything
          if (_ProcessManager.running !== null){
            var size = readyTable.rows.length;
+
+           //delete prev entries in table
            for (var d = size - 1; d > 0; d--) {
              readyTable.deleteRow(d);
            }
@@ -366,7 +370,6 @@ module TSOS {
              for (var i = 0; i < _ProcessManager.ready.getSize(); i++){
                  var process = _ProcessManager.ready.look(i);
 
-                 //readyTable.deleteRow(i + 2);
                  var row = readyTable.insertRow(i + 2);
                  var cell = row.insertCell(); //load in Pid
                  cell.innerHTML = process.Pid.toString(10).toUpperCase();
@@ -401,6 +404,48 @@ module TSOS {
                 cell = row.insertCell(); //load in z flag
                 cell.innerHTML = process.Zflag.toString(10).toUpperCase();
               }
+          } else {
+            var size = readyTable.rows.length;
+
+            //delete prev entries in table
+            for (var d = size - 1; d > 0; d--) {
+              readyTable.deleteRow(d);
+            }
+            //second row is empty
+            row = readyTable.insertRow(1);
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
+            cell = row.insertCell();
+            cell.innerHTML = "--";
+
           }
        }
 

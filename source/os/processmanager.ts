@@ -45,7 +45,7 @@ module TSOS {
       }
     }
 
-    //in run shell command make it go through resident queue to find proper element to add to ready enqueue
+    //runs a new process from reaedy queue
     public run(): void{
 
       //to do: scheduling and priorities and all that fun stuff
@@ -67,6 +67,7 @@ module TSOS {
       console.log("running process " + this.running.Pid);
     }
 
+    //exits a running process
     public terminate(process: PCB): void{
       //this.ready.dequeue();
       console.log("process " + process.Pid + " is over");
@@ -85,12 +86,14 @@ module TSOS {
 
       this.running = null;
 
+      //check if we have to turn off cpu or not
       if (this.ready.isEmpty()){
         _CPU.isExecuting = false;
       }
 
     }
 
+    //kills a process (only called w shell command)
     public kill(process:PCB): void{
       console.log("killing process " + process.Pid);
       _MemoryManager.clearPart(process.Partition);
@@ -106,14 +109,13 @@ module TSOS {
       _StdOut.advanceLine();
       _OsShell.putPrompt();
 
+      //check if we need to set running to null
       if (process.Pid == this.running.Pid){
         this.running = null;
       }
     }
 
-    //  WE MAY NOT EVEN NEED THIS????
-    //function to check if anything is in the ready queues
-    //--> to check if we
+    /*
     public checkReady(): void {
       if(!this.ready.isEmpty()){
         this.run();
@@ -121,12 +123,11 @@ module TSOS {
       else {
       //  _CPU.isExecuting
       }
-    }
+    }*/
 
 
+    //tracks wait time and turn around time of running processes
     public trackStats(): void{
-      //to do
-      //increment turnaround time of running prog
       this.running.TurnAroundTime++;
       for (var i = 0; i < this.ready.getSize(); i++){
         //increment turnaround time and wait time of everything in ready queue

@@ -205,21 +205,7 @@ module TSOS {
         //SHOULD WE CALL THIS AT THE START OF EACH CPU CYCLE OR AT THE END OF EACH OPCODE CALL??????
         //method to update the pcb were on at the end of each cpu cycle so we can save it b4 context switching
         public updatePcb(): void{
-          var currentPid = this.Pcb.getPid();
-          for (var i = 0; i < _ProcessManager.ready.getSize(); i++){
-            var currentPcb = _ProcessManager.ready.look(i);
-            //if current element in the ready queue has the pid we want, update its pcb to current cpu data
-            if (currentPcb.getPid() == currentPid){
-          /*    currentPcb.PC = this.PC;
-              currentPcb.IR = this.IR;
-              currentPcb.Acc = this.Acc;
-              currentPcb.Xreg = this.Xreg;
-              currentPcb.Yreg = this.Yreg;
-              currentPcb.Zflag = this.Zflag;
-              currentPcb.TurnAroundTime++; */
-
-            }
-          }
+          
           _ProcessManager.running.PC = this.PC;
           _ProcessManager.running.Acc = this.Acc;
           _ProcessManager.running.Xreg = this.Xreg;

@@ -11,11 +11,13 @@ module TSOS {
     }
 
     //resets counter
+    //called at run and runall
     init(): void{
       this.rrCounter = 0;
     }
 
     //Scheduling inspired by PhazonOS
+    //schedule function is called every clock tick
     public schedule(){
 
         switch (this.alg){
@@ -36,6 +38,7 @@ module TSOS {
 
     }
 
+    //sets scheduling algorithm to input
     public setAlg(a: string): boolean{
       switch (a) {
         case "rr":
@@ -54,6 +57,7 @@ module TSOS {
       return true;
     }
 
+    //context switch!!! switch from one program to another
     public contextSwitch(): void{
       //no need to do anything if ready queue is isEmpty
       if (!_ProcessManager.ready.isEmpty()){
@@ -65,19 +69,20 @@ module TSOS {
         }
         //get next process and run it
         _ProcessManager.running = _ProcessManager.ready.dequeue();
-        _CPU.setCPU(_ProcessManager.running);
+        _CPU.setCPU(_ProcessManager.running); //reset cpu to correct values
         console.log("Switching to process " + _ProcessManager.running.Pid);
         if (_CPU.isExecuting){
-          this.schedule();
+          this.schedule(); //we r always scheduling
         }
       } else {
         console.log("jk no need")
-        this.schedule();
+        this.schedule(); //we r always scheduling
       }
     }
 
+    //round robin function
     public roundRobin(){
-      //loading a new process in (could  be after a context switch?)
+      //loading a new process in
         if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated"){
           //to do for proj 4:
           //add disk driver stuff here
@@ -99,13 +104,10 @@ module TSOS {
           } else { //otherwise we increment counter
               this.rrCounter++;
               if (_CPU.isExecuting && !(_ProcessManager.running == null)){
-                //if (_ProcessManager.running !== null){
                 _ProcessManager.trackStats(); //increment wait time / turn around time as needed
                 _CPU.cycle(); //call cpu cycle
-                //console.log("cpu cycle " + _ProcessManager.running.Pid + " ran.");
                 Control.hostUpdateCPU(); //update cpu display
                 Control.hostUpdateReadyQueue(); //update ready queue display
-            //  }
               }
           }
       }
@@ -116,6 +118,7 @@ module TSOS {
 
     }
 
+    //sets quantum to param
     public setQuantum(q: number): void{
       this.quantum = q;
     }

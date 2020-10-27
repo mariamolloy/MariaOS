@@ -7,10 +7,12 @@ var TSOS;
             this.alg = "rr";
         }
         //resets counter
+        //called at run and runall
         Scheduler.prototype.init = function () {
             this.rrCounter = 0;
         };
         //Scheduling inspired by PhazonOS
+        //schedule function is called every clock tick
         Scheduler.prototype.schedule = function () {
             switch (this.alg) {
                 //round robin
@@ -28,6 +30,7 @@ var TSOS;
                     break;
             }
         };
+        //sets scheduling algorithm to input
         Scheduler.prototype.setAlg = function (a) {
             switch (a) {
                 case "rr":
@@ -45,6 +48,7 @@ var TSOS;
             }
             return true;
         };
+        //context switch!!! switch from one program to another
         Scheduler.prototype.contextSwitch = function () {
             //no need to do anything if ready queue is isEmpty
             if (!_ProcessManager.ready.isEmpty()) {
@@ -56,19 +60,20 @@ var TSOS;
                 }
                 //get next process and run it
                 _ProcessManager.running = _ProcessManager.ready.dequeue();
-                _CPU.setCPU(_ProcessManager.running);
+                _CPU.setCPU(_ProcessManager.running); //reset cpu to correct values
                 console.log("Switching to process " + _ProcessManager.running.Pid);
                 if (_CPU.isExecuting) {
-                    this.schedule();
+                    this.schedule(); //we r always scheduling
                 }
             }
             else {
                 console.log("jk no need");
-                this.schedule();
+                this.schedule(); //we r always scheduling
             }
         };
+        //round robin function
         Scheduler.prototype.roundRobin = function () {
-            //loading a new process in (could  be after a context switch?)
+            //loading a new process in
             if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated") {
                 //to do for proj 4:
                 //add disk driver stuff here
@@ -92,13 +97,10 @@ var TSOS;
                 else { //otherwise we increment counter
                     this.rrCounter++;
                     if (_CPU.isExecuting && !(_ProcessManager.running == null)) {
-                        //if (_ProcessManager.running !== null){
                         _ProcessManager.trackStats(); //increment wait time / turn around time as needed
                         _CPU.cycle(); //call cpu cycle
-                        //console.log("cpu cycle " + _ProcessManager.running.Pid + " ran.");
                         TSOS.Control.hostUpdateCPU(); //update cpu display
                         TSOS.Control.hostUpdateReadyQueue(); //update ready queue display
-                        //  }
                     }
                 }
             }
@@ -106,6 +108,7 @@ var TSOS;
         //to do for project 4
         Scheduler.prototype.priority = function () {
         };
+        //sets quantum to param
         Scheduler.prototype.setQuantum = function (q) {
             this.quantum = q;
         };

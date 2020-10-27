@@ -33,7 +33,7 @@ module TSOS {
 //to do i proj3: allocation and deallocation
 
 //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
-    public clearAllMemory(): void {
+    public clearAllMemory(): boolean {
       //make sure we arent in the middle of a process
       if (!_CPU.isExecuting) {
         //make all memory 00000 and set all partitions to empty
@@ -44,9 +44,11 @@ module TSOS {
           this.partitions[j].isEmpty = true;
         }
         TSOS.Control.hostUpdateMemory();
+        return true;
       } else {
         //error we are in the middle of a process or something
         _StdOut.putText("Error: cannot clear all memory rn. be patient.");
+        return false;
       }
     }
 

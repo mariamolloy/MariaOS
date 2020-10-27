@@ -40,10 +40,12 @@ var TSOS;
                     this.partitions[j].isEmpty = true;
                 }
                 TSOS.Control.hostUpdateMemory();
+                return true;
             }
             else {
                 //error we are in the middle of a process or something
                 _StdOut.putText("Error: cannot clear all memory rn. be patient.");
+                return false;
             }
         };
         //function to clear a single partition in memory and mark as empty
