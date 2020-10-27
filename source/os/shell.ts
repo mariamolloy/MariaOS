@@ -126,7 +126,7 @@ module TSOS {
             //runs all the programs in memory
             sc = new ShellCommand(this.shellRunAll,
                                   "runall",
-                                  "- Runs all programs at once");
+                                  "- Runs all programs loaded into memory at once");
             this.commandList[this.commandList.length] = sc;
 
             //Displays the PID and state of all processes
@@ -528,10 +528,7 @@ module TSOS {
       }
 
       public shellRunAll(args){
-        //to do
-        //run all programs loaded in memory?
-        //when a program finishes do we delete it immediately?
-        //run all programs in ready queue
+        //to dooooooooo
       }
 
       //prints out pid and state of each running process

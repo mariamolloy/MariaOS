@@ -362,7 +362,7 @@ module TSOS {
          for (var i = 0; i < _ProcessManager.ready.getSize(); i++){
              var process = _ProcessManager.ready.look(i);
 
-             readyTable.deleteRow(i + 2);
+             //readyTable.deleteRow(i + 2);
              var row = readyTable.insertRow(i + 2);
              var cell = row.insertCell(); //load in Pid
              cell.innerHTML = process.Pid.toString(10).toUpperCase();

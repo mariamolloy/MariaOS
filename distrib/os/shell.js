@@ -70,7 +70,7 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellClearMem, "clearmem", "- Clears all memory");
             this.commandList[this.commandList.length] = sc;
             //runs all the programs in memory
-            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "- Runs all programs at once");
+            sc = new TSOS.ShellCommand(this.shellRunAll, "runall", "- Runs all programs loaded into memory at once");
             this.commandList[this.commandList.length] = sc;
             //Displays the PID and state of all processes
             sc = new TSOS.ShellCommand(this.shellPS, "ps", "- Displays the PID and state of all processes");
@@ -425,10 +425,7 @@ var TSOS;
             _StdOut.putText("Memory is cleared");
         };
         Shell.prototype.shellRunAll = function (args) {
-            //to do
-            //run all programs loaded in memory?
-            //when a program finishes do we delete it immediately?
-            //run all programs in ready queue
+            //to dooooooooo
         };
         //prints out pid and state of each running process
         Shell.prototype.shellPS = function (args) {
