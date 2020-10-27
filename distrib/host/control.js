@@ -244,58 +244,64 @@ var TSOS;
         };
         Control.hostUpdateReadyQueue = function () {
             var readyTable = document.getElementById('readyQueueTable');
-            //first row is the running process
-            readyTable.deleteRow(1);
-            var row = readyTable.insertRow(1);
-            var cell = row.insertCell(); //load in Pid
-            cell.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in state
-            cell.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
-            cell = row.insertCell(); //load in partition
-            cell.innerHTML = _ProcessManager.running.Partition.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in base
-            cell.innerHTML = _ProcessManager.running.Base.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in limit
-            cell.innerHTML = _ProcessManager.running.Limit.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in PC
-            cell.innerHTML = _ProcessManager.running.PC.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in IR
-            cell.innerHTML = _ProcessManager.running.IR.toString().toUpperCase();
-            cell = row.insertCell(); //load in Accumulator
-            cell.innerHTML = _ProcessManager.running.Acc.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in xreg
-            cell.innerHTML = _ProcessManager.running.Xreg.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in yreg
-            cell.innerHTML = _ProcessManager.running.Yreg.toString(10).toUpperCase();
-            cell = row.insertCell(); //load in z flag
-            cell.innerHTML = _ProcessManager.running.Zflag.toString(10).toUpperCase();
-            //go through ready queue and print that (if there)
-            for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
-                var process = _ProcessManager.ready.look(i);
-                //readyTable.deleteRow(i + 2);
-                var row = readyTable.insertRow(i + 2);
+            //see if we are currently running anything
+            if (_ProcessManager.running !== null) {
+                var size = readyTable.rows.length;
+                for (var d = size - 1; d > 0; d--) {
+                    readyTable.deleteRow(d);
+                }
+                //first row is the running process
+                var row = readyTable.insertRow(1);
                 var cell = row.insertCell(); //load in Pid
-                cell.innerHTML = process.Pid.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in state
-                cell.innerHTML = process.State.toString().toUpperCase();
+                cell.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
                 cell = row.insertCell(); //load in partition
-                cell.innerHTML = process.Partition.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.Partition.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in base
-                cell.innerHTML = process.Base.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.Base.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in limit
-                cell.innerHTML = process.Limit.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.Limit.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in PC
-                cell.innerHTML = process.PC.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.PC.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in IR
-                cell.innerHTML = process.IR.toString().toUpperCase();
+                cell.innerHTML = _ProcessManager.running.IR.toString().toUpperCase();
                 cell = row.insertCell(); //load in Accumulator
-                cell.innerHTML = process.Acc.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.Acc.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in xreg
-                cell.innerHTML = process.Xreg.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.Xreg.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in yreg
-                cell.innerHTML = process.Yreg.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.Yreg.toString(10).toUpperCase();
                 cell = row.insertCell(); //load in z flag
-                cell.innerHTML = process.Zflag.toString(10).toUpperCase();
+                cell.innerHTML = _ProcessManager.running.Zflag.toString(10).toUpperCase();
+                //go through ready queue and print that (if there)
+                for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
+                    var process = _ProcessManager.ready.look(i);
+                    //readyTable.deleteRow(i + 2);
+                    var row = readyTable.insertRow(i + 2);
+                    var cell = row.insertCell(); //load in Pid
+                    cell.innerHTML = process.Pid.toString(10).toUpperCase();
+                    cell = row.insertCell(); //load in state
+                    cell.innerHTML = process.State.toString().toUpperCase();
+                    cell = row.insertCell(); //load in partition
+                    cell.innerHTML = process.Partition.toString(10).toUpperCase();
+                    cell = row.insertCell(); //load in base
+                    cell.innerHTML = process.Base.toString(10).toUpperCase();
+                    cell = row.insertCell(); //load in limit
+                    cell.innerHTML = process.Limit.toString(10).toUpperCase();
+                    cell = row.insertCell(); //load in PC
+                    cell.innerHTML = process.PC.toString(10).toUpperCase();
+                    cell = row.insertCell(); //load in IR
+                    cell.innerHTML = process.IR.toString().toUpperCase();
+                    cell = row.insertCell(); //load in Accumulator
+                    cell.innerHTML = process.Acc.toString(10).toUpperCase();
+                    cell = row.insertCell(); //load in xreg
+                    cell.innerHTML = process.Xreg.toString(10).toUpperCase();
+                    cell = row.insertCell(); //load in yreg
+                    cell.innerHTML = process.Yreg.toString(10).toUpperCase();
+                    cell = row.insertCell(); //load in z flag
+                    cell.innerHTML = process.Zflag.toString(10).toUpperCase();
+                }
             }
         };
         Control.hostBtnHaltOS_click = function (btn) {

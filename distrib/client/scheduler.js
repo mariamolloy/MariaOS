@@ -6,8 +6,7 @@ var TSOS;
             this.rrCounter = 0;
             this.alg = "rr";
         }
-        //called when cpu is not executing
-        //main process that runs every cpu cycle
+        //Scheduling inspired by PhazonOS
         Scheduler.prototype.schedule = function () {
             switch (this.alg) {
                 //round robin
@@ -66,7 +65,7 @@ var TSOS;
         };
         Scheduler.prototype.roundRobin = function () {
             //loading a new process in (could  be after a context switch?)
-            if (_ProcessManager.running == null) {
+            if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated") {
                 //to do for proj 4:
                 //add disk driver stuff here
                 //load in new program from ready queue
@@ -88,12 +87,14 @@ var TSOS;
                 }
                 else { //otherwise we increment counter
                     this.rrCounter++;
-                    if (_CPU.isExecuting) {
+                    if (_CPU.isExecuting && !(_ProcessManager.running == null)) {
+                        //if (_ProcessManager.running !== null){
                         _CPU.cycle(); //call cpu cycle
-                        console.log("cpu cycle " + _ProcessManager.running.Pid + " ran.");
+                        //console.log("cpu cycle " + _ProcessManager.running.Pid + " ran.");
                         TSOS.Control.hostUpdateCPU(); //update cpu display
                         TSOS.Control.hostUpdateReadyQueue(); //update ready queue display
                         _ProcessManager.trackStats(); //increment wait time / turn around time as needed
+                        //  }
                     }
                     //maybe add calling cpu cycle if executing??
                 }

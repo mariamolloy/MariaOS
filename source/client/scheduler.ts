@@ -10,8 +10,7 @@ module TSOS {
       this.alg = "rr";
     }
 
-    //called when cpu is not executing
-    //main process that runs every cpu cycle
+    //Scheduling inspired by PhazonOS
     public schedule(){
 
         switch (this.alg){
@@ -74,7 +73,7 @@ module TSOS {
 
     public roundRobin(){
       //loading a new process in (could  be after a context switch?)
-        if (_ProcessManager.running == null){
+        if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated"){
           //to do for proj 4:
           //add disk driver stuff here
           //load in new program from ready queue
@@ -94,12 +93,14 @@ module TSOS {
             _KernelInterruptQueue.enqueue(new Interrupt(CONTEXT_SWITCH, ["idk"]));
           } else { //otherwise we increment counter
               this.rrCounter++;
-              if (_CPU.isExecuting){
+              if (_CPU.isExecuting && !(_ProcessManager.running == null)){
+                //if (_ProcessManager.running !== null){
                 _CPU.cycle(); //call cpu cycle
-                console.log("cpu cycle " + _ProcessManager.running.Pid + " ran.");
+                //console.log("cpu cycle " + _ProcessManager.running.Pid + " ran.");
                 Control.hostUpdateCPU(); //update cpu display
                 Control.hostUpdateReadyQueue(); //update ready queue display
                 _ProcessManager.trackStats(); //increment wait time / turn around time as needed
+            //  }
               }
               //maybe add calling cpu cycle if executing??
           }
