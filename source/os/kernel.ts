@@ -101,7 +101,7 @@ module TSOS {
             } else {       // If there are no interrupts and there is nothing being executed then just be idle.
                 _NextStep = false;
                 this.krnTrace("Idle");
-                _ProcessManager.checkReady(); //check if theres anything in the ready queue
+              //  _ProcessManager.checkReady(); //check if theres anything in the ready queue
             }
         }
 

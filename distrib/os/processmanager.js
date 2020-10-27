@@ -45,13 +45,13 @@ var TSOS;
             _CPU.Pcb = this.running;
             this.running.State = "running";
             _CurrentPartition = this.running.Partition;
-            _CPU.isExecuting = true; //starts program essentially
             // Update host log and console log
             TSOS.Control.hostLog("Running process " + this.running.Pid, "OS");
             console.log("running process " + this.running.Pid);
         };
         ProcessManager.prototype.terminate = function (process) {
             //this.ready.dequeue();
+            console.log("process " + process.Pid + " is over");
             _MemoryManager.clearPart(process.Partition);
             process.State = "terminated";
             TSOS.Control.hostLog("Exiting process" + process.Pid, "OS");
@@ -64,8 +64,28 @@ var TSOS;
             //reset cursor to new line
             _StdOut.advanceLine();
             _OsShell.putPrompt();
-            //clear out prev running prog
             this.running = null;
+            if (this.ready.isEmpty()) {
+                _CPU.isExecuting = false;
+            }
+        };
+        ProcessManager.prototype.kill = function (process) {
+            console.log("killing process " + process.Pid);
+            _MemoryManager.clearPart(process.Partition);
+            process.State = "terminated";
+            TSOS.Control.hostLog("Exiting process" + process.Pid, "OS");
+            _StdOut.advanceLine();
+            //print stats
+            _StdOut.putText("Process ID: " + process.Pid);
+            _StdOut.advanceLine();
+            _StdOut.putText("Turnaround time: " + process.TurnAroundTime + " cycles, wait time: "
+                + process.WaitTime + " cycles.");
+            //reset cursor to new line
+            _StdOut.advanceLine();
+            _OsShell.putPrompt();
+            if (process.Pid == this.running.Pid) {
+                this.running = null;
+            }
         };
         //  WE MAY NOT EVEN NEED THIS????
         //function to check if anything is in the ready queues

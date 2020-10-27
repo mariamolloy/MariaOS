@@ -10,6 +10,11 @@ module TSOS {
       this.alg = "rr";
     }
 
+    //resets counter
+    init(): void{
+      this.rrCounter = 0;
+    }
+
     //Scheduling inspired by PhazonOS
     public schedule(){
 
@@ -66,7 +71,7 @@ module TSOS {
           this.schedule();
         }
       } else {
-        console.log("done scheduling for now")
+        console.log("jk no need")
         this.schedule();
       }
     }
@@ -82,7 +87,7 @@ module TSOS {
             _ProcessManager.run();
           }
         } else { //currently running a process
-          console.log("Round Robin cycle " + this.rrCounter); //log current cycle
+          console.log("Scheduler cycle " + this.rrCounter); //log current cycle
           //check if we have reached the end of our quantum cycle
           if (this.rrCounter >= this.quantum && _CPU.isExecuting){
             //big if so... time for a context switch
@@ -95,14 +100,13 @@ module TSOS {
               this.rrCounter++;
               if (_CPU.isExecuting && !(_ProcessManager.running == null)){
                 //if (_ProcessManager.running !== null){
+                _ProcessManager.trackStats(); //increment wait time / turn around time as needed
                 _CPU.cycle(); //call cpu cycle
                 //console.log("cpu cycle " + _ProcessManager.running.Pid + " ran.");
                 Control.hostUpdateCPU(); //update cpu display
                 Control.hostUpdateReadyQueue(); //update ready queue display
-                _ProcessManager.trackStats(); //increment wait time / turn around time as needed
             //  }
               }
-              //maybe add calling cpu cycle if executing??
           }
       }
     }

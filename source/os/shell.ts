@@ -512,6 +512,8 @@ module TSOS {
             var pcbToRun = _ProcessManager.resident.dequeue();
             if (pcbToRun.Pid == inputPID){
               _ProcessManager.ready.enqueue(pcbToRun);
+              _Scheduler.init();
+              _CPU.isExecuting = true; //start program
             } else { //if it isnt the right pcb we put it back in the resident qeueue
               _ProcessManager.resident.enqueue(pcbToRun);
             }
@@ -527,8 +529,21 @@ module TSOS {
         _StdOut.putText("Memory is cleared");
       }
 
+      //runs all programs loaded in
       public shellRunAll(args){
-        //to dooooooooo
+        if (_ProcessManager.resident.isEmpty()){
+          //nothing to run
+          _StdOut.putText("Error: nothing is loaded to run");
+        } else {
+          //add everything in resident queue to ready queue
+          var amtToAdd = _ProcessManager.resident.getSize();
+          for (var i = 0; i < amtToAdd; i++){
+            var toRun = _ProcessManager.resident.dequeue();
+            _ProcessManager.ready.enqueue(toRun);
+          }
+            _Scheduler.init();
+            _CPU.isExecuting = true; //start program
+        }
       }
 
       //prints out pid and state of each running process
@@ -555,8 +570,7 @@ module TSOS {
           var input = parseInt(args, 10);
           //check if its the running process
           if ((_CPU.isExecuting) && (input == _ProcessManager.running.Pid)){
-            _ProcessManager.terminate(_ProcessManager.running);
-            _CPU.isExecuting = false;
+            _ProcessManager.kill(_ProcessManager.running);
             foundKill = true;
           } else {
             var resSize = _ProcessManager.resident.getSize();
@@ -565,7 +579,7 @@ module TSOS {
             for (var i = 0; i < resSize; i++){
               var current = _ProcessManager.resident.dequeue();
               if (current.Pid == input){
-                _ProcessManager.terminate(current);
+                _ProcessManager.kill(current);
                 foundKill = true;
               } else {
                 _ProcessManager.resident.enqueue(current);
@@ -575,7 +589,7 @@ module TSOS {
             for (var j = 0; j < readSize; j++){
               var current = _ProcessManager.ready.dequeue();
               if (current.Pid == input){
-                _ProcessManager.terminate(current);
+                _ProcessManager.kill(current);
                 foundKill = true;
               } else {
                 _ProcessManager.ready.enqueue(current);
@@ -599,16 +613,16 @@ module TSOS {
         //kill everything in resident queue
         for (var i = 0; i < resSize; i++){
           var curr = _ProcessManager.resident.dequeue();
-          _ProcessManager.terminate(curr);
+          _ProcessManager.kill(curr);
         }
         //kill everything in ready queue
         for (var j = 0; j < readSize; j++){
           var curr = _ProcessManager.ready.dequeue();
-          _ProcessManager.terminate(curr);
+          _ProcessManager.kill(curr);
         }
         //if there is a process running... KILL IT!
         if (_CPU.isExecuting){
-          _ProcessManager.terminate(_ProcessManager.running);
+          _ProcessManager.kill(_ProcessManager.running);
           _CPU.isExecuting = false;
         }
         _StdOut.putText("All processes were terminated.");

@@ -62,15 +62,14 @@ module TSOS {
 
       _CurrentPartition = this.running.Partition;
 
-      _CPU.isExecuting = true; //starts program essentially
-
       // Update host log and console log
       Control.hostLog("Running process " + this.running.Pid, "OS");
       console.log("running process " + this.running.Pid);
     }
 
-    public terminate(process: PCB){
+    public terminate(process: PCB): void{
       //this.ready.dequeue();
+      console.log("process " + process.Pid + " is over");
       _MemoryManager.clearPart(process.Partition);
       process.State = "terminated";
       Control.hostLog("Exiting process" + process.Pid, "OS");
@@ -84,8 +83,32 @@ module TSOS {
       _StdOut.advanceLine();
       _OsShell.putPrompt();
 
-      //clear out prev running prog
       this.running = null;
+
+      if (this.ready.isEmpty()){
+        _CPU.isExecuting = false;
+      }
+
+    }
+
+    public kill(process:PCB): void{
+      console.log("killing process " + process.Pid);
+      _MemoryManager.clearPart(process.Partition);
+      process.State = "terminated";
+      Control.hostLog("Exiting process" + process.Pid, "OS");
+      _StdOut.advanceLine();
+      //print stats
+      _StdOut.putText("Process ID: " + process.Pid);
+      _StdOut.advanceLine();
+      _StdOut.putText("Turnaround time: " + process.TurnAroundTime + " cycles, wait time: "
+          + process.WaitTime + " cycles.");
+      //reset cursor to new line
+      _StdOut.advanceLine();
+      _OsShell.putPrompt();
+
+      if (process.Pid == this.running.Pid){
+        this.running = null;
+      }
     }
 
     //  WE MAY NOT EVEN NEED THIS????
