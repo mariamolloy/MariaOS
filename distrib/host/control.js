@@ -131,7 +131,7 @@ var TSOS;
             cpuTable.deleteRow(1);
             var row = cpuTable.insertRow(1);
             var cell = row.insertCell(); //load in PC
-            cell.innerHTML = _CPU.PC.toString(10).toUpperCase();
+            cell.innerHTML = _CPU.PC.toString(16).toUpperCase();
             cell = row.insertCell();
             cell.innerHTML = _CPU.IR.toString().toUpperCase();
             cell = row.insertCell(); //load in Accumulator

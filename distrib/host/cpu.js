@@ -176,20 +176,6 @@ var TSOS;
             var addy = parseInt(memAdd, 16);
             return addy;
         };
-        //method to translate a logical address to a physical address
-        //input is logical address and partition
-        //output is physical address
-        /*    private getPhysicalAddress(logicalAddy: number, part: number): number {
-              var base = _PartitionSize * part;
-              var physicalAddy = base + logicalAddy;
-              //checks if memory is in bounds
-              if (_MemoryAccessor.inBounds(physicalAddy, part)){
-                return physicalAddy;
-              } else {
-                _StdOut.putText("ERROR: ADDRESS NOT IN BOUNDS");
-                return null;
-              }
-            } */
         //SHOULD WE CALL THIS AT THE START OF EACH CPU CYCLE OR AT THE END OF EACH OPCODE CALL??????
         //method to update the pcb were on at the end of each cpu cycle so we can save it b4 context switching
         Cpu.prototype.updatePcb = function () {

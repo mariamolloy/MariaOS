@@ -63,7 +63,6 @@ module TSOS {
     }
 
     //call function with a logical address and it returns a physical address
-    //same as one in cpu... which to delete?
     public addressTranslator(logicalAddy: number, par: number): number{
       this.par = par;
       this.base = _PartitionSize * this.par;
@@ -86,6 +85,7 @@ module TSOS {
         return true;
       } else {
         _StdOut.putText("ERROR: MEM OUT OF BOUNDS");
+        _ProcessManager.kill(_ProcessManager.running);
         return false;
       }
     }

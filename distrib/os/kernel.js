@@ -69,6 +69,7 @@ var TSOS;
             */
             //update memory gui
             TSOS.Control.hostUpdateMemory();
+            //update ready queue display
             TSOS.Control.hostUpdateReadyQueue();
             // Check for an interrupt, if there are any. Page 560
             if (_KernelInterruptQueue.getSize() > 0) {

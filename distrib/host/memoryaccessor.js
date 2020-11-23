@@ -56,7 +56,6 @@ var TSOS;
             return _Memory.readMem(addy);
         };
         //call function with a logical address and it returns a physical address
-        //same as one in cpu... which to delete?
         MemoryAccessor.prototype.addressTranslator = function (logicalAddy, par) {
             this.par = par;
             this.base = _PartitionSize * this.par;
@@ -80,6 +79,7 @@ var TSOS;
             }
             else {
                 _StdOut.putText("ERROR: MEM OUT OF BOUNDS");
+                _ProcessManager.kill(_ProcessManager.running);
                 return false;
             }
         };

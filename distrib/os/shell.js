@@ -422,14 +422,17 @@ var TSOS;
             }
         };
         //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
+        // removes everything from resident and ready queues
         Shell.prototype.shellClearMem = function (args) {
             if (_MemoryManager.clearAllMemory()) {
+                //remove everything from resident queue and log it
                 while (!_ProcessManager.resident.isEmpty()) {
                     var curr = _ProcessManager.resident.dequeue();
                     console.log("deleting process " + curr.Pid);
                     curr.State = "terminated";
                     TSOS.Control.hostLog("Deleting process" + curr.Pid, "OS");
                 }
+                //remove everything from ready queue and log it
                 while (!_ProcessManager.ready.isEmpty()) {
                     var curr = _ProcessManager.ready.dequeue();
                     console.log("deleting process " + curr.Pid);
