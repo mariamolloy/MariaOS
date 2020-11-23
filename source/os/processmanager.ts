@@ -107,7 +107,7 @@ module TSOS {
           + process.WaitTime + " cycles.");
       //reset cursor to new line
       _StdOut.advanceLine();
-      _OsShell.putPrompt();
+
 
       //check if we need to set running to null
       if (process.Pid == this.running.Pid){

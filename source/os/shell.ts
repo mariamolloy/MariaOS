@@ -526,12 +526,24 @@ module TSOS {
       //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
       public shellClearMem(args){
         if (_MemoryManager.clearAllMemory()){
-          _StdOut.putText("Memory is cleared");
-        }
+            while (!_ProcessManager.resident.isEmpty()){
+               let curr = _ProcessManager.resident.dequeue();
+                console.log("deleting process " + curr.Pid);
+                curr.State = "terminated";
+                Control.hostLog("Deleting process" + curr.Pid, "OS");
+            }
+            while (!_ProcessManager.ready.isEmpty()){
+                let curr = _ProcessManager.ready.dequeue();
+                console.log("deleting process " + curr.Pid);
+                curr.State = "terminated";
+                Control.hostLog("Deleting process" + curr.Pid, "OS");
+            }
+            _StdOut.putText("Memory is cleared");
+          }
       }
 
       //runs all programs loaded in
-      public shellRunAll(args){
+      public shellRunAll(args: string[]){
         if (_ProcessManager.resident.isEmpty()){
           //nothing to run
           _StdOut.putText("Error: nothing is loaded to run");
@@ -548,7 +560,7 @@ module TSOS {
       }
 
       //prints out pid and state of each running process
-      public shellPS(args){
+      public shellPS(args: string[]){
         //check if we have any running processes
         if ((_ProcessManager.ready.isEmpty()) && (_CPU.isExecuting == false)){
           _StdOut.putText("No processes are currently running.");
@@ -605,10 +617,11 @@ module TSOS {
         } else { //no input
           _StdOut.putText("Error please specify which process you want to kill");
         }
+          _OsShell.putPrompt();
       }
 
       //kills all loaded / running processes
-      public shellKillAll(args){
+      public shellKillAll(args: string[]){
         var resSize = _ProcessManager.resident.getSize();
         var readSize = _ProcessManager.ready.getSize();
         //kill everything in resident queue
@@ -627,6 +640,7 @@ module TSOS {
           _CPU.isExecuting = false;
         }
         _StdOut.putText("All processes were terminated.");
+          _OsShell.putPrompt();
       }
 
       //sets the quantum to the specified amount

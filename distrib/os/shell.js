@@ -424,8 +424,21 @@ var TSOS;
         //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
         Shell.prototype.shellClearMem = function (args) {
             if (_MemoryManager.clearAllMemory()) {
+                while (!_ProcessManager.resident.isEmpty()) {
+                    var curr = _ProcessManager.resident.dequeue();
+                    console.log("deleting process " + curr.Pid);
+                    curr.State = "terminated";
+                    TSOS.Control.hostLog("Deleting process" + curr.Pid, "OS");
+                }
+                while (!_ProcessManager.ready.isEmpty()) {
+                    var curr = _ProcessManager.ready.dequeue();
+                    console.log("deleting process " + curr.Pid);
+                    curr.State = "terminated";
+                    TSOS.Control.hostLog("Deleting process" + curr.Pid, "OS");
+                }
                 _StdOut.putText("Memory is cleared");
             }
+            _OsShell.putPrompt();
         };
         //runs all programs loaded in
         Shell.prototype.shellRunAll = function (args) {
@@ -507,6 +520,7 @@ var TSOS;
             else { //no input
                 _StdOut.putText("Error please specify which process you want to kill");
             }
+            _OsShell.putPrompt();
         };
         //kills all loaded / running processes
         Shell.prototype.shellKillAll = function (args) {
@@ -528,6 +542,7 @@ var TSOS;
                 _CPU.isExecuting = false;
             }
             _StdOut.putText("All processes were terminated.");
+            _OsShell.putPrompt();
         };
         //sets the quantum to the specified amount
         Shell.prototype.shellQuantum = function (args) {

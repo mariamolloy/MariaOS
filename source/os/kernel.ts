@@ -80,6 +80,7 @@ module TSOS {
             */
             //update memory gui
             TSOS.Control.hostUpdateMemory();
+            TSOS.Control.hostUpdateReadyQueue();
 
 
             // Check for an interrupt, if there are any. Page 560
