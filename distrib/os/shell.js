@@ -438,7 +438,6 @@ var TSOS;
                 }
                 _StdOut.putText("Memory is cleared");
             }
-            _OsShell.putPrompt();
         };
         //runs all programs loaded in
         Shell.prototype.shellRunAll = function (args) {

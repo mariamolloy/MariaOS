@@ -107,7 +107,6 @@ module TSOS {
                 _ProcessManager.trackStats(); //increment wait time / turn around time as needed
                 _CPU.cycle(); //call cpu cycle
                 Control.hostUpdateCPU(); //update cpu display
-                Control.hostUpdateReadyQueue(); //update ready queue display
               }
           }
       }

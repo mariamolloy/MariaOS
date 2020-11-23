@@ -80,6 +80,7 @@ module TSOS {
             */
             //update memory gui
             TSOS.Control.hostUpdateMemory();
+            //update ready queue display
             TSOS.Control.hostUpdateReadyQueue();
 
 

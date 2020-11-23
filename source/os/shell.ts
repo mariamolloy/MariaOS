@@ -524,14 +524,17 @@ module TSOS {
       }
 
       //clears memory in all sections and sets to 00 00 00 00 00 00 00 ...
+        // removes everything from resident and ready queues
       public shellClearMem(args){
         if (_MemoryManager.clearAllMemory()){
+            //remove everything from resident queue and log it
             while (!_ProcessManager.resident.isEmpty()){
                let curr = _ProcessManager.resident.dequeue();
                 console.log("deleting process " + curr.Pid);
                 curr.State = "terminated";
                 Control.hostLog("Deleting process" + curr.Pid, "OS");
             }
+            //remove everything from ready queue and log it
             while (!_ProcessManager.ready.isEmpty()){
                 let curr = _ProcessManager.ready.dequeue();
                 console.log("deleting process " + curr.Pid);

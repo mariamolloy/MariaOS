@@ -100,7 +100,6 @@ var TSOS;
                         _ProcessManager.trackStats(); //increment wait time / turn around time as needed
                         _CPU.cycle(); //call cpu cycle
                         TSOS.Control.hostUpdateCPU(); //update cpu display
-                        TSOS.Control.hostUpdateReadyQueue(); //update ready queue display
                     }
                 }
             }
