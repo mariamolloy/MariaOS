@@ -114,7 +114,20 @@ module TSOS {
 
     //to do for project 4
     public priority(){
-
+      //find process with highest priority
+      if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated"){
+        for (let i = 0; i < _ProcessManager.ready.getSize(); i++){
+          //to dooo
+        }
+      }else { //currently running a process
+        console.log("Scheduler cycle " + this.rrCounter); //log current cycle
+      }
+      this.rrCounter++;
+      if (_CPU.isExecuting && !(_ProcessManager.running == null)){
+        _ProcessManager.trackStats(); //increment wait time / turn around time as needed
+        _CPU.cycle(); //call cpu cycle
+        Control.hostUpdateCPU(); //update cpu display
+      }
     }
 
     //sets quantum to param

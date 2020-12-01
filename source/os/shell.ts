@@ -438,11 +438,12 @@ module TSOS {
         }
 
 
-        public shellBsod(args){
+        public shellBsod(args: string[]){
           _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
+          //to do: change console to bsod blue
         }
 
-        public shellLoad (args){
+        public shellLoad (args: string[]){
           //create an array of input letter by letter to check for valid input
           //and create an array of input bytes to pass on to memory
           var userInp: string = (<HTMLTextAreaElement>(document.getElementById("taProgramInput"))).value.trim().toUpperCase();
@@ -484,8 +485,25 @@ module TSOS {
 
               //checks that input isn't too big for one partition
               if (bytes.length <= _PartitionSize){
+                  //check if priority and set
+                  //if no priority specified set to 1
+                  if (args.length > 0){
+                      var priority = 0;
+                      for (let i = 0; i < args.length; i ++){
+                          if (args[i] == "0" || args[i] == "1" || args[i] == "2" || args[i] == "3" || args[i] == "4" || args[i] == "5" || args[i] == "6" || args[i] == "7"
+                              || args[i] == "8" || args[i] == "9"){
+                              priority += (parseInt(args[i], 10) * (Math.pow(10, i)));
+                          }else{
+                              _StdOut.putText("invalid priority, please enter a number" +" \n " +
+                                  "0 is the highest priority" + "\n" +
+                                  "1 is the default priority");
+                              priority = 1;
+                          }
+                      }
 
-                _ProcessManager.load(bytes); // load into memory
+                  }
+
+                _ProcessManager.load(bytes, priority); // load into memory
 
             } else {
                 _StdOut.putText("Please enter shorter input, yours is over 256 bytes");

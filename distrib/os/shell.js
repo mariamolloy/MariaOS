@@ -342,6 +342,7 @@ var TSOS;
         };
         Shell.prototype.shellBsod = function (args) {
             _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
+            //to do: change console to bsod blue
         };
         Shell.prototype.shellLoad = function (args) {
             //create an array of input letter by letter to check for valid input
@@ -383,7 +384,24 @@ var TSOS;
                     }
                     //checks that input isn't too big for one partition
                     if (bytes.length <= _PartitionSize) {
-                        _ProcessManager.load(bytes); // load into memory
+                        //check if priority and set
+                        //if no priority specified set to 1
+                        if (args.length > 0) {
+                            var priority = 0;
+                            for (var i_1 = 0; i_1 < args.length; i_1++) {
+                                if (args[i_1] == "0" || args[i_1] == "1" || args[i_1] == "2" || args[i_1] == "3" || args[i_1] == "4" || args[i_1] == "5" || args[i_1] == "6" || args[i_1] == "7"
+                                    || args[i_1] == "8" || args[i_1] == "9") {
+                                    priority += (parseInt(args[i_1], 10) * (Math.pow(10, i_1)));
+                                }
+                                else {
+                                    _StdOut.putText("invalid priority, please enter a number" + " \n " +
+                                        "0 is the highest priority" + "\n" +
+                                        "1 is the default priority");
+                                    priority = 1;
+                                }
+                            }
+                        }
+                        _ProcessManager.load(bytes, priority); // load into memory
                     }
                     else {
                         _StdOut.putText("Please enter shorter input, yours is over 256 bytes");

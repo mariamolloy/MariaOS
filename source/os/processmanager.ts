@@ -16,7 +16,7 @@ module TSOS {
     }
 
     //put all ur shell load code in here
-    public load(input: string[]): void{
+    public load(input: string[], p: number): void{
       //check to make sure there is an empty partition we can load this into
       if (_MemoryManager.checkEmptyPart()){
         //finds the first empty partition to load input into
@@ -28,7 +28,7 @@ module TSOS {
         var newPcb = new PCB(processID);
 
 
-        newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
+        newPcb.init(part, p); //initialize the PCB we just made with the free partition we found earlier
       //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
 
       //add initalized PCB to resident queue now that it is loaded

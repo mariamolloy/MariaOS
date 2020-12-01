@@ -15,6 +15,8 @@ module TSOS {
     public Limit: number;
     public Partition: number;
 
+    public Priority: number; //scheduling priority
+
     //stats
     public TurnAroundTime: number;
     public WaitTime: number;
@@ -26,7 +28,7 @@ module TSOS {
     //initialize pcb
     //everything is 0 except partition base and limit
     //p = partition pcb is in
-    public init(p: number): void{
+    public init(part: number, pri: number): void{
       this.State = "new";
       this.PC = 0;
       this.IR = 0;
@@ -38,7 +40,9 @@ module TSOS {
       this.TurnAroundTime = 0;
       this.WaitTime = 0;
 
-      this.Partition = p;
+      this.Partition = part;
+
+      this.Priority = pri; //default = 1
 
       this.Base = this.Partition * _PartitionSize ;
       this.Limit = this.Base + _PartitionSize - 1;

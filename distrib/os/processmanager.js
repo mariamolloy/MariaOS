@@ -9,7 +9,7 @@ var TSOS;
             this.running = null;
         }
         //put all ur shell load code in here
-        ProcessManager.prototype.load = function (input) {
+        ProcessManager.prototype.load = function (input, p) {
             //check to make sure there is an empty partition we can load this into
             if (_MemoryManager.checkEmptyPart()) {
                 //finds the first empty partition to load input into
@@ -18,7 +18,7 @@ var TSOS;
                 //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
                 var processID = this.idCounter;
                 var newPcb = new TSOS.PCB(processID);
-                newPcb.init(part); //initialize the PCB we just made with the free partition we found earlier
+                newPcb.init(part, p); //initialize the PCB we just made with the free partition we found earlier
                 //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
                 //add initalized PCB to resident queue now that it is loaded
                 this.resident.enqueue(newPcb);
