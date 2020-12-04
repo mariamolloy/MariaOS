@@ -153,6 +153,12 @@ module TSOS {
                                   "<quantum> - Sets round robin quantum to specified integer");
             this.commandList[this.commandList.length] = sc;
 
+            //prints current  quantum
+            sc = new ShellCommand(this.shellGetQuantum,
+                "getquantum",
+                "– Returns current scheduler quantum");
+            this.commandList[this.commandList.length] = sc;
+
             //sets scheduler algorithm
             sc = new ShellCommand(this.shellSetScheduler,
                                   "setscheduler",
@@ -681,6 +687,11 @@ module TSOS {
           _StdOut.putText("Please specify what you want to set the quantum to");
         }
       }
+
+      //prints the current quantum
+        public shellGetQuantum(args: string){
+            _StdOut.putText("The quantum is currently " + _Scheduler.quantum);
+        }
 
       //prints current scheduling algorithm
       public shellGetScheduler(){

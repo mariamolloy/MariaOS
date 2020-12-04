@@ -84,6 +84,9 @@ var TSOS;
             //sets quantum
             sc = new TSOS.ShellCommand(this.shellQuantum, "quantum", "<quantum> - Sets round robin quantum to specified integer");
             this.commandList[this.commandList.length] = sc;
+            //prints current  quantum
+            sc = new TSOS.ShellCommand(this.shellGetQuantum, "getquantum", "– Returns current scheduler quantum");
+            this.commandList[this.commandList.length] = sc;
             //sets scheduler algorithm
             sc = new TSOS.ShellCommand(this.shellSetScheduler, "setscheduler", "<algorithm> - Sets the scheduler algorithm: rr, fcfs, or priority");
             this.commandList[this.commandList.length] = sc;
@@ -582,6 +585,10 @@ var TSOS;
             else {
                 _StdOut.putText("Please specify what you want to set the quantum to");
             }
+        };
+        //prints the current quantum
+        Shell.prototype.shellGetQuantum = function (args) {
+            _StdOut.putText("The quantum is currently " + _Scheduler.quantum);
         };
         //prints current scheduling algorithm
         Shell.prototype.shellGetScheduler = function () {

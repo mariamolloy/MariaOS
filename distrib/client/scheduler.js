@@ -18,11 +18,17 @@ var TSOS;
             switch (this.alg) {
                 //round robin
                 case "rr":
+                    if (this.quantum > 100) {
+                        this.setQuantum(6);
+                    }
+                    else {
+                        this.setQuantum(this.quantum);
+                    }
                     this.roundRobin();
                     break;
                 //fcfs is just round robin w huge quantum
                 case "fcfs":
-                    this.setQuantum(500000);
+                    this.setQuantum(500000000000);
                     this.roundRobin();
                     break;
                 //priority
@@ -35,11 +41,17 @@ var TSOS;
         Scheduler.prototype.setAlg = function (a) {
             switch (a) {
                 case "rr":
+                    if (this.quantum > 100) {
+                        this.setQuantum(6);
+                    }
+                    else {
+                        this.setQuantum(this.quantum);
+                    }
                     this.alg = "rr";
                     break;
                 case "fcfs":
                     this.alg = "fcfs";
-                    this.setQuantum(500000);
+                    this.setQuantum(5000000000000);
                     break;
                 case "priority":
                     this.alg = "priority";
@@ -74,7 +86,12 @@ var TSOS;
         };
         //round robin function
         Scheduler.prototype.roundRobin = function () {
-            console.log("Scheduler: Round Robin");
+            if (this.alg == "fcfs") {
+                console.log("Scheduler: First Come First Serve");
+            }
+            else if (this.alg == "rr") {
+                console.log("Scheduler: Round Robin");
+            }
             //loading a new process in
             if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated") {
                 //to do for proj 4:
@@ -106,7 +123,7 @@ var TSOS;
                 }
             }
         };
-        //to do for project 4
+        //priority scheduling
         Scheduler.prototype.priority = function () {
             console.log("Scheduler: Priority");
             //nothing to do if ready queue is empty
@@ -126,7 +143,7 @@ var TSOS;
                 }
             }
             else {
-                if (_CPU.isExecuting && !(_ProcessManager.running == null)) {
+                if (_CPU.isExecuting && !(_ProcessManager.running == null)) { //if were in the middle of runnning a program
                     _ProcessManager.trackStats(); //increment wait time / turn around time as needed
                     _CPU.cycle(); //call cpu cycle
                     TSOS.Control.hostUpdateCPU(); //update cpu display

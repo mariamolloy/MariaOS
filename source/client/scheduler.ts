@@ -25,6 +25,11 @@ module TSOS {
         switch (this.alg){
           //round robin
           case "rr":
+            if (this.quantum > 100){
+              this.setQuantum(6);
+            } else {
+              this.setQuantum(this.quantum);
+            }
             this.roundRobin();
             break;
           //fcfs is just round robin w huge quantum
@@ -44,6 +49,11 @@ module TSOS {
     public setAlg(a: string): boolean{
       switch (a) {
         case "rr":
+          if (this.quantum > 100){
+            this.setQuantum(6);
+          } else {
+            this.setQuantum(this.quantum);
+          }
           this.alg = "rr"
           break;
         case "fcfs":
@@ -84,7 +94,11 @@ module TSOS {
 
     //round robin function
     public roundRobin(){
-      console.log("Scheduler: Round Robin");
+      if (this.alg == "fcfs"){
+        console.log("Scheduler: First Come First Serve");
+      } else if (this.alg == "rr"){
+        console.log("Scheduler: Round Robin");
+      }
       //loading a new process in
         if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated"){
           //to do for proj 4:
