@@ -29,7 +29,7 @@ module TSOS {
             break;
           //fcfs is just round robin w huge quantum
           case "fcfs":
-            this.setQuantum(500000);
+            this.setQuantum(500000000000);
             this.roundRobin();
             break;
           //priority
@@ -48,7 +48,7 @@ module TSOS {
           break;
         case "fcfs":
           this.alg = "fcfs"
-          this.setQuantum(500000);
+          this.setQuantum(5000000000000);
           break;
         case "priority":
           this.alg = "priority";
@@ -115,9 +115,8 @@ module TSOS {
       }
     }
 
-    //to do for project 4
+    //priority scheduling
     public priority(){
-
       console.log("Scheduler: Priority");
       //nothing to do if ready queue is empty
       if (_ProcessManager.ready.getSize()>0) {
@@ -134,7 +133,7 @@ module TSOS {
           Control.hostUpdateCPU(); //update cpu display
         }
       } else {
-        if (_CPU.isExecuting && !(_ProcessManager.running == null)){
+        if (_CPU.isExecuting && !(_ProcessManager.running == null)){ //if were in the middle of runnning a program
           _ProcessManager.trackStats(); //increment wait time / turn around time as needed
           _CPU.cycle(); //call cpu cycle
           Control.hostUpdateCPU(); //update cpu display
@@ -147,7 +146,6 @@ module TSOS {
       this.quantum = q;
     }
 
-    //to do round robin
   }
 
 

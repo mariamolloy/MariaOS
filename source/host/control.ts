@@ -430,7 +430,7 @@ module TSOS {
 
             cell = row.insertCell();
             cell.innerHTML = "--";
-            
+
              cell = row.insertCell();
              cell.innerHTML = "--";
 
