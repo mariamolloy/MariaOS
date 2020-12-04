@@ -199,6 +199,8 @@ var TSOS;
             var cell = row.insertCell();
             cell.innerHTML = "PID";
             cell = row.insertCell();
+            cell.innerHTML = "PRIORITY";
+            cell = row.insertCell();
             cell.innerHTML = "STATE";
             cell = row.insertCell();
             cell.innerHTML = "PART";
@@ -242,6 +244,8 @@ var TSOS;
             cell.innerHTML = "--";
             cell = row.insertCell();
             cell.innerHTML = "--";
+            cell = row.insertCell();
+            cell.innerHTML = "--";
         };
         //call whenever theres something in ready qeueueeueueueue
         Control.hostUpdateReadyQueue = function () {
@@ -257,6 +261,8 @@ var TSOS;
                 var row = readyTable.insertRow(1);
                 var cell = row.insertCell(); //load in Pid
                 cell.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
+                cell = row.insertCell(); //load in pirority
+                cell.innerHTML = _ProcessManager.running.Priority.toString().toUpperCase();
                 cell = row.insertCell(); //load in state
                 cell.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
                 cell = row.insertCell(); //load in partition
@@ -283,6 +289,8 @@ var TSOS;
                     var row = readyTable.insertRow(i + 2);
                     var cell = row.insertCell(); //load in Pid
                     cell.innerHTML = process.Pid.toString(10).toUpperCase();
+                    var cell = row.insertCell(); //load in priority
+                    cell.innerHTML = process.Priority.toString(10).toUpperCase();
                     cell = row.insertCell(); //load in state
                     cell.innerHTML = process.State.toString().toUpperCase();
                     cell = row.insertCell(); //load in partition
@@ -313,6 +321,8 @@ var TSOS;
                 }
                 //second row is empty
                 row = readyTable.insertRow(1);
+                cell = row.insertCell();
+                cell.innerHTML = "--";
                 cell = row.insertCell();
                 cell.innerHTML = "--";
                 cell = row.insertCell();

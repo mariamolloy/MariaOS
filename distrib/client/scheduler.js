@@ -125,6 +125,13 @@ var TSOS;
                     TSOS.Control.hostUpdateCPU(); //update cpu display
                 }
             }
+            else {
+                if (_CPU.isExecuting && !(_ProcessManager.running == null)) {
+                    _ProcessManager.trackStats(); //increment wait time / turn around time as needed
+                    _CPU.cycle(); //call cpu cycle
+                    TSOS.Control.hostUpdateCPU(); //update cpu display
+                }
+            }
         };
         //sets quantum to param
         Scheduler.prototype.setQuantum = function (q) {

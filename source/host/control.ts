@@ -252,6 +252,9 @@ module TSOS {
          var cell = row.insertCell();
          cell.innerHTML = "PID";
 
+           cell = row.insertCell();
+           cell.innerHTML = "PRIORITY";
+
          cell = row.insertCell();
          cell.innerHTML = "STATE";
 
@@ -289,6 +292,9 @@ module TSOS {
 
          cell = row.insertCell();
          cell.innerHTML = "--";
+
+           cell = row.insertCell();
+           cell.innerHTML = "--";
 
          cell = row.insertCell();
          cell.innerHTML = "--";
@@ -336,6 +342,9 @@ module TSOS {
              var cell = row.insertCell(); //load in Pid
              cell.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
 
+             cell = row.insertCell(); //load in pirority
+             cell.innerHTML = _ProcessManager.running.Priority.toString().toUpperCase();
+
              cell = row.insertCell(); //load in state
              cell.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
 
@@ -373,6 +382,9 @@ module TSOS {
                  var row = readyTable.insertRow(i + 2);
                  var cell = row.insertCell(); //load in Pid
                  cell.innerHTML = process.Pid.toString(10).toUpperCase();
+
+                 var cell = row.insertCell(); //load in priority
+                 cell.innerHTML = process.Priority.toString(10).toUpperCase();
 
                  cell = row.insertCell(); //load in state
                  cell.innerHTML = process.State.toString().toUpperCase();
@@ -418,6 +430,9 @@ module TSOS {
 
             cell = row.insertCell();
             cell.innerHTML = "--";
+            
+             cell = row.insertCell();
+             cell.innerHTML = "--";
 
             cell = row.insertCell();
             cell.innerHTML = "--";

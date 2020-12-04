@@ -133,6 +133,12 @@ module TSOS {
           _CPU.cycle(); //call cpu cycle
           Control.hostUpdateCPU(); //update cpu display
         }
+      } else {
+        if (_CPU.isExecuting && !(_ProcessManager.running == null)){
+          _ProcessManager.trackStats(); //increment wait time / turn around time as needed
+          _CPU.cycle(); //call cpu cycle
+          Control.hostUpdateCPU(); //update cpu display
+        }
       }
     }
 
