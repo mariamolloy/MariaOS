@@ -386,12 +386,12 @@ var TSOS;
                     if (bytes.length <= _PartitionSize) {
                         //check if priority and set
                         //if no priority specified set to 1
+                        var priority = 0;
                         if (args.length > 0) {
-                            var priority = 0;
                             for (var i_1 = 0; i_1 < args.length; i_1++) {
-                                if (args[i_1] == "0" || args[i_1] == "1" || args[i_1] == "2" || args[i_1] == "3" || args[i_1] == "4" || args[i_1] == "5" || args[i_1] == "6" || args[i_1] == "7"
-                                    || args[i_1] == "8" || args[i_1] == "9") {
-                                    priority += (parseInt(args[i_1], 10) * (Math.pow(10, i_1)));
+                                var inp_1 = parseInt(args[i_1], 10);
+                                if (inp_1 >= 0) {
+                                    priority = priority + (inp_1 * (Math.pow(10, i_1)));
                                 }
                                 else {
                                     _StdOut.putText("invalid priority, please enter a number" + " \n " +
@@ -400,6 +400,9 @@ var TSOS;
                                     priority = 1;
                                 }
                             }
+                        }
+                        else {
+                            priority = 1;
                         }
                         _ProcessManager.load(bytes, priority); // load into memory
                     }
@@ -477,7 +480,7 @@ var TSOS;
                 _CPU.isExecuting = true; //start program
             }
         };
-        //prints out pid and state of each running process
+        //prints out pid and state and priority of each running process
         Shell.prototype.shellPS = function (args) {
             //check if we have any running processes
             if ((_ProcessManager.ready.isEmpty()) && (_CPU.isExecuting == false)) {
@@ -486,11 +489,11 @@ var TSOS;
             else {
                 _StdOut.putText("Active Processes:");
                 _StdOut.advanceLine();
-                _StdOut.putText("Process " + _ProcessManager.running.Pid + " is " + _ProcessManager.running.State);
+                _StdOut.putText("Process " + _ProcessManager.running.Pid + " is " + _ProcessManager.running.State + ", with a priority of " + _ProcessManager.running.Priority);
                 for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {
                     var current = _ProcessManager.ready.look(i);
                     _StdOut.advanceLine();
-                    _StdOut.putText("Process " + current.Pid + " is " + current.State);
+                    _StdOut.putText("Process " + current.Pid + " is " + current.State + ", with a priority of " + _ProcessManager.current.Priority);
                 }
             }
         };

@@ -10,6 +10,7 @@ var TSOS;
         //called at run and runall
         Scheduler.prototype.init = function () {
             this.rrCounter = 0;
+            this.pCounter = 0;
         };
         //Scheduling inspired by PhazonOS
         //schedule function is called every clock tick
@@ -73,6 +74,7 @@ var TSOS;
         };
         //round robin function
         Scheduler.prototype.roundRobin = function () {
+            console.log("Scheduler: Round Robin");
             //loading a new process in
             if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated") {
                 //to do for proj 4:
@@ -106,6 +108,23 @@ var TSOS;
         };
         //to do for project 4
         Scheduler.prototype.priority = function () {
+            console.log("Scheduler: Priority");
+            //nothing to do if ready queue is empty
+            if (_ProcessManager.ready.getSize() > 0) {
+                if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated") {
+                    this.pCounter = 0;
+                    _ProcessManager.priorityRun();
+                }
+                else { //currently running a process
+                    console.log("Scheduler cycle " + this.pCounter + "; running program " + _ProcessManager.running.Pid + " with priority " + _ProcessManager.running.Priority); //log current cycle
+                }
+                this.pCounter++;
+                if (_CPU.isExecuting && !(_ProcessManager.running == null)) {
+                    _ProcessManager.trackStats(); //increment wait time / turn around time as needed
+                    _CPU.cycle(); //call cpu cycle
+                    TSOS.Control.hostUpdateCPU(); //update cpu display
+                }
+            }
         };
         //sets quantum to param
         Scheduler.prototype.setQuantum = function (q) {

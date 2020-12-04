@@ -49,6 +49,32 @@ var TSOS;
             TSOS.Control.hostLog("Running process " + this.running.Pid, "OS");
             console.log("running process " + this.running.Pid);
         };
+        //method to rearrange the ready queue by priority before running a program
+        //only called when scheduler calls priority
+        ProcessManager.prototype.priorityRun = function () {
+            var highestP = this.ready.look(0).Priority;
+            var priorityPid = this.ready.look(0).Pid;
+            //go thru ready queue find the pcb with the highest priority (aka lowest numebr)
+            for (var i = 0; i < this.ready.getSize(); i++) {
+                if ((this.ready.look(i).Priority < highestP) && (this.ready.look(i).Priority >= 0)) {
+                    highestP = this.ready.look(i).Priority;
+                    priorityPid = this.ready.look(i).Pid;
+                }
+            }
+            var priorFound = false;
+            while (!(this.ready.isEmpty()) && priorFound == false) {
+                if (this.ready.look(0).Pid == priorityPid) {
+                    //we found first program with highest priority
+                    //run priority program
+                    this.run();
+                    priorFound = true;
+                }
+                else {
+                    var temp = this.ready.dequeue();
+                    this.ready.enqueue(temp);
+                }
+            }
+        };
         //exits a running process
         ProcessManager.prototype.terminate = function (process) {
             //this.ready.dequeue();

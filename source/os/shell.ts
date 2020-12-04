@@ -487,12 +487,13 @@ module TSOS {
               if (bytes.length <= _PartitionSize){
                   //check if priority and set
                   //if no priority specified set to 1
+                  let priority = 0;
                   if (args.length > 0){
-                      var priority = 0;
+
                       for (let i = 0; i < args.length; i ++){
-                          if (args[i] == "0" || args[i] == "1" || args[i] == "2" || args[i] == "3" || args[i] == "4" || args[i] == "5" || args[i] == "6" || args[i] == "7"
-                              || args[i] == "8" || args[i] == "9"){
-                              priority += (parseInt(args[i], 10) * (Math.pow(10, i)));
+                          let inp = parseInt(args[i], 10);
+                          if (inp >= 0){
+                            priority = priority + (inp * (Math.pow(10, i)));
                           }else{
                               _StdOut.putText("invalid priority, please enter a number" +" \n " +
                                   "0 is the highest priority" + "\n" +
@@ -501,6 +502,8 @@ module TSOS {
                           }
                       }
 
+                  } else {
+                      priority = 1;
                   }
 
                 _ProcessManager.load(bytes, priority); // load into memory
@@ -580,7 +583,7 @@ module TSOS {
         }
       }
 
-      //prints out pid and state of each running process
+      //prints out pid and state and priority of each running process
       public shellPS(args: string[]){
         //check if we have any running processes
         if ((_ProcessManager.ready.isEmpty()) && (_CPU.isExecuting == false)){
@@ -588,11 +591,11 @@ module TSOS {
         } else {
           _StdOut.putText("Active Processes:");
           _StdOut.advanceLine();
-          _StdOut.putText("Process " + _ProcessManager.running.Pid + " is " + _ProcessManager.running.State);
-          for (var i = 0; i < _ProcessManager.ready.getSize(); i++){
-            var current = _ProcessManager.ready.look(i);
+          _StdOut.putText("Process " + _ProcessManager.running.Pid + " is " + _ProcessManager.running.State + ", with a priority of " + _ProcessManager.running.Priority);
+          for (let i = 0; i < _ProcessManager.ready.getSize(); i++){
+            let current = _ProcessManager.ready.look(i);
             _StdOut.advanceLine();
-            _StdOut.putText("Process " + current.Pid + " is " + current.State);
+            _StdOut.putText("Process " + current.Pid + " is " + current.State + ", with a priority of " + _ProcessManager.current.Priority);
           }
         }
       }

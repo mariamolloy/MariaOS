@@ -3,6 +3,7 @@ module TSOS {
     public quantum: number;
     public alg: string;
     public rrCounter: number;
+    public pCounter: number;
 
     constructor (){
       this.quantum = _DefaultQuantum;
@@ -14,6 +15,7 @@ module TSOS {
     //called at run and runall
     init(): void{
       this.rrCounter = 0;
+      this.pCounter = 0;
     }
 
     //Scheduling inspired by PhazonOS
@@ -82,6 +84,7 @@ module TSOS {
 
     //round robin function
     public roundRobin(){
+      console.log("Scheduler: Round Robin");
       //loading a new process in
         if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated"){
           //to do for proj 4:
@@ -114,19 +117,22 @@ module TSOS {
 
     //to do for project 4
     public priority(){
-      //find process with highest priority
-      if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated"){
-        for (let i = 0; i < _ProcessManager.ready.getSize(); i++){
-          //to dooo
+
+      console.log("Scheduler: Priority");
+      //nothing to do if ready queue is empty
+      if (_ProcessManager.ready.getSize()>0) {
+        if (_ProcessManager.running === null || _ProcessManager.running.State === "terminated") {
+          this.pCounter = 0;
+         _ProcessManager.priorityRun();
+        } else { //currently running a process
+          console.log("Scheduler cycle " + this.pCounter + "; running program " + _ProcessManager.running.Pid + " with priority " + _ProcessManager.running.Priority); //log current cycle
         }
-      }else { //currently running a process
-        console.log("Scheduler cycle " + this.rrCounter); //log current cycle
-      }
-      this.rrCounter++;
-      if (_CPU.isExecuting && !(_ProcessManager.running == null)){
-        _ProcessManager.trackStats(); //increment wait time / turn around time as needed
-        _CPU.cycle(); //call cpu cycle
-        Control.hostUpdateCPU(); //update cpu display
+        this.pCounter++;
+        if (_CPU.isExecuting && !(_ProcessManager.running == null)) {
+          _ProcessManager.trackStats(); //increment wait time / turn around time as needed
+          _CPU.cycle(); //call cpu cycle
+          Control.hostUpdateCPU(); //update cpu display
+        }
       }
     }
 

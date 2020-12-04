@@ -54,5 +54,26 @@ module TSOS {
       return this.Pid;
     }
 
+    public copyPCB(original: PCB): PCB{
+      let pa = original.Partition;
+      let pr = original.Priority;
+      let copy = new PCB(pa);
+      copy.init(pa, pr);
+
+      copy.State = original.State;
+      copy.PC = original.PC;
+      copy.IR = original.PC;
+      copy.Acc = original.PC;
+      copy.Xreg = original.Xreg;
+      copy.Yreg = original.Yreg;
+      copy.Zflag = original.Zflag;
+
+      copy.TurnAroundTime = original.TurnAroundTime;
+      copy.WaitTime = original.WaitTime;
+
+      return copy;
+    }
+
+
   }
 }
