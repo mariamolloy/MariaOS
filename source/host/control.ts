@@ -175,28 +175,69 @@ module TSOS {
         //load correct values into cpu table in index
         //this is called in kernel and should update as programs run
        public static hostUpdateCPU(): void {
-          var cpuTable = (<HTMLTableElement>document.getElementById('cpuTable'));
+           var cpuTable = (<HTMLTableElement>document.getElementById('cpuTable'));
+
+           cpuTable.deleteRow(1);
+
+            if (_CPU.isExecuting){
 
 
-          cpuTable.deleteRow(1);
-          var row = cpuTable.insertRow(1);
-          var cell = row.insertCell(); //load in PC
-          cell.innerHTML = _CPU.PC.toString(16).toUpperCase();
+                let row = cpuTable.insertRow(1);
+                row.style.backgroundColor = "white";
+                let cellPC = row.insertCell(0); //load in PC
+                cellPC.innerHTML = _CPU.PC.toString(16).toUpperCase();
+                cellPC.style.color = "lightcoral";
+                cellPC.style.fontWeight = "bold";
 
-          cell = row.insertCell();
-          cell.innerHTML = _CPU.IR.toString().toUpperCase();
+                let cellIR = row.insertCell(1);
+                cellIR.innerHTML = _CPU.IR.toString().toUpperCase();
+                cellIR.style.color = "lightcoral";
+                cellIR.style.fontWeight = "bold";
 
-         cell = row.insertCell(); //load in Accumulator
-         cell.innerHTML = _CPU.Acc.toString(10).toUpperCase();
+               let  cellACC = row.insertCell(2); //load in Accumulator
+                cellACC.innerHTML = _CPU.Acc.toString(10).toUpperCase();
+                cellACC.style.color = "lightcoral";
+                cellACC.style.fontWeight = "bold";
 
-         cell = row.insertCell(); //load in X register
-         cell.innerHTML = _CPU.Xreg.toString(10).toUpperCase();
+                let cellX = row.insertCell(3); //load in X register
+                cellX.innerHTML = _CPU.Xreg.toString(10).toUpperCase();
+                cellX.style.color = "lightcoral";
+                cellX.style.fontWeight = "bold";
 
-         cell = row.insertCell(); //load in Y register
-         cell.innerHTML = _CPU.Yreg.toString(10).toUpperCase();
+                let cellY = row.insertCell(4); //load in Y register
+                cellY.innerHTML = _CPU.Yreg.toString(10).toUpperCase();
+                cellY.style.color = "lightcoral";
+                cellY.style.fontWeight = "bold";
 
-         cell = row.insertCell(); //load in Z flag
-         cell.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
+                let cellZ = row.insertCell(5); //load in Z flag
+                cellZ.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
+                cellZ.style.color = "lightcoral";
+                cellZ.style.fontWeight = "bold";
+
+            } else {
+
+                var row = cpuTable.insertRow(1);
+                var cell = row.insertCell(); //load in PC
+                cell.innerHTML = _CPU.PC.toString(16).toUpperCase();
+
+                cell = row.insertCell();
+                cell.innerHTML = _CPU.IR.toString().toUpperCase();
+
+                cell = row.insertCell(); //load in Accumulator
+                cell.innerHTML = _CPU.Acc.toString(10).toUpperCase();
+
+                cell = row.insertCell(); //load in X register
+                cell.innerHTML = _CPU.Xreg.toString(10).toUpperCase();
+
+                cell = row.insertCell(); //load in Y register
+                cell.innerHTML = _CPU.Yreg.toString(10).toUpperCase();
+
+                cell = row.insertCell(); //load in Z flag
+                cell.innerHTML = _CPU.Zflag.toString(10).toUpperCase();
+
+            }
+
+
        }
 
        public static hostInitMemory(): void {
@@ -345,41 +386,67 @@ module TSOS {
 
            //first row is the running process
              var row = readyTable.insertRow(1);
-             var cell = row.insertCell(); //load in Pid
-             cell.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
+           row.style.color = "white";
+             let cellPID = row.insertCell(); //load in Pid
+             cellPID.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
+             cellPID.style.color = "lightcoral";
+             cellPID.style.fontWeight = "bold";
 
-             cell = row.insertCell(); //load in pirority
-             cell.innerHTML = _ProcessManager.running.Priority.toString().toUpperCase();
+             let cellPri = row.insertCell(); //load in pirority
+             cellPri.innerHTML = _ProcessManager.running.Priority.toString().toUpperCase();
+             cellPri.style.color = "lightcoral";
+             cellPri.style.fontWeight = "bold";
 
-             cell = row.insertCell(); //load in state
-             cell.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
+             let cellS = row.insertCell(); //load in state
+             cellS.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
+             cellS.style.color = "lightcoral";
+             cellS.style.fontWeight = "bold";
 
-            cell = row.insertCell(); //load in partition
-            cell.innerHTML = _ProcessManager.running.Partition.toString(10).toUpperCase();
+            let cellPar = row.insertCell(); //load in partition
+            cellPar.innerHTML = _ProcessManager.running.Partition.toString(10).toUpperCase();
+             cellPar.style.color = "lightcoral";
+             cellPar.style.fontWeight = "bold";
 
-            cell = row.insertCell(); //load in base
-            cell.innerHTML = _ProcessManager.running.Base.toString(10).toUpperCase();
 
-            cell = row.insertCell(); //load in limit
-            cell.innerHTML = _ProcessManager.running.Limit.toString(10).toUpperCase();
+            let cellBase = row.insertCell(); //load in base
+            cellBase.innerHTML = _ProcessManager.running.Base.toString(10).toUpperCase();
+             cellBase.style.color = "lightcoral";
+             cellBase.style.fontWeight = "bold";
 
-            cell = row.insertCell(); //load in PC
-            cell.innerHTML = _ProcessManager.running.PC.toString(10).toUpperCase();
+            let cellLim = row.insertCell(); //load in limit
+            cellLim.innerHTML = _ProcessManager.running.Limit.toString(10).toUpperCase();
+             cellLim.style.color = "lightcoral";
+             cellLim.style.fontWeight = "bold";
 
-            cell = row.insertCell(); //load in IR
-            cell.innerHTML = _ProcessManager.running.IR.toString().toUpperCase();
+            let cellPC = row.insertCell(); //load in PC
+            cellPC.innerHTML = _ProcessManager.running.PC.toString(10).toUpperCase();
+             cellPC.style.color = "lightcoral";
+             cellPC.style.fontWeight = "bold";
 
-            cell = row.insertCell(); //load in Accumulator
-            cell.innerHTML = _ProcessManager.running.Acc.toString(10).toUpperCase();
+            let cellIR = row.insertCell(); //load in IR
+            cellIR.innerHTML = _ProcessManager.running.IR.toString().toUpperCase();
+             cellIR.style.color = "lightcoral";
+             cellIR.style.fontWeight = "bold";
 
-            cell = row.insertCell(); //load in xreg
-            cell.innerHTML = _ProcessManager.running.Xreg.toString(10).toUpperCase();
+            let cellAcc = row.insertCell(); //load in Accumulator
+            cellAcc.innerHTML = _ProcessManager.running.Acc.toString(10).toUpperCase();
+             cellAcc.style.color = "lightcoral";
+             cellAcc.style.fontWeight = "bold";
 
-            cell = row.insertCell(); //load in yreg
-            cell.innerHTML = _ProcessManager.running.Yreg.toString(10).toUpperCase();
+           let cellX = row.insertCell(); //load in xreg
+            cellX.innerHTML = _ProcessManager.running.Xreg.toString(10).toUpperCase();
+             cellX.style.color = "lightcoral";
+             cellX.style.fontWeight = "bold";
 
-            cell = row.insertCell(); //load in z flag
-            cell.innerHTML = _ProcessManager.running.Zflag.toString(10).toUpperCase();
+            let cellY = row.insertCell(); //load in yreg
+            cellY.innerHTML = _ProcessManager.running.Yreg.toString(10).toUpperCase();
+             cellY.style.color = "lightcoral";
+             cellY.style.fontWeight = "bold";
+
+            let cellZ = row.insertCell(); //load in z flag
+            cellZ.innerHTML = _ProcessManager.running.Zflag.toString(10).toUpperCase();
+             cellZ.style.color = "lightcoral";
+             cellZ.style.fontWeight = "bold";
 
             //go through ready queue and print that (if there)
              for (var i = 0; i < _ProcessManager.ready.getSize(); i++){
@@ -506,7 +573,7 @@ module TSOS {
            var table = (<HTMLTableElement>document.getElementById('diskTable'));
            // Remove all rows
            let rows = table.rows.length;
-           for(var i=0; i<rows; i++){
+           for(let i=0; i<rows; i++){
                table.deleteRow(0);
            }
            let rowNumber = 0;
