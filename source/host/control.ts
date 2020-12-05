@@ -45,16 +45,21 @@ module TSOS {
             //create CPU and memory <3__<3
               _CPU	=	new	Cpu();
               _CPU.init();
+
               _Memory	=	new	Memory();
               _Memory.init();
               _MemoryAccessor	=	new	MemoryAccessor();
 
+            // Create the disk
+            _Disc = new Disc();
+            _Disc.initFormat();
 
               //load in cpu values
               //load in cpu table and memory table w zeroed values
               Control.hostInitCPU();
               Control.hostInitMemory();
               Control.hostInitReadyQueue();
+
 
 
 
@@ -110,6 +115,7 @@ module TSOS {
             _CPU = new Cpu();  // Note: We could simulate multi-core systems by instantiating more than one instance of the CPU here.
             _CPU.init();       //       There's more to do, like dealing with scheduling and such, but this would be a start. Pretty cool.
 
+            Control.hostInitDisk();
 
             // ... then set the host clock pulse ...
             _hardwareClockID = setInterval(Devices.hostClockPulse, CPU_CLOCK_INTERVAL);
@@ -462,6 +468,73 @@ module TSOS {
             cell.innerHTML = "--";
 
           }
+       }
+
+       public static hostInitDisk(): void{
+           let table = (<HTMLTableElement>document.getElementById('diskTable'));
+           // Remove all rows
+           let rows = table.rows.length;
+           let rowNumber = 0;
+
+           for(let l = 0; l < _Disc.tracks; l++){
+               for(let m = 0; m < _Disc.sectors; m++){
+                   for(let n = 0; n<_Disc.blocks; n++){
+                       // generate tsbid?????
+                       let tsbID = l + ":" + m + ":" + n;
+                       let row = table.insertRow(rowNumber);
+                       rowNumber++;
+                       row.style.backgroundColor = "white";
+                       let tsb = row.insertCell(0);
+                       tsb.innerHTML = tsbID;
+                       tsb.style.color = "lightcoral";
+                       let ava = row.insertCell(1);
+                       ava.innerHTML = "0";
+                       ava.style.color = "lightgreen";
+                       let p = row.insertCell(2);
+                       p.innerHTML = "0:0:0";
+                       p.style.color = "lightgray";
+                       let data = row.insertCell(3);
+                       data.innerHTML = JSON.parse(sessionStorage.getItem(tsbID)).data.join("").toString();
+                        data.style.color = "lightblue";
+                   }
+               }
+           }
+
+       }
+
+       public static hostUpdateDisk(): void{
+           var table = (<HTMLTableElement>document.getElementById('diskTable'));
+           // Remove all rows
+           let rows = table.rows.length;
+           for(var i=0; i<rows; i++){
+               table.deleteRow(0);
+           }
+           let rowNumber = 0;
+
+           for(let l = 0; l < _Disc.tracks; l++){
+               for(let m = 0; m < _Disc.sectors; m++){
+                   for(let n = 0; n<_Disc.blocks; n++){
+                       // generate tsbid?????
+                       let tsbID = l + ":" + m + ":" + n;
+                       let row = table.insertRow(rowNumber);
+                       rowNumber++;
+                       row.style.backgroundColor = "white";
+                       let tsb = row.insertCell(0);
+                       tsb.innerHTML = tsbID;
+                       tsb.style.color = "lightcoral";
+                       let ava = row.insertCell(1);
+                       ava.innerHTML = JSON.parse(sessionStorage.getItem(tsbID)).ava;
+                       ava.style.color = "lightgreen";
+                       let p = row.insertCell(2);
+                       let pVal = JSON.parse(sessionStorage.getItem(tsbID)).p;
+                       p.innerHTML = pVal;
+                       p.style.color = "lightgray";
+                       let data = row.insertCell(3);
+                       data.innerHTML = JSON.parse(sessionStorage.getItem(tsbID)).data.join("").toString();
+                       data.style.color = "lightblue";
+                   }
+               }
+           }
        }
 
 

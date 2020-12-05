@@ -87,6 +87,13 @@ max-width:50%;
   font-family: "Courier New", Courier, monospace;
 }
 
+.panel-body-diskTable{
+  overflow-y:scroll;
+  width:200px;
+  height: 150px;
+  font-family: "Courier New", Courier, monospace;
+}
+
 
 
 .panel-label {
