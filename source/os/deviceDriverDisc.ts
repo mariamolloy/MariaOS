@@ -23,6 +23,7 @@ module TSOS {
             // More?
         }
 
+        /*
         public krnKbdDispatchKeyPress(params) {
             // Parse the params.  TODO: Check that the params are valid and osTrapError if not.
             var keyCode = params[0];
@@ -82,6 +83,6 @@ module TSOS {
                 _StdOut.deleteText(chr);
                 //_KernelInputQueue.dequeue();
             }
-        }
+        }*/
     }
 }

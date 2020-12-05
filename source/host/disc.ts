@@ -6,5 +6,28 @@ module TSOS {
         public totalBytes: number = 60; // actual amt of bytes to write to
         constructor(){
         }
+
+        //function to initialize all storage to 0s
+        public initFormat(): void{
+            //make matrix with array lists
+            for (let i = 0; i < this.tracks; i++){
+                for (let j = 0; j < this.sectors; j++){
+                    for (let k = 0; k < this.blocks; k++){
+                        let key = i + ":" + j + ":" + k;
+                        let emptyDisc = Array<String>();
+                        for (let n = 0; n < this.totalBytes; n++){
+                            emptyDisc.push("00");
+                        }
+                        let block = {
+                            avail : "0", // is block available or not?
+                            pointer: "0:0:0", // pointer
+                            data: emptyDisc // make it empty
+                        }
+                        sessionStorage.setItem(key, JSON.stringify(block));
+                    }
+                }
+            }
+        }
+
     }
 }

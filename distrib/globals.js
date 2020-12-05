@@ -17,6 +17,14 @@ var TIMER_IRQ = 0; // Pages 23 (timer), 9 (interrupts), and 561 (interrupt prior
 // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ = 1;
 var CONTEXT_SWITCH = 2;
+var FILE_SUCCESS = 0;
+var FILE_FULL_DISC = 1;
+var FILE_NEED_NEW_NAME = 2;
+var FILE_NO_NAME = 3;
+var IN_DISK = 999;
+var MAX_FILE_LENGTH = 56;
+var QUICK_FORMAT = 1;
+var FULL_FORMAT = 0;
 //
 // Global Variables
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
@@ -40,6 +48,7 @@ var _TotalMemorySize = 768; //default memory size
 //var	_CPU:	TSOS.Cpu;
 var _Memory;
 var _MemoryAccessor;
+var _Disc;
 //	Software	(OS)
 var _MemoryManager;
 var _ProcessManager; //creates a process manager to deal w PCBs
@@ -64,6 +73,7 @@ var _OsShell;
 var _SarcasticMode = false;
 // Global Device Driver Objects - page 12
 var _krnKeyboardDriver = null;
+var _krnDiscDriver = null;
 var _hardwareClockID = null;
 // For testing (and enrichment)...
 var Glados = null; // This is the function Glados() in glados-ip*.js http://alanclasses.github.io/TSOS/test/ .

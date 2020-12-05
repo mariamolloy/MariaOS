@@ -22,6 +22,21 @@ const KEYBOARD_IRQ: number = 1;
 
 const CONTEXT_SWITCH: number = 2;
 
+const FILE_SUCCESS: number = 0;
+
+const FILE_FULL_DISC: number = 1;
+
+const FILE_NEED_NEW_NAME: number = 2;
+
+const FILE_NO_NAME: number = 3;
+
+const IN_DISK: number = 999;
+
+const MAX_FILE_LENGTH: number = 56;
+
+const QUICK_FORMAT: number = 1;
+const FULL_FORMAT: number = 0;
+
 
 //
 // Global Variables
@@ -57,6 +72,7 @@ var _TotalMemorySize: number = 768; //default memory size
 //var	_CPU:	TSOS.Cpu;
 var	_Memory:	TSOS.Memory;
 var	_MemoryAccessor:	TSOS.MemoryAccessor;
+var _Disc: TSOS.Disc;
 
 //	Software	(OS)
 var	_MemoryManager:	TSOS.MemoryManager;
@@ -89,6 +105,7 @@ var _SarcasticMode: boolean = false;
 
 // Global Device Driver Objects - page 12
 var _krnKeyboardDriver: TSOS.DeviceDriverKeyboard  = null;
+var _krnDiscDriver: TSOS.DeviceDriverDisc  = null;
 
 var _hardwareClockID: number = null;
 
