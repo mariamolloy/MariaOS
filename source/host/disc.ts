@@ -4,11 +4,12 @@ module TSOS {
         public sectors: number = 8; // sectors in each track
         public blocks: number = 8; //  blocks in each sector
         public totalBytes: number = 60; // actual amt of bytes to write to
+        public isFormatted: boolean = false; //its not formatted yet
         constructor(){
         }
 
         //function to initialize all storage to 0s
-        public initFormat(): void{
+        public format(): void{
             //make matrix with array lists
             for (let i = 0; i < this.tracks; i++){
                 for (let j = 0; j < this.sectors; j++){
@@ -24,6 +25,7 @@ module TSOS {
                             data: emptyDisc // make it empty
                         }
                         sessionStorage.setItem(key, JSON.stringify(block));
+                        this.isFormatted = true;
                     }
                 }
             }

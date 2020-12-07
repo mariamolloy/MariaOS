@@ -22,6 +22,8 @@ const KEYBOARD_IRQ: number = 1;
 
 const CONTEXT_SWITCH: number = 2;
 
+const DISK_IRQ: number = 3;
+
 const FILE_SUCCESS: number = 0;
 
 const FILE_FULL_DISC: number = 1;
