@@ -136,6 +136,9 @@ var TSOS;
                     _Scheduler.contextSwitch(); //call scheduler context switch
                     TSOS.Control.hostUpdateReadyQueue(); //update ready queue display
                     break;
+                case DISK_IRQ:
+                    _krnDiscDriver.isr(params); // Kernel mode device driver
+                    break;
                 default:
                     this.krnTrapError("Invalid Interrupt Request. irq=" + irq + " params=[" + params + "]");
             }

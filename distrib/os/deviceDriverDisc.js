@@ -33,6 +33,38 @@ var TSOS;
             this.status = "loaded";
             // More?
         };
+        DeviceDriverDisc.prototype.krnDsDispatchKeyPress = function (params) {
+            var command = params[0];
+            var fileName = params[1];
+            var fileData = params[2];
+            if (command == "format") {
+                _Disc.format();
+            }
+            else {
+                if (_Disc.isFormatted == true) {
+                    switch (command) {
+                        case "create":
+                            break;
+                        case "read":
+                            break;
+                        case "write":
+                            break;
+                        case "delete":
+                            break;
+                        case "ls":
+                            break;
+                    }
+                }
+            }
+        };
+        DeviceDriverDisc.prototype.create = function (fn) {
+        };
+        DeviceDriverDisc.prototype.read = function (fn) {
+        };
+        DeviceDriverDisc.prototype.write = function (fn, data) {
+        };
+        DeviceDriverDisc.prototype.list = function () {
+        };
         return DeviceDriverDisc;
     }(TSOS.DeviceDriver));
     TSOS.DeviceDriverDisc = DeviceDriverDisc;

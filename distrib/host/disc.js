@@ -6,9 +6,10 @@ var TSOS;
             this.sectors = 8; // sectors in each track
             this.blocks = 8; //  blocks in each sector
             this.totalBytes = 60; // actual amt of bytes to write to
+            this.isFormatted = false; //its not formatted yet
         }
         //function to initialize all storage to 0s
-        Disc.prototype.initFormat = function () {
+        Disc.prototype.format = function () {
             //make matrix with array lists
             for (var i = 0; i < this.tracks; i++) {
                 for (var j = 0; j < this.sectors; j++) {
@@ -24,6 +25,7 @@ var TSOS;
                             data: emptyDisc // make it empty
                         };
                         sessionStorage.setItem(key, JSON.stringify(block));
+                        this.isFormatted = true;
                     }
                 }
             }

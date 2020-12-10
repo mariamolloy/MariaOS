@@ -52,7 +52,7 @@ module TSOS {
 
             // Create the disk
             _Disc = new Disc();
-            _Disc.initFormat();
+            _Disc.format();
 
               //load in cpu values
               //load in cpu table and memory table w zeroed values

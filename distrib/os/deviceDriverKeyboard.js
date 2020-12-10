@@ -29,7 +29,7 @@ var TSOS;
             // So instead...
             _super.call(this) || this;
             _this.driverEntry = _this.krnKbdDriverEntry;
-            _this.isr = _this.krnKbdDispatchKeyPress;
+            _this.isr = _this.krnDsDispatchKeyPress;
             return _this;
         }
         DeviceDriverKeyboard.prototype.krnKbdDriverEntry = function () {
@@ -37,7 +37,7 @@ var TSOS;
             this.status = "loaded";
             // More?
         };
-        DeviceDriverKeyboard.prototype.krnKbdDispatchKeyPress = function (params) {
+        DeviceDriverKeyboard.prototype.krnDsDispatchKeyPress = function (params) {
             // Parse the params.  TODO: Check that the params are valid and osTrapError if not.
             var keyCode = params[0];
             var isShifted = params[1];

@@ -17,6 +17,7 @@ var TIMER_IRQ = 0; // Pages 23 (timer), 9 (interrupts), and 561 (interrupt prior
 // NOTE: The timer is different from hardware/host clock pulses. Don't confuse these.
 var KEYBOARD_IRQ = 1;
 var CONTEXT_SWITCH = 2;
+var DISK_IRQ = 3;
 var FILE_SUCCESS = 0;
 var FILE_FULL_DISC = 1;
 var FILE_NEED_NEW_NAME = 2;
