@@ -227,8 +227,11 @@ var TSOS;
             }
             else {
                 for (var i = 0; i < files.length; i++) {
-                    _StdOut.putText(files[i]['name']);
-                    _StdOut.advanceLine();
+                    //dont print secret files!
+                    if (files[i]['name'].substr(0, 1) != ".") {
+                        _StdOut.putText(files[i]['name']);
+                        _StdOut.advanceLine();
+                    }
                 }
             }
         };

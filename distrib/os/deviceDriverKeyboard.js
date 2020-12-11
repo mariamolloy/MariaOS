@@ -66,6 +66,7 @@ var TSOS;
                 (keyCode == 59) || //semi-colon
                 (keyCode == 187) || //equals sign //61
                 (keyCode == 189) || //- //45
+                (keyCode == 190) || //. suuposed to be 46... hmm im sensing a pattern in what is broken here....
                 (keyCode == 96)) {
                 if (isShifted === true) {
                     var spec_Char = {
@@ -90,15 +91,17 @@ var TSOS;
                         '93': '125',
                         '96': '126',
                         '189': '95',
-                        '187': '43'
+                        '187': '43',
+                        '190': '62',
                     };
                     chr = String.fromCharCode(spec_Char[keyCode]);
                 }
                 else {
-                    if ((keyCode == 187) || (keyCode == 189)) { //= or -
+                    if ((keyCode == 187) || (keyCode == 189) || (keyCode == 190)) { //= or -
                         var spec2 = {
                             '187': '61',
-                            '189': '45'
+                            '189': '45',
+                            '190': '46'
                         };
                         chr = String.fromCharCode(spec2[keyCode]);
                     }
