@@ -582,23 +582,26 @@ module TSOS {
            for(let l = 0; l < _Disc.tracks; l++){
                for(let m = 0; m < _Disc.sectors; m++){
                    for(let n = 0; n<_Disc.blocks; n++){
-                       // generate tsbid?????
+                       // generate tsbid
                        let tsbID = l + ":" + m + ":" + n;
                        let row = table.insertRow(rowNumber);
                        rowNumber++;
                        row.style.backgroundColor = "white";
+
                        let tsb = row.insertCell(0);
                        tsb.innerHTML = tsbID;
                        tsb.style.color = "lightcoral";
-                       let ava = row.insertCell(1);
-                       ava.innerHTML = JSON.parse(sessionStorage.getItem(tsbID)).ava;
-                       ava.style.color = "lightgreen";
+
+                       let avail = row.insertCell(1);
+                       avail.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).avail;
+                       avail.style.color = "lightgreen";
+
                        let p = row.insertCell(2);
-                       let pVal = JSON.parse(sessionStorage.getItem(tsbID)).p;
-                       p.innerHTML = pVal;
+                       p.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).pointer;
                        p.style.color = "lightgray";
+
                        let data = row.insertCell(3);
-                       data.innerHTML = JSON.parse(sessionStorage.getItem(tsbID)).data.join("").toString();
+                       data.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).data.join("").toString();
                        data.style.color = "lightblue";
                    }
                }

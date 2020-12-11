@@ -447,7 +447,7 @@ var TSOS;
             for (var l = 0; l < _Disc.tracks; l++) {
                 for (var m = 0; m < _Disc.sectors; m++) {
                     for (var n = 0; n < _Disc.blocks; n++) {
-                        // generate tsbid?????
+                        // generate tsbid
                         var tsbID = l + ":" + m + ":" + n;
                         var row = table.insertRow(rowNumber);
                         rowNumber++;
@@ -455,15 +455,14 @@ var TSOS;
                         var tsb = row.insertCell(0);
                         tsb.innerHTML = tsbID;
                         tsb.style.color = "lightcoral";
-                        var ava = row.insertCell(1);
-                        ava.innerHTML = JSON.parse(sessionStorage.getItem(tsbID)).ava;
-                        ava.style.color = "lightgreen";
+                        var avail = row.insertCell(1);
+                        avail.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).avail;
+                        avail.style.color = "lightgreen";
                         var p = row.insertCell(2);
-                        var pVal = JSON.parse(sessionStorage.getItem(tsbID)).p;
-                        p.innerHTML = pVal;
+                        p.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).pointer;
                         p.style.color = "lightgray";
                         var data = row.insertCell(3);
-                        data.innerHTML = JSON.parse(sessionStorage.getItem(tsbID)).data.join("").toString();
+                        data.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).data.join("").toString();
                         data.style.color = "lightblue";
                     }
                 }

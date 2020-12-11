@@ -213,7 +213,7 @@ var TSOS;
         };
         //function to get todays day into hex in an array we can easily put onto the disk
         DeviceDriverDisc.prototype.getDate = function () {
-            var todaysDate;
+            var todaysDate = new Array(USED_BYTES);
             var today = new Date();
             var day = (today.getDate()).toString(16);
             if (day.length == 1) {
@@ -226,8 +226,8 @@ var TSOS;
             }
             todaysDate[1] = month;
             var year = (today.getFullYear().toString(16));
-            todaysDate[2] = year.substr(0, 2);
-            todaysDate[3] = year.substr(2, 2);
+            todaysDate[2] = (year.substr(0, 2));
+            todaysDate[3] = (year.substr(2, 2));
             return todaysDate;
         };
         return DeviceDriverDisc;

@@ -227,7 +227,7 @@ module TSOS {
 
         //function to get todays day into hex in an array we can easily put onto the disk
         public getDate(){
-            let todaysDate: string[];
+            let todaysDate: string[] = new Array(USED_BYTES);
             let today = new Date();
             let day = (today.getDate()).toString(16);
             if (day.length == 1){
@@ -240,8 +240,8 @@ module TSOS {
             }
             todaysDate[1] = month;
             let year = (today.getFullYear().toString(16));
-            todaysDate[2] = year.substr(0,2);
-            todaysDate[3] = year.substr(2, 2);
+            todaysDate[2] = (year.substr(0,2));
+            todaysDate[3]= (year.substr(2, 2));
 
             return todaysDate;
         }
