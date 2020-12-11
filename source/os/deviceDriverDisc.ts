@@ -76,19 +76,24 @@ module TSOS {
         }
 
         public listFiles(l: boolean): void{
+            let files: string[];
+            if (l == true){
+                //to do: -l
+            }else {
+                //go through Sectors and blocks but dont look in the MBR
+                for (var s = 0; s < _Disc.sectors; s ++){
+                    for (var b = 0; b < _Disc.blocks; b++){
+                        if (s == 0 && b ==0){ //we found the MBR. ignore it
+                            continue;
+                        }
+                        var tsb = "0:" + s + ":" + b;
+                        let fileBlock = JSON.parse(_Disc.storage.getItem(tsb));
+                    }
+                }
+            }
 
         }
-        //create <filename>	—	Create	the	Eile	"ilename	and	display	a	message
-        // denoting	success	or	failure.
-        // read <filename>	—	Read	and	display	the	contents	of	"ilename	or
-        // display	an	error	if	something	went	wrong.
-        // write <filename> “data”	—	Write	the	data	inside	the	quotes	to
-        // "ilename	and	display	a	message	denoting	success	or	failure.
-        // delete <filename>	—	Remove	"ilename	from	storage	and	display	a
-        // message	denoting	success	or	failure.
-        // format	—	Initialize	all	blocks	in	all	sectors	in	all	tracks	and	display	a
-        // message	denoting	success	or	failure.
-        // Add	a	shell	command,	ls,	to	list	the	Eiles	currently	stored	on	the	disk.
+
 
     }
 }
