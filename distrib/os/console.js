@@ -44,6 +44,12 @@ var TSOS;
                     // ... and reset our buffer.
                     this.buffer = "";
                 }
+                else if (chr === String.fromCharCode(8)) { //delete key
+                    this.clearLine();
+                    this.putText(_OsShell.promptStr);
+                    this.buffer = this.buffer.substring(0, this.buffer.length - 1);
+                    this.putText(this.buffer);
+                }
                 else {
                     // This is a "normal" character, so ...
                     // ... draw it on the screen...
@@ -96,20 +102,10 @@ var TSOS;
                 this.currentYPosition += oneLine;
             }
         };
-        Console.prototype.deleteText = function (text) {
-            /*  while (_KernelInputQueue.getSize() > 0) {
-                    // Get the next character from the kernel input queue.
-                    var ch = _KernelInputQueue.dequeue();*/
-            if /*((ch === String.fromCharCode(8)) && */ (this.currentXPosition > 0) { //if delete is pressed and theres a character to be deleted
-                //remove from buffer
-                this.buffer = this.buffer.substring(0, this.buffer.length - 2);
-                //move current x position back
-                var offset = _DrawingContext.measureText(this.currentFont, this.currentFontSize, text);
-                this.currentXPosition = this.currentXPosition - offset;
-                //delete character by drawing a clear rect over it
-                _DrawingContext.clearRect(this.currentXPosition, this.currentYPosition, offset, this.currentFontSize * 2);
-            }
-            //    }
+        Console.prototype.clearLine = function () {
+            var lineH = _DefaultFontSize + _DrawingContext.fontDescent(this.currentFont, this.currentFontSize) + _FontHeightMargin;
+            this.currentXPosition = 0;
+            _DrawingContext.clearRect(0, this.currentYPosition - lineH + 5, _Canvas.width, lineH * 2);
         };
         return Console;
     }());
