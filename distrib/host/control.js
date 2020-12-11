@@ -44,7 +44,7 @@ var TSOS;
             _MemoryAccessor = new TSOS.MemoryAccessor();
             // Create the disk
             _Disc = new TSOS.Disc();
-            _Disc.initFormat();
+            _Disc.format();
             //load in cpu values
             //load in cpu table and memory table w zeroed values
             Control.hostInitCPU();
@@ -296,51 +296,51 @@ var TSOS;
                 row.style.color = "white";
                 var cellPID = row.insertCell(); //load in Pid
                 cellPID.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
-                cellPID.style.color = "lightcoral";
+                cellPID.style.color = "lightblue";
                 cellPID.style.fontWeight = "bold";
                 var cellPri = row.insertCell(); //load in pirority
                 cellPri.innerHTML = _ProcessManager.running.Priority.toString().toUpperCase();
-                cellPri.style.color = "lightcoral";
+                cellPri.style.color = "lightblue";
                 cellPri.style.fontWeight = "bold";
                 var cellS = row.insertCell(); //load in state
                 cellS.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
-                cellS.style.color = "lightcoral";
+                cellS.style.color = "lightblue";
                 cellS.style.fontWeight = "bold";
                 var cellPar = row.insertCell(); //load in partition
                 cellPar.innerHTML = _ProcessManager.running.Partition.toString(10).toUpperCase();
-                cellPar.style.color = "lightcoral";
+                cellPar.style.color = "lightblue";
                 cellPar.style.fontWeight = "bold";
                 var cellBase = row.insertCell(); //load in base
                 cellBase.innerHTML = _ProcessManager.running.Base.toString(10).toUpperCase();
-                cellBase.style.color = "lightcoral";
+                cellBase.style.color = "lightblue";
                 cellBase.style.fontWeight = "bold";
                 var cellLim = row.insertCell(); //load in limit
                 cellLim.innerHTML = _ProcessManager.running.Limit.toString(10).toUpperCase();
-                cellLim.style.color = "lightcoral";
+                cellLim.style.color = "lightblue";
                 cellLim.style.fontWeight = "bold";
                 var cellPC = row.insertCell(); //load in PC
                 cellPC.innerHTML = _ProcessManager.running.PC.toString(10).toUpperCase();
-                cellPC.style.color = "lightcoral";
+                cellPC.style.color = "lightblue";
                 cellPC.style.fontWeight = "bold";
                 var cellIR = row.insertCell(); //load in IR
                 cellIR.innerHTML = _ProcessManager.running.IR.toString().toUpperCase();
-                cellIR.style.color = "lightcoral";
+                cellIR.style.color = "lightblue";
                 cellIR.style.fontWeight = "bold";
                 var cellAcc = row.insertCell(); //load in Accumulator
                 cellAcc.innerHTML = _ProcessManager.running.Acc.toString(10).toUpperCase();
-                cellAcc.style.color = "lightcoral";
+                cellAcc.style.color = "lightblue";
                 cellAcc.style.fontWeight = "bold";
                 var cellX = row.insertCell(); //load in xreg
                 cellX.innerHTML = _ProcessManager.running.Xreg.toString(10).toUpperCase();
-                cellX.style.color = "lightcoral";
+                cellX.style.color = "lightblue";
                 cellX.style.fontWeight = "bold";
                 var cellY = row.insertCell(); //load in yreg
                 cellY.innerHTML = _ProcessManager.running.Yreg.toString(10).toUpperCase();
-                cellY.style.color = "lightcoral";
+                cellY.style.color = "lightblue";
                 cellY.style.fontWeight = "bold";
                 var cellZ = row.insertCell(); //load in z flag
                 cellZ.innerHTML = _ProcessManager.running.Zflag.toString(10).toUpperCase();
-                cellZ.style.color = "lightcoral";
+                cellZ.style.color = "lightblue";
                 cellZ.style.fontWeight = "bold";
                 //go through ready queue and print that (if there)
                 for (var i = 0; i < _ProcessManager.ready.getSize(); i++) {

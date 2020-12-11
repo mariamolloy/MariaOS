@@ -75,6 +75,7 @@ var _TotalMemorySize: number = 768; //default memory size
 var	_Memory:	TSOS.Memory;
 var	_MemoryAccessor:	TSOS.MemoryAccessor;
 var _Disc: TSOS.Disc;
+var _DiscAccessor: TSOS.DiscAccessor;
 
 //	Software	(OS)
 var	_MemoryManager:	TSOS.MemoryManager;

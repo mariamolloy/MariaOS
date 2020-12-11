@@ -55,15 +55,21 @@ var TSOS;
                             break;
                     }
                 }
+                else {
+                    _StdOut.putText("Uh oh! your disk isn't formatted! Use the \"format\" command to do so");
+                }
             }
         };
-        DeviceDriverDisc.prototype.create = function (fn) {
+        DeviceDriverDisc.prototype.createFile = function (fn) {
         };
-        DeviceDriverDisc.prototype.read = function (fn) {
+        DeviceDriverDisc.prototype.doesFileExist = function (fn) {
+            return false;
         };
-        DeviceDriverDisc.prototype.write = function (fn, data) {
+        DeviceDriverDisc.prototype.readFile = function (fn) {
         };
-        DeviceDriverDisc.prototype.list = function () {
+        DeviceDriverDisc.prototype.writeFile = function (fn, data) {
+        };
+        DeviceDriverDisc.prototype.listFiles = function () {
         };
         return DeviceDriverDisc;
     }(TSOS.DeviceDriver));

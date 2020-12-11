@@ -50,9 +50,10 @@ module TSOS {
               _Memory.init();
               _MemoryAccessor	=	new	MemoryAccessor();
 
-            // Create the disk
+            // Create the disk and its accessor (**)_(**)
             _Disc = new Disc();
             _Disc.format();
+            _DiscAccessor = new DiscAccessor();
 
               //load in cpu values
               //load in cpu table and memory table w zeroed values
@@ -389,63 +390,63 @@ module TSOS {
            row.style.color = "white";
              let cellPID = row.insertCell(); //load in Pid
              cellPID.innerHTML = _ProcessManager.running.Pid.toString(10).toUpperCase();
-             cellPID.style.color = "lightcoral";
+             cellPID.style.color = "lightblue";
              cellPID.style.fontWeight = "bold";
 
              let cellPri = row.insertCell(); //load in pirority
              cellPri.innerHTML = _ProcessManager.running.Priority.toString().toUpperCase();
-             cellPri.style.color = "lightcoral";
+             cellPri.style.color = "lightblue";
              cellPri.style.fontWeight = "bold";
 
              let cellS = row.insertCell(); //load in state
              cellS.innerHTML = _ProcessManager.running.State.toString().toUpperCase();
-             cellS.style.color = "lightcoral";
+             cellS.style.color = "lightblue";
              cellS.style.fontWeight = "bold";
 
             let cellPar = row.insertCell(); //load in partition
             cellPar.innerHTML = _ProcessManager.running.Partition.toString(10).toUpperCase();
-             cellPar.style.color = "lightcoral";
+             cellPar.style.color = "lightblue";
              cellPar.style.fontWeight = "bold";
 
 
             let cellBase = row.insertCell(); //load in base
             cellBase.innerHTML = _ProcessManager.running.Base.toString(10).toUpperCase();
-             cellBase.style.color = "lightcoral";
+             cellBase.style.color = "lightblue";
              cellBase.style.fontWeight = "bold";
 
             let cellLim = row.insertCell(); //load in limit
             cellLim.innerHTML = _ProcessManager.running.Limit.toString(10).toUpperCase();
-             cellLim.style.color = "lightcoral";
+             cellLim.style.color = "lightblue";
              cellLim.style.fontWeight = "bold";
 
             let cellPC = row.insertCell(); //load in PC
             cellPC.innerHTML = _ProcessManager.running.PC.toString(10).toUpperCase();
-             cellPC.style.color = "lightcoral";
+             cellPC.style.color = "lightblue";
              cellPC.style.fontWeight = "bold";
 
             let cellIR = row.insertCell(); //load in IR
             cellIR.innerHTML = _ProcessManager.running.IR.toString().toUpperCase();
-             cellIR.style.color = "lightcoral";
+             cellIR.style.color = "lightblue";
              cellIR.style.fontWeight = "bold";
 
             let cellAcc = row.insertCell(); //load in Accumulator
             cellAcc.innerHTML = _ProcessManager.running.Acc.toString(10).toUpperCase();
-             cellAcc.style.color = "lightcoral";
+             cellAcc.style.color = "lightblue";
              cellAcc.style.fontWeight = "bold";
 
            let cellX = row.insertCell(); //load in xreg
             cellX.innerHTML = _ProcessManager.running.Xreg.toString(10).toUpperCase();
-             cellX.style.color = "lightcoral";
+             cellX.style.color = "lightblue";
              cellX.style.fontWeight = "bold";
 
             let cellY = row.insertCell(); //load in yreg
             cellY.innerHTML = _ProcessManager.running.Yreg.toString(10).toUpperCase();
-             cellY.style.color = "lightcoral";
+             cellY.style.color = "lightblue";
              cellY.style.fontWeight = "bold";
 
             let cellZ = row.insertCell(); //load in z flag
             cellZ.innerHTML = _ProcessManager.running.Zflag.toString(10).toUpperCase();
-             cellZ.style.color = "lightcoral";
+             cellZ.style.color = "lightblue";
              cellZ.style.fontWeight = "bold";
 
             //go through ready queue and print that (if there)

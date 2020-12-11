@@ -172,13 +172,37 @@ module TSOS {
             this.commandList[this.commandList.length] = sc;
 
 
-            //to do:
+            //DISK COMMANDS
+            //fully formats disk
+            sc = new ShellCommand(this.shellFullFormat,
+                "format",
+                "– Formats the hard drive");
+            this.commandList[this.commandList.length] = sc;
 
-            //to do: run <pid> program in memory
+            //creates a file on the disk
+            sc = new ShellCommand(this.shellCreate,
+                "create",
+                "<filename> - Creates a file with specified name if one doesn't already exist");
+            this.commandList[this.commandList.length] = sc;
 
+            //read a file from the harddrive
+            sc = new ShellCommand(this.shellRead,
+                "read",
+                "<filename> - Read and display the contents of filename");
+            this.commandList[this.commandList.length] = sc;
 
-            // ps  - list the running processes and their IDs
-            // kill <id> - kills the specified process id.
+            //writes to a file on the disk
+            sc = new ShellCommand(this.shellWrite,
+                "write",
+                "<filename> \"content\" - Writes the content of specified file if it exists");
+            this.commandList[this.commandList.length] = sc;
+
+            //prints all files
+            sc = new ShellCommand(this.shellLs,
+                "ls",
+                "– Prints the files stored on the disk");
+            this.commandList[this.commandList.length] = sc;
+
 
             // Display the initial prompt.
             this.putPrompt();
@@ -715,6 +739,28 @@ module TSOS {
           }
         }
       }
+
+      //<---------DISK SHELL COMMANDS------------------------------------------------------------->
+        //formats the entire disk
+        public shellFullyFormat(args: string){
+            //to do: add quick
+            _DiscAccessor.fullFormat();
+        }
+//creates a file with filename args on harddrive
+        public shellCreate(args: string){
+
+        }
+        //writes args[1] to the file args [0]
+        public shellWrite(args: string[]){
+        }
+
+        //reads file args
+        public shellRead(args: string){
+        }
+
+        //prints all files on disk
+        public shellLs(args: string){
+        }
 
 
 
