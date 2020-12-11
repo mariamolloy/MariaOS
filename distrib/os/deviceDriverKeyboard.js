@@ -67,6 +67,7 @@ var TSOS;
                 (keyCode == 187) || //equals sign //61
                 (keyCode == 189) || //- //45
                 (keyCode == 190) || //. suuposed to be 46... hmm im sensing a pattern in what is broken here....
+                (keyCode == 222) || //" or '
                 (keyCode == 96)) {
                 if (isShifted === true) {
                     var spec_Char = {
@@ -93,6 +94,7 @@ var TSOS;
                         '189': '95',
                         '187': '43',
                         '190': '62',
+                        '222': '34'
                     };
                     chr = String.fromCharCode(spec_Char[keyCode]);
                 }

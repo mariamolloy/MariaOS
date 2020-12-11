@@ -127,20 +127,52 @@ module TSOS {
             //bc if it doesnt we dont have to do anything
             if (this.doesFileExist(fn) != false) {
                 //get hex but remove the " " first
-                let hexData = this.toHexASCII(data.substring(1, data.length - 2));
+                let hexData = this.toHexASCII(data.substring(1, data.length - 1));
                 //get the file we are adding to
                 let fileTSB = this.doesFileExist(fn) + "";
                 let fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
                 //now lets look for the file
                 let fcTSB = fnBlock.pointer;
                 let fileContentBlock = JSON.parse(_DiscAccessor.readFrmDisc(fcTSB));
-                //make sure its not too long for the block
-                for (let i = 0; i < hexData.length; i++){
-
+                //make sure we can allocate enough space for it
+                let space = this.allocateFileSpace(hexData, fcTSB);
+                if (space){
+                    //we can actually write the data now
+                    this.write(fcTSB, hexData);
+                    _StdOut.putText("Success! The file has been edited");
+                } else{
+                    _StdOut.putText("There is not sufficient free space on the disk to write this content. sorry");
+                    return false;
                 }
-                fileContentBlock.data
+            } else {
+                _StdOut.putText("Please enter a valid filename");
+                return false;
+
             }
-            return false;
+        }
+
+        //function to write file contents to the disk
+        //param : tsb is the first tsb were writing data in
+        //param hexTest is the data were adding
+        public write(tsb: string, hexText: string[]){
+            let index = 0;
+            let currTsb = tsb;
+            let currblock = JSON.parse(_DiscAccessor.readFrmDisc(currTsb));
+            currblock = this.clear(currblock);
+            for (let i = 0; i < hexText.length; i++){
+                currblock.data[index] = hexText[i];
+                index++;
+                if (index == 60){
+                    //now we go to next block
+                    _DiscAccessor.writeToDisc(currTsb, JSON.stringify(currblock));
+                    currTsb = currblock.pointer;
+                    currblock = JSON.parse(_DiscAccessor.readFrmDisc(currTsb));
+                    index = 0;
+                }
+            }
+            this.deleteFile(currblock.pointer);
+            currblock.pointer = "0:0:0";
+            _DiscAccessor.writeToDisc(currTsb, JSON.stringify(currblock));
         }
 
         //function to see if we have enough space for the file
@@ -167,12 +199,21 @@ module TSOS {
                             dataB.pointer = freeBlocks[x];
                             dataB.avail = "1";
                             _DiscAccessor.writeToDisc(dataBTsb, JSON.stringify(dataB));
-                            dataBTsb = freeBlocks[x]
+                            dataBTsb = freeBlocks[x];
+                            dataB = JSON.stringify(_DiscAccessor.readFrmDisc(dataBTsb));
                         }
+                        dataB.avail = "1";
+                        _DiscAccessor.writeToDisc(dataBTsb, JSON.stringify(dataB));
+                        return true;
+                    } else {
+                        dataB.avail = "0";
+                        _StdOut.putText("Error: not enough free space on disk to allocate to this file")
+                        return false;
                     }
                 }
             }
-
+            _DiscAccessor.writeToDisc(dataBTsb, JSON.stringify(dataB));
+            return true;
         }
 
         //function to find the next free data block in data structure (2nd and 3rd track)
@@ -287,8 +328,8 @@ module TSOS {
                 }
                 //print out what we just read
                 for (let j = 0; j < fileContent.length; j++){
-                    _StdOut.advanceLine();
-                    _StdOut.putText(fileContent[j].join());
+                    //_StdOut.advanceLine();
+                    _StdOut.putText(fileContent[j]+ "");
                 }
             } else {
                 _StdOut.putText("Please provide a valid <filename>");
@@ -329,8 +370,6 @@ module TSOS {
                 _DiscAccessor.writeToDisc(tsbToDelete, JSON.stringify(dirBlockToDelete));
 
                 _StdOut.putText("Success! the file has been deleted");
-            }else {
-                _StdOut.putText("Error: File not found. Please input a valid <filename>");
             }
         }
 

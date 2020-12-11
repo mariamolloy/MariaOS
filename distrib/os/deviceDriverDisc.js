@@ -129,24 +129,94 @@ var TSOS;
             //bc if it doesnt we dont have to do anything
             if (this.doesFileExist(fn) != false) {
                 //get hex but remove the " " first
-                var hexData = this.toHexASCII(data.substring(1, data.length - 2));
+                var hexData = this.toHexASCII(data.substring(1, data.length - 1));
                 //get the file we are adding to
                 var fileTSB = this.doesFileExist(fn) + "";
                 var fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
                 //now lets look for the file
                 var fcTSB = fnBlock.pointer;
                 var fileContentBlock = JSON.parse(_DiscAccessor.readFrmDisc(fcTSB));
-                //make sure its not too long for the block
-                for (var i = 0; i < hexData.length; i++) {
+                //make sure we can allocate enough space for it
+                var space = this.allocateFileSpace(hexData, fcTSB);
+                if (space) {
+                    //we can actually write the data now
+                    this.write(fcTSB, hexData);
+                    _StdOut.putText("Success! The file has been edited");
                 }
-                fileContentBlock.data;
+                else {
+                    _StdOut.putText("There is not sufficient free space on the disk to write this content. sorry");
+                    return false;
+                }
             }
-            return false;
+            else {
+                _StdOut.putText("Please enter a valid filename");
+                return false;
+            }
+        };
+        //function to write file contents to the disk
+        //param : tsb is the first tsb were writing data in
+        //param hexTest is the data were adding
+        DeviceDriverDisc.prototype.write = function (tsb, hexText) {
+            var index = 0;
+            var currTsb = tsb;
+            var currblock = JSON.parse(_DiscAccessor.readFrmDisc(currTsb));
+            currblock = this.clear(currblock);
+            for (var i = 0; i < hexText.length; i++) {
+                currblock.data[index] = hexText[i];
+                index++;
+                if (index == 60) {
+                    //now we go to next block
+                    _DiscAccessor.writeToDisc(currTsb, JSON.stringify(currblock));
+                    currTsb = currblock.pointer;
+                    currblock = JSON.parse(_DiscAccessor.readFrmDisc(currTsb));
+                    index = 0;
+                }
+            }
+            this.deleteFile(currblock.pointer);
+            currblock.pointer = "0:0:0";
+            _DiscAccessor.writeToDisc(currTsb, JSON.stringify(currblock));
         };
         //function to see if we have enough space for the file
         //fileData = a hex array of what we want to add to the disk
         //tsb = the tsb of the first availible block
         DeviceDriverDisc.prototype.allocateFileSpace = function (fileData, tsb) {
+            var len = fileData.length; //if > 60 we need to have more than one available data block (see while loop below)
+            var dataBTsb = tsb;
+            var dataB = JSON.parse(_DiscAccessor.readFrmDisc(dataBTsb));
+            while (len > _Disc.blockSize) {
+                //if its already pointing to something were good
+                if (dataB.pointer != "0:0:0" && dataB.avail == "1") {
+                    len = len - _Disc.blockSize;
+                    //new data blocks to write to
+                    dataBTsb = dataB.pointer;
+                    dataB = JSON.parse(_DiscAccessor.readFrmDisc(dataBTsb));
+                }
+                else {
+                    //we must allocate more blocks for this file
+                    dataB.avail = "1";
+                    var blocksNeeded = Math.ceil(len / _Disc.blockSize);
+                    var freeBlocks = this.nextFreeBlocks(blocksNeeded);
+                    if (freeBlocks != null) {
+                        for (var x = 0; x < freeBlocks.length; x++) {
+                            dataB.pointer = freeBlocks[x];
+                            dataB.avail = "1";
+                            _DiscAccessor.writeToDisc(dataBTsb, JSON.stringify(dataB));
+                            dataBTsb = freeBlocks[x];
+                            dataB = JSON.stringify(_DiscAccessor.readFrmDisc(dataBTsb));
+                        }
+                        dataB.avail = "1";
+                        _DiscAccessor.writeToDisc(dataBTsb, JSON.stringify(dataB));
+                        return true;
+                    }
+                    else {
+                        dataB.avail = "0";
+                        _StdOut.putText("Error: not enough free space on disk to allocate to this file");
+                        return false;
+                    }
+                }
+            }
+            _DiscAccessor.writeToDisc(dataBTsb, JSON.stringify(dataB));
+            return true;
         };
         //function to find the next free data block in data structure (2nd and 3rd track)
         DeviceDriverDisc.prototype.nextFreeBlock = function () {
@@ -163,6 +233,30 @@ var TSOS;
             }
             _StdOut.putText("ERROR: DISK IS FULL. There are no available blocks to store files.");
             return null;
+        };
+        //function to find a selected amount of free blocks
+        //param : num the number of blocks we need to find
+        DeviceDriverDisc.prototype.nextFreeBlocks = function (num) {
+            var blocks = [];
+            for (var t = 1; t < _Disc.tracks; t++) {
+                for (var s = 0; s < _Disc.sectors; s++) {
+                    for (var b = 0; b < _Disc.blocks; b++) {
+                        var tsbID = t + ":" + s + ":" + b;
+                        var fileDataBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                        if (fileDataBlock.avail == "0") {
+                            blocks.push(tsbID);
+                            num--;
+                        }
+                        if (num == 0) {
+                            return blocks;
+                        }
+                    }
+                }
+            }
+            if (num != 0) {
+                _StdOut.putText("ERROR: DISK IS FULL. There aren't enougj available blocks to store files.");
+                return null;
+            }
         };
         //function to take a string data and convert first to ascii then to hex
         //returns an array of each character in hex
@@ -229,8 +323,8 @@ var TSOS;
                 }
                 //print out what we just read
                 for (var j = 0; j < fileContent.length; j++) {
-                    _StdOut.advanceLine();
-                    _StdOut.putText(fileContent[j].join());
+                    //_StdOut.advanceLine();
+                    _StdOut.putText(fileContent[j] + "");
                 }
             }
             else {
@@ -268,9 +362,6 @@ var TSOS;
                 dirBlockToDelete.avail = "0";
                 _DiscAccessor.writeToDisc(tsbToDelete, JSON.stringify(dirBlockToDelete));
                 _StdOut.putText("Success! the file has been deleted");
-            }
-            else {
-                _StdOut.putText("Error: File not found. Please input a valid <filename>");
             }
         };
         //recursive delete file function
