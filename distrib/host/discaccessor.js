@@ -18,9 +18,9 @@ var TSOS;
             return _Disc.storage.getItem(TSB);
         };
         //TSB : TSB of the file we are writing to
-        //bytes : data we are writing
-        DiscAccessor.prototype.writeToDisc = function (TSB, bytes) {
-            _Disc.storage.setItem(TSB, bytes);
+        //block : block data we are writing
+        DiscAccessor.prototype.writeToDisc = function (TSB, block) {
+            _Disc.storage.setItem(TSB, block);
             TSOS.Control.hostUpdateDisk();
         };
         DiscAccessor.prototype.getTsb = function (t, s, b) {

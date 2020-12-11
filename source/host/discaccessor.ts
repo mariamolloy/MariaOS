@@ -23,9 +23,9 @@ module TSOS {
 
 
         //TSB : TSB of the file we are writing to
-        //bytes : data we are writing
-        public writeToDisc(TSB: string, bytes: string): void {
-            _Disc.storage.setItem(TSB, bytes);
+        //block : block data we are writing
+        public writeToDisc(TSB: string, block: string): void {
+            _Disc.storage.setItem(TSB, block);
             TSOS.Control.hostUpdateDisk();
         }
 

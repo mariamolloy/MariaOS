@@ -455,15 +455,18 @@ var TSOS;
                         var tsb = row.insertCell(0);
                         tsb.innerHTML = tsbID;
                         tsb.style.color = "lightcoral";
-                        var avail = row.insertCell(1);
-                        avail.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).avail;
-                        avail.style.color = "lightgreen";
+                        var ava = row.insertCell(1);
+                        var a = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                        ava.innerHTML = a.avail;
+                        ava.style.color = "lightgreen";
                         var p = row.insertCell(2);
-                        p.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).pointer;
+                        var poi = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                        p.innerHTML = poi.pointer;
                         p.style.color = "lightgray";
-                        var data = row.insertCell(3);
-                        data.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).data.join("").toString();
-                        data.style.color = "lightblue";
+                        var da = row.insertCell(3);
+                        var d = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                        da.innerHTML = d.data.join("").toString();
+                        da.style.color = "lightblue";
                     }
                 }
             }

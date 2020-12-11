@@ -592,17 +592,20 @@ module TSOS {
                        tsb.innerHTML = tsbID;
                        tsb.style.color = "lightcoral";
 
-                       let avail = row.insertCell(1);
-                       avail.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).avail;
-                       avail.style.color = "lightgreen";
+                       let ava = row.insertCell(1);
+                       let a = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                       ava.innerHTML = a.avail;
+                       ava.style.color = "lightgreen";
 
                        let p = row.insertCell(2);
-                       p.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).pointer;
+                       let poi = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                       p.innerHTML = poi.pointer;
                        p.style.color = "lightgray";
 
-                       let data = row.insertCell(3);
-                       data.innerHTML = JSON.parse(_DiscAccessor.readFrmDisc(tsbID)).data.join("").toString();
-                       data.style.color = "lightblue";
+                       let da = row.insertCell(3);
+                       let d = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                       da.innerHTML = d.data.join("").toString();
+                       da.style.color = "lightblue";
                    }
                }
            }

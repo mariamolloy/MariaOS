@@ -114,6 +114,30 @@ var TSOS;
             _StdOut.putText("Disk is full. Please delete files before creating a new one.");
             return false;
         };
+        DeviceDriverDisc.prototype.writeFile = function (fn, data) {
+            //check if file we are writing to exists
+            //bc if it doesnt we dont have to do anything
+            if (this.doesFileExist(fn) != false) {
+                //get hex but remove the " " first
+                var hexData = this.toHexASCII(data.substring(1, data.length - 2));
+                //get the file we are adding to
+                var fileTSB = this.doesFileExist(fn) + "";
+                var fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
+                //now lets look for the file
+                var fcTSB = fnBlock.pointer;
+                var fileContentBlock = JSON.parse(_DiscAccessor.readFrmDisc(fcTSB));
+                //make sure its not too long for the block
+                for (var i = 0; i < hexData.length; i++) {
+                }
+                fileContentBlock.data;
+            }
+            return false;
+        };
+        //function to see if we have enough space for the file
+        //fileData = a hex array of what we want to add to the disk
+        //tsb = the tsb of the first availible block
+        DeviceDriverDisc.prototype.allocateFileSpace = function (fileData, tsb) {
+        };
         //function to find the next free data block in data structure (2nd and 3rd track)
         DeviceDriverDisc.prototype.nextFreeBlock = function () {
             for (var t = 1; t < _Disc.tracks; t++) {
@@ -168,19 +192,72 @@ var TSOS;
                         }
                         //file already exists
                         if (fileMatch == true) {
-                            return fileMatch;
+                            return tsbID;
                         }
                     }
                 }
             }
             return false;
         };
+        //read the data of a file given its name
         DeviceDriverDisc.prototype.readFile = function (fn) {
+            //check if file we are reading exists
+            //bc if it doesnt we dont have to do anything
+            if (this.doesFileExist(fn) != false) {
+                //get the file we are reading
+                var fileTSB = this.doesFileExist(fn) + "";
+                var fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
+                //now lets look for the file
+                var fcTSB = fnBlock.pointer;
+                return (this.readFileData(fcTSB));
+            }
+            else {
+                _StdOut.putText("Please provide a valid <filename>");
+                return false;
+            }
         };
-        DeviceDriverDisc.prototype.writeFile = function (fn, data) {
+        //read the hex data of a file given its starting block's tsb
+        DeviceDriverDisc.prototype.readFileData = function (tsb) {
         };
+        //deletes a file
         DeviceDriverDisc.prototype.deleteFile = function (fn) {
+            //check the file we wanna delete exists
+            if (this.doesFileExist(fn) != false) {
+                var tsbToDelete = this.doesFileExist(fn) + "";
+                var dirBlockToDelete = JSON.parse(_DiscAccessor.readFrmDisc(tsbToDelete));
+                var fileTSBToDelete = dirBlockToDelete.pointer;
+                //delete the file contents
+                this.delete(fileTSBToDelete);
+                //delete the file directory
+                dirBlockToDelete = this.clear(dirBlockToDelete);
+                dirBlockToDelete.pointer = "0:0:0";
+                dirBlockToDelete.avail = "0";
+                _DiscAccessor.writeToDisc(tsbToDelete, JSON.stringify(dirBlockToDelete));
+                _StdOut.putText("Success! the file has been deleted");
+            }
+            else {
+                _StdOut.putText("Error: File not found. Please input a valid <filename>");
+            }
         };
+        //recursive delete file function
+        DeviceDriverDisc.prototype.delete = function (tsb) {
+            var current = JSON.parse(_DiscAccessor.readFrmDisc(tsb));
+            //if its pointing to another block go delete that block
+            if (current.pointer != "0:0:0") {
+                this.delete(current.pointer);
+            }
+            else {
+                for (var i = 0; i < _Disc.blockSize; i++) {
+                    current.data[i] = "00";
+                }
+                //current.data = this.clear(current);
+                current.avail = "0";
+                current.pointer = "0:0:0";
+                _DiscAccessor.writeToDisc(tsb, JSON.stringify(current));
+            }
+        };
+        //prints the files stored on our disk
+        //if l == true then we have entered command line mode and it will print secret files too
         DeviceDriverDisc.prototype.listFiles = function (l) {
             _StdOut.putText("Files in your disk: ");
             _StdOut.advanceLine();
@@ -235,8 +312,9 @@ var TSOS;
                 }
             }
         };
+        //returns the length of a file given its starting track sector and block
         DeviceDriverDisc.prototype.getSize = function (tsb) {
-            //   return _DiscAccessor.length;
+            //   return this.readFileData(tsb).length;
             return 0;
         };
         //resets a block's data to 00000.. and returns the block
