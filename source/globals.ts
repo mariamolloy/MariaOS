@@ -24,15 +24,6 @@ const CONTEXT_SWITCH: number = 2;
 
 const DISK_IRQ: number = 3;
 
-const FILE_SUCCESS: number = 0;
-
-const FILE_FULL_DISC: number = 1;
-
-const FILE_NEED_NEW_NAME: number = 2;
-
-const FILE_NO_NAME: number = 3;
-
-const IN_DISK: number = 999;
 
 const MAX_FILE_LENGTH: number = 56;
 const USED_BYTES: number = 4;

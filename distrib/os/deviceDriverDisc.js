@@ -45,14 +45,24 @@ var TSOS;
                 if (_Disc.isFormatted == true) {
                     switch (command) {
                         case "create":
+                            this.createFile(fileName);
                             break;
                         case "read":
+                            this.readFile(fileName);
                             break;
                         case "write":
+                            this.writeFile(fileName, fileData);
                             break;
                         case "delete":
+                            this.deleteFile(fileName);
                             break;
                         case "ls":
+                            if (params[1] != null) {
+                                this.listFiles(true);
+                            }
+                            else {
+                                this.listFiles(false);
+                            }
                             break;
                     }
                 }
@@ -205,19 +215,43 @@ var TSOS;
             //bc if it doesnt we dont have to do anything
             if (this.doesFileExist(fn) != false) {
                 //get the file we are reading
-                var fileTSB = this.doesFileExist(fn) + "";
-                var fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
+                var dirFileTSB = this.doesFileExist(fn) + "";
+                var directoryBlock = JSON.parse(_DiscAccessor.readFrmDisc(dirFileTSB));
                 //now lets look for the file
-                var fcTSB = fnBlock.pointer;
-                return (this.readFileData(fcTSB));
+                var fileContentTSB = directoryBlock.pointer;
+                var hexData = this.readFileData(fileContentTSB);
+                //now lets make this legible
+                var index = 0;
+                var fileContent = [];
+                while (hexData[index] != "00") {
+                    fileContent.push(String.fromCharCode(parseInt(hexData[index], 16)));
+                    index++;
+                }
+                //print out what we just read
+                for (var j = 0; j < fileContent.length; j++) {
+                    _StdOut.advanceLine();
+                    _StdOut.putText(fileContent[j].join());
+                }
             }
             else {
                 _StdOut.putText("Please provide a valid <filename>");
                 return false;
             }
         };
+        //recursive read... does this work?
         //read the hex data of a file given its starting block's tsb
         DeviceDriverDisc.prototype.readFileData = function (tsb) {
+            var block = JSON.parse(_DiscAccessor.readFrmDisc(tsb));
+            var content = [];
+            for (var i = 0; i < block.data.length; i++) {
+                content.push(block.data[i]);
+            }
+            if (block.pointer != "0:0:0") {
+                this.readFileData(block.pointer);
+            }
+            else {
+                return content;
+            }
         };
         //deletes a file
         DeviceDriverDisc.prototype.deleteFile = function (fn) {
@@ -275,7 +309,7 @@ var TSOS;
                         var size = this.getSize(tsbID);
                         var metadata = {
                             data: fileBlock.data,
-                            size: 5
+                            size: size
                         };
                         //add it to our array of files
                         files.push(metadata);
@@ -314,7 +348,9 @@ var TSOS;
         };
         //returns the length of a file given its starting track sector and block
         DeviceDriverDisc.prototype.getSize = function (tsb) {
-            //   return this.readFileData(tsb).length;
+            if (this.readFileData(tsb) != null) {
+                return this.readFileData(tsb).length;
+            }
             return 0;
         };
         //resets a block's data to 00000.. and returns the block

@@ -463,7 +463,11 @@ module TSOS {
 
         public shellStatus(args: string[]) {
           if (args.length > 0){
-            _Status = args[0];
+              let status: string = "";
+              for (let i = 0; i < args.length; i++){
+                  status = status + " " + args[i];
+              }
+            _Status = status;
 
             _StdOut.putText("New status: " + _Status);
             document.getElementById('status').innerHTML = _Status;
@@ -805,7 +809,7 @@ module TSOS {
         public shellRead(args): void{
             if (args.length == 1){
                 let fn = args[0];
-                _krnDiscDriver.createFile(fn);
+                _krnDiscDriver.readFile(fn);
                 _KernelInterruptQueue.enqueue(new Interrupt(DISK_IRQ, [0]))
             } else {
                 _StdOut.putText("<filename> - Please provide a valid filename");

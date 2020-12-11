@@ -18,11 +18,6 @@ var TIMER_IRQ = 0; // Pages 23 (timer), 9 (interrupts), and 561 (interrupt prior
 var KEYBOARD_IRQ = 1;
 var CONTEXT_SWITCH = 2;
 var DISK_IRQ = 3;
-var FILE_SUCCESS = 0;
-var FILE_FULL_DISC = 1;
-var FILE_NEED_NEW_NAME = 2;
-var FILE_NO_NAME = 3;
-var IN_DISK = 999;
 var MAX_FILE_LENGTH = 56;
 var USED_BYTES = 4;
 //

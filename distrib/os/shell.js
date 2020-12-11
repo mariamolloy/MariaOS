@@ -350,7 +350,11 @@ var TSOS;
         };
         Shell.prototype.shellStatus = function (args) {
             if (args.length > 0) {
-                _Status = args[0];
+                var status_1 = "";
+                for (var i = 0; i < args.length; i++) {
+                    status_1 = status_1 + " " + args[i];
+                }
+                _Status = status_1;
                 _StdOut.putText("New status: " + _Status);
                 document.getElementById('status').innerHTML = _Status;
             }
@@ -685,7 +689,7 @@ var TSOS;
         Shell.prototype.shellRead = function (args) {
             if (args.length == 1) {
                 var fn = args[0];
-                _krnDiscDriver.createFile(fn);
+                _krnDiscDriver.readFile(fn);
                 _KernelInterruptQueue.enqueue(new TSOS.Interrupt(DISK_IRQ, [0]));
             }
             else {

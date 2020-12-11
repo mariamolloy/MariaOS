@@ -38,14 +38,23 @@ module TSOS {
                 if (_Disc.isFormatted == true){
                     switch(command){
                         case "create":
+                            this.createFile(fileName);
                             break;
                         case "read":
+                            this.readFile(fileName);
                             break;
                         case "write":
+                            this.writeFile(fileName, fileData);
                             break;
                         case "delete":
+                            this.deleteFile(fileName);
                             break;
                         case "ls":
+                            if (params[1] != null){
+                                this.listFiles(true);
+                            } else {
+                                this.listFiles(false);
+                            }
                             break;
                     }
 
@@ -138,6 +147,31 @@ module TSOS {
         //fileData = a hex array of what we want to add to the disk
         //tsb = the tsb of the first availible block
         public allocateFileSpace(fileData: string[], tsb: string) {
+            let len = fileData.length; //if > 60 we need to have more than one available data block (see while loop below)
+            let dataBTsb = tsb;
+            let dataB = JSON.parse(_DiscAccessor.readFrmDisc(dataBTsb));
+            while (len > _Disc.blockSize){
+                //if its already pointing to something were good
+                if (dataB.pointer != "0:0:0" && dataB.avail == "1"){
+                    len = len - _Disc.blockSize;
+                    //new data blocks to write to
+                    dataBTsb = dataB.pointer;
+                    dataB = JSON.parse(_DiscAccessor.readFrmDisc(dataBTsb));
+                } else {
+                    //we must allocate more blocks for this file
+                    dataB.avail = "1";
+                    let blocksNeeded = Math.ceil(len / _Disc.blockSize);
+                    let freeBlocks = this.nextFreeBlocks(blocksNeeded);
+                    if (freeBlocks != null){
+                        for (let x = 0; x < freeBlocks.length; x++){
+                            dataB.pointer = freeBlocks[x];
+                            dataB.avail = "1";
+                            _DiscAccessor.writeToDisc(dataBTsb, JSON.stringify(dataB));
+                            dataBTsb = freeBlocks[x]
+                        }
+                    }
+                }
+            }
 
         }
 
@@ -154,8 +188,33 @@ module TSOS {
                     }
                 }
             }
-            _StdOut.putText("ERROR: DISK IS FULL. There are no available blocks to store files.")
+            _StdOut.putText("ERROR: DISK IS FULL. There are no available blocks to store files.");
             return null;
+        }
+
+        //function to find a selected amount of free blocks
+        //param : num the number of blocks we need to find
+        public nextFreeBlocks(num: number){
+            let blocks = [];
+            for (let t = 1; t < _Disc.tracks; t++){
+                for (let s = 0; s < _Disc.sectors; s++){
+                    for (let b = 0; b<_Disc.blocks; b++){
+                        let tsbID = t+":"+s+":"+b;
+                        let fileDataBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                        if (fileDataBlock.avail == "0"){
+                            blocks.push(tsbID);
+                            num--;
+                        }
+                        if (num == 0){
+                            return blocks;
+                        }
+                    }
+                }
+            }
+            if (num !=0){
+                _StdOut.putText("ERROR: DISK IS FULL. There aren't enougj available blocks to store files.");
+                return null;
+            }
         }
 
         //function to take a string data and convert first to ascii then to hex
@@ -214,11 +273,23 @@ module TSOS {
             //bc if it doesnt we dont have to do anything
             if (this.doesFileExist(fn) != false) {
                 //get the file we are reading
-                let fileTSB = this.doesFileExist(fn) + "";
-                let fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
+                let dirFileTSB = this.doesFileExist(fn) + "";
+                let directoryBlock = JSON.parse(_DiscAccessor.readFrmDisc(dirFileTSB));
                 //now lets look for the file
-                let fcTSB = fnBlock.pointer;
-                return(this.readFileData(fcTSB));
+                let fileContentTSB = directoryBlock.pointer;
+                let hexData = this.readFileData(fileContentTSB);
+                //now lets make this legible
+                let index = 0;
+                let fileContent = [];
+                while(hexData[index] != "00"){
+                    fileContent.push(String.fromCharCode(parseInt(hexData[index], 16)));
+                    index++;
+                }
+                //print out what we just read
+                for (let j = 0; j < fileContent.length; j++){
+                    _StdOut.advanceLine();
+                    _StdOut.putText(fileContent[j].join());
+                }
             } else {
                 _StdOut.putText("Please provide a valid <filename>");
                 return false;
@@ -226,9 +297,19 @@ module TSOS {
 
         }
 
+        //recursive read... does this work?
         //read the hex data of a file given its starting block's tsb
         public readFileData(tsb: string): any{
-
+            let block = JSON.parse(_DiscAccessor.readFrmDisc(tsb));
+            let content = [];
+            for (let i = 0; i < block.data.length; i++){
+                content.push(block.data[i]);
+            }
+            if (block.pointer != "0:0:0"){
+                this.readFileData(block.pointer);
+            } else {
+                return content;
+            }
         }
 
 
@@ -289,7 +370,7 @@ module TSOS {
                             let size = this.getSize(tsbID);
                             let metadata = {
                                 data: fileBlock.data,
-                                size: 5
+                                size: size
                             }
                             //add it to our array of files
                             files.push(metadata);
@@ -329,7 +410,9 @@ module TSOS {
 
         //returns the length of a file given its starting track sector and block
         public getSize(tsb): number{
-         //   return this.readFileData(tsb).length;
+            if (this.readFileData(tsb) != null){
+                return this.readFileData(tsb).length;
+            }
             return 0;
         }
 
