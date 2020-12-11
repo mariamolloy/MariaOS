@@ -182,27 +182,59 @@ var TSOS;
         DeviceDriverDisc.prototype.deleteFile = function (fn) {
         };
         DeviceDriverDisc.prototype.listFiles = function (l) {
-            var files;
+            _StdOut.putText("Files in your disk: ");
+            _StdOut.advanceLine();
+            var files = [];
+            //go through Sectors and blocks but dont look in the MBR
+            for (var s = 0; s < _Disc.sectors; s++) {
+                for (var b = 0; b < _Disc.blocks; b++) {
+                    if (s == 0 && b == 0) { //we found the MBR. ignore it
+                        continue;
+                    }
+                    var tsbID = "0:" + s + ":" + b;
+                    var fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                    //theres something here
+                    if (fileBlock.avail == "1") {
+                        var size = this.getSize(tsbID);
+                        var metadata = {
+                            data: fileBlock.data,
+                            size: 5
+                        };
+                        //add it to our array of files
+                        files.push(metadata);
+                    }
+                }
+            }
+            //now we have to convert all the hex data to english
+            for (var i = 0; i < files.length; i++) {
+                var name_1 = [];
+                var index = USED_BYTES;
+                while (files[i]['data'][index] != "00") {
+                    name_1.push(String.fromCharCode(parseInt(files[i]['data'][index], 16)));
+                    index++;
+                }
+                files[i]['name'] = name_1.join("");
+                files[i]['day'] = parseInt(files[i]['data'][0], 16);
+                files[i]['month'] = parseInt(files[i]['data'][1], 16);
+                files[i]['year'] = parseInt(files[i]['data'][2], 16) + parseInt(files[i]['data'][3], 16);
+            }
             if (l == true) {
-                //to do: -l
+                for (var i = 0; i < files.length; i++) {
+                    _StdOut.putText(files[i]['name'] + " created on " + files[i]['day'] + " " + files[i]['month'] + " " +
+                        files[i]['year'] + " with a size of " + files[i]['size'] + " bytes ");
+                    _StdOut.advanceLine();
+                }
             }
             else {
-                //go through Sectors and blocks but dont look in the MBR
-                for (var s = 0; s < _Disc.sectors; s++) {
-                    for (var b = 0; b < _Disc.blocks; b++) {
-                        if (s == 0 && b == 0) { //we found the MBR. ignore it
-                            continue;
-                        }
-                        var tsbID = "0:" + s + ":" + b;
-                        var fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
-                        if (fileBlock.avail == "1") {
-                        }
-                    }
+                for (var i = 0; i < files.length; i++) {
+                    _StdOut.putText(files[i]['name']);
+                    _StdOut.advanceLine();
                 }
             }
         };
         DeviceDriverDisc.prototype.getSize = function (tsb) {
-            return this.readFile(tsb).length;
+            //   return _DiscAccessor.length;
+            return 0;
         };
         //resets a block's data to 00000.. and returns the block
         DeviceDriverDisc.prototype.clear = function (block) {

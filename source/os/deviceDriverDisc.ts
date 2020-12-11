@@ -191,11 +191,10 @@ module TSOS {
 
         }
 
-        public listFiles(l: boolean): void{
-            let files: string[];
-            if (l == true){
-                //to do: -l
-            }else {
+        public listFiles(l: boolean){
+            _StdOut.putText("Files in your disk: ")
+            _StdOut.advanceLine();
+            let files = [];
                 //go through Sectors and blocks but dont look in the MBR
                 for (var s = 0; s < _Disc.sectors; s ++){
                     for (var b = 0; b < _Disc.blocks; b++){
@@ -204,17 +203,49 @@ module TSOS {
                         }
                         var tsbID = "0:" + s + ":" + b;
                         let fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                        //theres something here
                         if (fileBlock.avail == "1"){
-
+                            let size = this.getSize(tsbID);
+                            let metadata = {
+                                data: fileBlock.data,
+                                size: 5
+                            }
+                            //add it to our array of files
+                            files.push(metadata);
                         }
                     }
                 }
+                //now we have to convert all the hex data to english
+                for (let i = 0 ; i < files.length; i++){
+                    let name = [];
+                    let index = USED_BYTES;
+                    while (files[i]['data'][index] != "00"){
+                        name.push(String.fromCharCode(parseInt(files[i]['data'][index], 16)));
+                        index++;
+                    }
+                    files[i]['name']= name.join("");
+                    files[i]['day'] = parseInt(files[i]['data'][0], 16);
+                    files[i]['month'] = parseInt(files[i]['data'][1], 16);
+                    files[i]['year'] = parseInt(files[i]['data'][2], 16) + parseInt(files[i]['data'][3], 16);
+                }
+            if (l == true){
+                for (let i = 0; i < files.length; i++){
+                    _StdOut.putText(files[i]['name'] + " created on " + files[i]['day'] + " " + files[i]['month'] + " " +
+                    files[i]['year']+ " with a size of " + files[i]['size'] + " bytes ");
+                    _StdOut.advanceLine();
+                }
+            } else {
+               for (let i = 0; i < files.length; i++){
+                   _StdOut.putText(files[i]['name'] );
+                   _StdOut.advanceLine();
+               }
             }
 
         }
 
         public getSize(tsb): number{
-            return this.readFile(tsb).length;
+         //   return _DiscAccessor.length;
+            return 0;
         }
 
         //resets a block's data to 00000.. and returns the block
