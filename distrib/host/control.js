@@ -42,9 +42,10 @@ var TSOS;
             _Memory = new TSOS.Memory();
             _Memory.init();
             _MemoryAccessor = new TSOS.MemoryAccessor();
-            // Create the disk
+            // Create the disk and its accessor (**)_(**)
             _Disc = new TSOS.Disc();
             _Disc.format();
+            _DiscAccessor = new TSOS.DiscAccessor();
             //load in cpu values
             //load in cpu table and memory table w zeroed values
             Control.hostInitCPU();

@@ -197,8 +197,14 @@ module TSOS {
                 "<filename> \"content\" - Writes the content of specified file if it exists");
             this.commandList[this.commandList.length] = sc;
 
+            //deletes a file on the disk
+            sc = new ShellCommand(this.shellDelete,
+                "delete",
+                "<filename> - Deletes the specified file if it exists");
+            this.commandList[this.commandList.length] = sc;
+
             //prints all files
-            sc = new ShellCommand(this.shellLs,
+            sc = new ShellCommand(this.shellList,
                 "ls",
                 "– Prints the files stored on the disk");
             this.commandList[this.commandList.length] = sc;
@@ -470,6 +476,13 @@ module TSOS {
 
         public shellBsod(args: string[]){
           _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
+            TSOS.Control.hostLog("Emergency halt", "host");
+            TSOS.Control.hostLog("Attempting Kernel shutdown.", "host");
+            // Call the OS shutdown routine.
+            _Kernel.krnShutdown();
+            // Stop the interval that's simulating our clock pulse.
+            clearInterval(_hardwareClockID);
+            // TODO: Is there anything else we need to do here?
           //to do: change console to bsod blue
         }
 
@@ -742,28 +755,87 @@ module TSOS {
 
       //<---------DISK SHELL COMMANDS------------------------------------------------------------->
         //formats the entire disk
-        public shellFullyFormat(args: string){
+        public shellFullFormat(args): void{
             //to do: add quick
             _DiscAccessor.fullFormat();
         }
-//creates a file with filename args on harddrive
-        public shellCreate(args: string){
 
+//creates a file with filename args on harddrive
+        public shellCreate(args): void{
+            if (args.length == 1){
+                let fn = args[0];
+                if (fn > MAX_FILE_LENGTH){
+                    _StdOut.putText("File name is too long. It can have up to "+ MAX_FILE_LENGTH + " characters");
+                    return;
+                }
+                _krnDiscDriver.createFile(fn);
+                _KernelInterruptQueue.enqueue(new Interrupt(DISK_IRQ, [0]));
+            } else {
+                _StdOut.putText("Please provide a unique and valid filename");
+            }
         }
+
         //writes args[1] to the file args [0]
-        public shellWrite(args: string[]){
+        public shellWrite(args): void{
+            if (args.length > 1){
+                let fn = args[0];
+                let data = ""; //data we are writing to fn
+                for (let i = 1; i < args.length; i++){
+                    data += args[i] + " ";
+                }
+                data = data.trim();
+                //  check there are quotes around the data
+                if((data.charAt(0) != "\"") || (data.charAt(data.length - 1) != "\"")){
+                    _StdOut.putText("<filename> \"<text>\" - Please supply a filename and text surrounded by quotes");
+                    return;
+                }
+                // only characters and spaces can be written to the file
+                if(!data.substring(1,data.length-2).match(/^.[a-z ]*$/i)){
+                    _StdOut.putText("Files can only have characters and spaces in them.");
+                    return;
+                }
+                _krnDiscDriver.writeFile(fn, data);
+                _KernelInterruptQueue.enqueue(new Interrupt(DISK_IRQ, [0]));
+            } else {
+                _StdOut.putText("<filename> \"<text>\" - Please provide a filename followed by text surrounded by quotes")
+            }
         }
 
         //reads file args
-        public shellRead(args: string){
+        public shellRead(args): void{
+            if (args.length == 1){
+                let fn = args[0];
+                _krnDiscDriver.createFile(fn);
+                _KernelInterruptQueue.enqueue(new Interrupt(DISK_IRQ, [0]))
+            } else {
+                _StdOut.putText("<filename> - Please provide a valid filename");
+            }
+        }
+
+        //deletes file args
+        public shellDelete(args): void{
+            if (args.length == 1){
+                let fn = args[0];
+                _krnDiscDriver.deleteFile(fn);
+                _KernelInterruptQueue.enqueue(new Interrupt((DISK_IRQ), [0]));
+            } else {
+                _StdOut.putText("<filename> - Please provide a valid filename");
+            }
         }
 
         //prints all files on disk
-        public shellLs(args: string){
+        public shellList(args){
+            if (args.length > 0){
+                if (args[0] == "-l"){
+                    _krnDiscDriver.listFiles(true);
+                } else {
+                    _StdOut.putText("Oops that argument is invalid. Hint: try -l");
+                }
+            } else {
+                _krnDiscDriver.listFiles(false);
+            }
+            _KernelInterruptQueue.enqueue(new Interrupt(DISK_IRQ, [0]));
         }
-
-
-
 
 
 

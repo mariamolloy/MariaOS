@@ -53,7 +53,8 @@ module TSOS {
             } else if (((keyCode >= 44) && (keyCode <= 57)) || //digits and punctuation
                 ((keyCode >= 91) && (keyCode <= 93)) || //square brackets
                 (keyCode == 59) || //semi-colon
-                (keyCode == 61) || //equals sign
+                (keyCode == 187) || //equals sign //61
+                (keyCode == 189) || //- //45
                 (keyCode == 96)){
                 if (isShifted === true){
                     var spec_Char = {
@@ -76,11 +77,21 @@ module TSOS {
                         '91':'123',
                         '92':'124',
                         '93':'125',
-                        '96':'126'
+                        '96':'126',
+                        '189':'95',
+                        '187':'43'
                     }
                     chr = String.fromCharCode(spec_Char[keyCode]);
                 } else {
-                    chr = String.fromCharCode(keyCode);
+                    if ((keyCode == 187) || (keyCode == 189)){ //= or -
+                        var spec2 = {
+                            '187':'61',
+                            '189':'45'
+                        }
+                        chr = String.fromCharCode(spec2[keyCode]);
+                    } else {
+                        chr = String.fromCharCode(keyCode);
+                    }
                 }
                 _KernelInputQueue.enqueue(chr);
             } else if (keyCode == 8){      //backspace key

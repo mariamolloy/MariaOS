@@ -14,7 +14,7 @@ module TSOS {
             // So instead...
             super();
             this.driverEntry = this.krnDiscDriverEntry;
-          //  this.isr = this.krnKbdDispatchKeyPress; //idk what this is yet
+             this.isr = this.krnDsDispatchKeyPress; //idk what this is yet
         }
 
         public krnDiscDriverEntry() {
@@ -71,7 +71,11 @@ module TSOS {
 
         }
 
-        public listFiles(){
+        public deleteFile(fn: string): void{
+
+        }
+
+        public listFiles(l: boolean): void{
 
         }
         //create <filename>	—	Create	the	Eile	"ilename	and	display	a	message

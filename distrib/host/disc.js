@@ -12,26 +12,32 @@ var TSOS;
         }
         //function to initialize all storage to 0s
         Disc.prototype.format = function () {
-            this.storage.clear();
-            //make matrix with array lists
-            for (var i = 0; i < this.tracks; i++) {
-                for (var j = 0; j < this.sectors; j++) {
-                    for (var k = 0; k < this.blocks; k++) {
-                        var key = i + ":" + j + ":" + k;
-                        var emptyDisc = Array();
-                        for (var n = 0; n < this.blockSize; n++) {
-                            emptyDisc.push("00");
+            if (_CPU.isExecuting) {
+                return false;
+            }
+            else {
+                this.storage.clear();
+                //make matrix with array lists
+                for (var i = 0; i < this.tracks; i++) {
+                    for (var j = 0; j < this.sectors; j++) {
+                        for (var k = 0; k < this.blocks; k++) {
+                            var TSB = i + ":" + j + ":" + k;
+                            var emptyDisc = Array();
+                            for (var n = 0; n < this.blockSize; n++) {
+                                emptyDisc.push("00");
+                            }
+                            var block = {
+                                avail: "0",
+                                pointer: "0:0:0",
+                                data: emptyDisc // make it empty
+                            };
+                            this.storage.setItem(TSB, JSON.stringify(block));
                         }
-                        var block = {
-                            avail: "0",
-                            pointer: "0:0:0",
-                            data: emptyDisc // make it empty
-                        };
-                        this.storage.setItem(key, JSON.stringify(block));
                     }
                 }
+                this.isFormatted = true;
+                return this.isFormatted;
             }
-            this.isFormatted = true;
         };
         return Disc;
     }());

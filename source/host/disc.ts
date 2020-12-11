@@ -13,28 +13,32 @@ module TSOS {
         }
 
         //function to initialize all storage to 0s
-        public format(): void{
-            this.storage.clear();
-            //make matrix with array lists
-            for (let i = 0; i < this.tracks; i++){
-                for (let j = 0; j < this.sectors; j++){
-                    for (let k = 0; k < this.blocks; k++){
-                        let key = i + ":" + j + ":" + k;
-                        let emptyDisc = Array<String>();
-                        for (let n = 0; n < this.blockSize; n++){
-                            emptyDisc.push("00");
+        public format(): boolean {
+            if (_CPU.isExecuting) {
+                return false;
+            } else {
+                this.storage.clear();
+                //make matrix with array lists
+                for (let i = 0; i < this.tracks; i++) {
+                    for (let j = 0; j < this.sectors; j++) {
+                        for (let k = 0; k < this.blocks; k++) {
+                            let TSB = i + ":" + j + ":" + k;
+                            let emptyDisc = Array<String>();
+                            for (let n = 0; n < this.blockSize; n++) {
+                                emptyDisc.push("00");
+                            }
+                            let block = {
+                                avail: "0", // is block available or not?
+                                pointer: "0:0:0", // pointer
+                                data: emptyDisc // make it empty
+                            }
+                            this.storage.setItem(TSB, JSON.stringify(block));
                         }
-                        let block = {
-                            avail : "0", // is block available or not?
-                            pointer: "0:0:0", // pointer
-                            data: emptyDisc // make it empty
-                        }
-                        this.storage.setItem(key, JSON.stringify(block));
                     }
                 }
+                this.isFormatted = true;
+                return this.isFormatted;
             }
-            this.isFormatted = true;
         }
-
     }
 }

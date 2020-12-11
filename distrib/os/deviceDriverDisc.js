@@ -25,8 +25,8 @@ var TSOS;
             // So instead...
             _super.call(this) || this;
             _this.driverEntry = _this.krnDiscDriverEntry;
+            _this.isr = _this.krnDsDispatchKeyPress; //idk what this is yet
             return _this;
-            //  this.isr = this.krnKbdDispatchKeyPress; //idk what this is yet
         }
         DeviceDriverDisc.prototype.krnDiscDriverEntry = function () {
             // Initialization routine for this, the kernel-mode Keyboard Device Driver.
@@ -69,7 +69,9 @@ var TSOS;
         };
         DeviceDriverDisc.prototype.writeFile = function (fn, data) {
         };
-        DeviceDriverDisc.prototype.listFiles = function () {
+        DeviceDriverDisc.prototype.deleteFile = function (fn) {
+        };
+        DeviceDriverDisc.prototype.listFiles = function (l) {
         };
         return DeviceDriverDisc;
     }(TSOS.DeviceDriver));

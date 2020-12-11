@@ -93,10 +93,25 @@ var TSOS;
             //prints current scheduler algorithm
             sc = new TSOS.ShellCommand(this.shellGetScheduler, "getscheduler", "– Returns current scheduler algorithm");
             this.commandList[this.commandList.length] = sc;
-            //to do:
-            //to do: run <pid> program in memory
-            // ps  - list the running processes and their IDs
-            // kill <id> - kills the specified process id.
+            //DISK COMMANDS
+            //fully formats disk
+            sc = new TSOS.ShellCommand(this.shellFullFormat, "format", "– Formats the hard drive");
+            this.commandList[this.commandList.length] = sc;
+            //creates a file on the disk
+            sc = new TSOS.ShellCommand(this.shellCreate, "create", "<filename> - Creates a file with specified name if one doesn't already exist");
+            this.commandList[this.commandList.length] = sc;
+            //read a file from the harddrive
+            sc = new TSOS.ShellCommand(this.shellRead, "read", "<filename> - Read and display the contents of filename");
+            this.commandList[this.commandList.length] = sc;
+            //writes to a file on the disk
+            sc = new TSOS.ShellCommand(this.shellWrite, "write", "<filename> \"content\" - Writes the content of specified file if it exists");
+            this.commandList[this.commandList.length] = sc;
+            //deletes a file on the disk
+            sc = new TSOS.ShellCommand(this.shellDelete, "delete", "<filename> - Deletes the specified file if it exists");
+            this.commandList[this.commandList.length] = sc;
+            //prints all files
+            sc = new TSOS.ShellCommand(this.shellList, "ls", "– Prints the files stored on the disk");
+            this.commandList[this.commandList.length] = sc;
             // Display the initial prompt.
             this.putPrompt();
         };
@@ -345,6 +360,13 @@ var TSOS;
         };
         Shell.prototype.shellBsod = function (args) {
             _StdOut.putText("ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR SOS ERROR");
+            TSOS.Control.hostLog("Emergency halt", "host");
+            TSOS.Control.hostLog("Attempting Kernel shutdown.", "host");
+            // Call the OS shutdown routine.
+            _Kernel.krnShutdown();
+            // Stop the interval that's simulating our clock pulse.
+            clearInterval(_hardwareClockID);
+            // TODO: Is there anything else we need to do here?
             //to do: change console to bsod blue
         };
         Shell.prototype.shellLoad = function (args) {
@@ -611,6 +633,90 @@ var TSOS;
                     _StdOut.putText("priority: Priority");
                 }
             }
+        };
+        //<---------DISK SHELL COMMANDS------------------------------------------------------------->
+        //formats the entire disk
+        Shell.prototype.shellFullFormat = function (args) {
+            //to do: add quick
+            _DiscAccessor.fullFormat();
+        };
+        //creates a file with filename args on harddrive
+        Shell.prototype.shellCreate = function (args) {
+            if (args.length == 1) {
+                var fn = args[0];
+                if (fn > MAX_FILE_LENGTH) {
+                    _StdOut.putText("File name is too long. It can have up to " + MAX_FILE_LENGTH + " characters");
+                    return;
+                }
+                _krnDiscDriver.createFile(fn);
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(DISK_IRQ, [0]));
+            }
+            else {
+                _StdOut.putText("Please provide a unique and valid filename");
+            }
+        };
+        //writes args[1] to the file args [0]
+        Shell.prototype.shellWrite = function (args) {
+            if (args.length > 1) {
+                var fn = args[0];
+                var data = ""; //data we are writing to fn
+                for (var i = 1; i < args.length; i++) {
+                    data += args[i] + " ";
+                }
+                data = data.trim();
+                //  check there are quotes around the data
+                if ((data.charAt(0) != "\"") || (data.charAt(data.length - 1) != "\"")) {
+                    _StdOut.putText("<filename> \"<text>\" - Please supply a filename and text surrounded by quotes");
+                    return;
+                }
+                // only characters and spaces can be written to the file
+                if (!data.substring(1, data.length - 2).match(/^.[a-z ]*$/i)) {
+                    _StdOut.putText("Files can only have characters and spaces in them.");
+                    return;
+                }
+                _krnDiscDriver.writeFile(fn, data);
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(DISK_IRQ, [0]));
+            }
+            else {
+                _StdOut.putText("<filename> \"<text>\" - Please provide a filename followed by text surrounded by quotes");
+            }
+        };
+        //reads file args
+        Shell.prototype.shellRead = function (args) {
+            if (args.length == 1) {
+                var fn = args[0];
+                _krnDiscDriver.createFile(fn);
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt(DISK_IRQ, [0]));
+            }
+            else {
+                _StdOut.putText("<filename> - Please provide a valid filename");
+            }
+        };
+        //deletes file args
+        Shell.prototype.shellDelete = function (args) {
+            if (args.length == 1) {
+                var fn = args[0];
+                _krnDiscDriver.deleteFile(fn);
+                _KernelInterruptQueue.enqueue(new TSOS.Interrupt((DISK_IRQ), [0]));
+            }
+            else {
+                _StdOut.putText("<filename> - Please provide a valid filename");
+            }
+        };
+        //prints all files on disk
+        Shell.prototype.shellList = function (args) {
+            if (args.length > 0) {
+                if (args[0] == "-l") {
+                    _krnDiscDriver.listFiles(true);
+                }
+                else {
+                    _StdOut.putText("Oops that argument is invalid. Hint: try -l");
+                }
+            }
+            else {
+                _krnDiscDriver.listFiles(false);
+            }
+            _KernelInterruptQueue.enqueue(new TSOS.Interrupt(DISK_IRQ, [0]));
         };
         return Shell;
     }());

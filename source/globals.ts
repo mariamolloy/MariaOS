@@ -36,8 +36,6 @@ const IN_DISK: number = 999;
 
 const MAX_FILE_LENGTH: number = 56;
 
-const QUICK_FORMAT: number = 1;
-const FULL_FORMAT: number = 0;
 
 
 //

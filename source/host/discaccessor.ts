@@ -5,10 +5,32 @@ module TSOS {
         constructor(){
         }
 
+        //formats the disk
         public fullFormat(): void{
-            _Disc.format();
-            TSOS.Control.hostInitDisk();
-            _StdOut.putText("Hard Drive was successfully fully formatted.");
+           if(_Disc.format()){
+               TSOS.Control.hostInitDisk();
+               _StdOut.putText("Hard Drive was successfully fully formatted.");
+           } else {
+               _StdOut.putText("Hard drive could not be formatted at this moment");
+           }
+
+        }
+
+        public readFrmDisc(): string{
+            return "hi";
+        }
+
+        public createFile(): void{
+
+        }
+
+        public writeToDisc(): void{
+
+        }
+
+        public getTsb(t: string, s: string, b:string): string{
+            let TSB = t + ":" + s + ":" + b;
+            return TSB;
         }
         /**
          //writes byte to memory

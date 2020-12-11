@@ -24,8 +24,6 @@ var FILE_NEED_NEW_NAME = 2;
 var FILE_NO_NAME = 3;
 var IN_DISK = 999;
 var MAX_FILE_LENGTH = 56;
-var QUICK_FORMAT = 1;
-var FULL_FORMAT = 0;
 //
 // Global Variables
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.
@@ -50,6 +48,7 @@ var _TotalMemorySize = 768; //default memory size
 var _Memory;
 var _MemoryAccessor;
 var _Disc;
+var _DiscAccessor;
 //	Software	(OS)
 var _MemoryManager;
 var _ProcessManager; //creates a process manager to deal w PCBs
