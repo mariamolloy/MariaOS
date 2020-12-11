@@ -3,7 +3,7 @@ var TSOS;
     var DiscAccessor = /** @class */ (function () {
         function DiscAccessor() {
         }
-        //formats the disk
+        //fully formats the disk
         DiscAccessor.prototype.fullFormat = function () {
             if (_Disc.format()) {
                 TSOS.Control.hostInitDisk();
@@ -13,12 +13,15 @@ var TSOS;
                 _StdOut.putText("Hard drive could not be formatted at this moment");
             }
         };
-        DiscAccessor.prototype.readFrmDisc = function () {
-            return "hi";
+        //takes a track sector and branch as param and returns a file
+        DiscAccessor.prototype.readFrmDisc = function (TSB) {
+            return _Disc.storage.getItem(TSB);
         };
-        DiscAccessor.prototype.createFile = function () {
-        };
-        DiscAccessor.prototype.writeToDisc = function () {
+        //TSB : TSB of the file we are writing to
+        //bytes : data we are writing
+        DiscAccessor.prototype.writeToDisc = function (TSB, bytes) {
+            _Disc.storage.setItem(TSB, bytes);
+            TSOS.Control.hostUpdateDisk();
         };
         DiscAccessor.prototype.getTsb = function (t, s, b) {
             var TSB = t + ":" + s + ":" + b;

@@ -24,6 +24,7 @@ var FILE_NEED_NEW_NAME = 2;
 var FILE_NO_NAME = 3;
 var IN_DISK = 999;
 var MAX_FILE_LENGTH = 56;
+var USED_BYTES = 4;
 //
 // Global Variables
 // TODO: Make a global object and use that instead of the "_" naming convention in the global namespace.

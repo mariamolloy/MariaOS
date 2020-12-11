@@ -1,6 +1,7 @@
 
 
 module TSOS {
+    //Inspired by and with a special thank you to Kai Wong of KaiOS and Tien Liengtiraphan of TienminatOS, Hall of Fame 2017
 
     // Extends DeviceDriver
     export class DeviceDriverDisc extends DeviceDriver {
@@ -55,11 +56,77 @@ module TSOS {
         }
 
         public createFile(fn: string): boolean{
-            //check for existing file
+            //check for existing file with same fn
             if (this.doesFileExist(fn)){
                 _StdOut.putText("A file already exists with that name. Please choose a unique name.");
                 return false;
             }
+            //look for first free block in first track (which is the directory)
+            // (ignore first block which is the master boot record)
+            for (let s = 0; s < _Disc.sectors; s++){
+                for (let b = 0; b < _Disc.blocks; b++){
+                    if(s == 0 && b == 0){
+                        //MBR alert lets get outta here
+                        continue;
+                    }
+                    let tsbID = "0:"+ s + ":" + b;
+                    let fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                    //obvi we can only write to an available block
+                    if (fileBlock.avail == "0"){
+                        //now find somewhere to put the file
+                        let dbTSB = this.nextFreeBlock();
+                        if (dbTSB != null){
+                            let fileDataBlock = JSON.parse(_DiscAccessor.readFrmDisc(dbTSB));
+                            fileBlock.avail = "1";
+                            fileDataBlock.avail = "1";
+                            //clear any data that could be in both blocks
+                            fileDataBlock = this.clear(fileDataBlock);
+                            fileBlock = this.clear(fileBlock);
+                            fileBlock.pointer = dbTSB;
+                            //convert fn to hex ASCII and store it
+                            let hexData = this.toHexASCII(fn);
+
+                            let date = this.getDate();
+                            //set first four directory bytes as the date the file was created
+                            for (let i = 0; i < date.length; i++){
+                                fileBlock.data[i] = date[i];
+                            }
+                            let index = date.length;
+                            //add filename to the directory data
+                            for (let j = 0; j < hexData.length; j++){
+                                fileBlock.data[index] = hexData[j];
+                                index++;
+                            }
+
+                            _DiscAccessor.writeToDisc(tsbID, JSON.stringify(fileBlock));
+                            _DiscAccessor.writeToDisc(dbTSB, JSON.stringify(fileDataBlock));
+                            _StdOut.putText("Success! You have a new file: " + fn);
+                            return true;
+                        }
+
+                    }
+                }
+            }
+            //if we get here it means the directory was full and we couldnt create a file
+            _StdOut.putText("Disk is full. Please delete files before creating a new one.")
+            return false;
+        }
+
+        //function to find the next free data block in data structure (2nd and 3rd track)
+        public nextFreeBlock() {
+            for (let t = 1; t < _Disc.tracks; t++){
+                for (let s = 0; s < _Disc.sectors; s++){
+                    for (let b = 0; b<_Disc.blocks; b++){
+                        let tsbID = t+":"+s+":"+b;
+                        let fileDataBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                        if (fileDataBlock.avail == "0"){
+                            return tsbID;
+                        }
+                    }
+                }
+            }
+            _StdOut.putText("ERROR: DISK IS FULL. There are no available blocks to store files.")
+            return null;
         }
 
         //function to take a string data and convert first to ascii then to hex
@@ -83,8 +150,8 @@ module TSOS {
                     if (s ==0 && b ==0){
                         continue;
                     }
-                    var tsb = "0:"+s+":"+b;
-                    let fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsb));
+                    var tsbID = "0:"+s+":"+b;
+                    let fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
                     let fileMatch = true;
                     //only look at blocks in use
                     if (fileBlock.avail == "1"){
@@ -99,6 +166,7 @@ module TSOS {
                         if (fileBlock.data[hex.length + USED_BYTES] != "00"){
                             fileMatch = false;
                         }
+                        //file already exists
                         if (fileMatch == true){
                             return fileMatch;
                         }
@@ -134,9 +202,9 @@ module TSOS {
                         if (s == 0 && b ==0){ //we found the MBR. ignore it
                             continue;
                         }
-                        var tsb = "0:" + s + ":" + b;
-                        let fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsb));
-                        if (fileBlock.avail == 1){
+                        var tsbID = "0:" + s + ":" + b;
+                        let fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsbID));
+                        if (fileBlock.avail == "1"){
 
                         }
                     }
@@ -147,6 +215,35 @@ module TSOS {
 
         public getSize(tsb): number{
             return this.readFile(tsb).length;
+        }
+
+        //resets a block's data to 00000.. and returns the block
+        public clear(block){
+            for (let i = 0; i < _Disc.blockSize; i++){
+                block.data[i] = "00";
+            }
+            return block;
+        }
+
+        //function to get todays day into hex in an array we can easily put onto the disk
+        public getDate(){
+            let todaysDate: string[];
+            let today = new Date();
+            let day = (today.getDate()).toString(16);
+            if (day.length == 1){
+                day = "0" + day;
+            }
+            todaysDate[0] = day;
+            let month = (today.getMonth()+ 1).toString(16);
+            if (month.length == 1){
+                month = "0" + month;
+            }
+            todaysDate[1] = month;
+            let year = (today.getFullYear().toString(16));
+            todaysDate[2] = year.substr(0,2);
+            todaysDate[3] = year.substr(2, 2);
+
+            return todaysDate;
         }
 
 
