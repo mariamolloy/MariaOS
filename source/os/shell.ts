@@ -161,13 +161,13 @@ module TSOS {
 
             //sets scheduler algorithm
             sc = new ShellCommand(this.shellSetScheduler,
-                                  "setscheduler",
+                                  "setschedule",
                                   "<algorithm> - Sets the scheduler algorithm: rr, fcfs, or priority");
             this.commandList[this.commandList.length] = sc;
 
             //prints current scheduler algorithm
             sc = new ShellCommand(this.shellGetScheduler,
-                                  "getscheduler",
+                                  "getschedule",
                                   "– Returns current scheduler algorithm");
             this.commandList[this.commandList.length] = sc;
 

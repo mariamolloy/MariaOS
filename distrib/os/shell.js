@@ -88,10 +88,10 @@ var TSOS;
             sc = new TSOS.ShellCommand(this.shellGetQuantum, "getquantum", "– Returns current scheduler quantum");
             this.commandList[this.commandList.length] = sc;
             //sets scheduler algorithm
-            sc = new TSOS.ShellCommand(this.shellSetScheduler, "setscheduler", "<algorithm> - Sets the scheduler algorithm: rr, fcfs, or priority");
+            sc = new TSOS.ShellCommand(this.shellSetScheduler, "setschedule", "<algorithm> - Sets the scheduler algorithm: rr, fcfs, or priority");
             this.commandList[this.commandList.length] = sc;
             //prints current scheduler algorithm
-            sc = new TSOS.ShellCommand(this.shellGetScheduler, "getscheduler", "– Returns current scheduler algorithm");
+            sc = new TSOS.ShellCommand(this.shellGetScheduler, "getschedule", "– Returns current scheduler algorithm");
             this.commandList[this.commandList.length] = sc;
             //DISK COMMANDS
             //fully formats disk
