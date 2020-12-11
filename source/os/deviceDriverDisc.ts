@@ -307,11 +307,11 @@ module TSOS {
                     files[i]['name']= name.join("");
                     files[i]['day'] = parseInt(files[i]['data'][0], 16);
                     files[i]['month'] = parseInt(files[i]['data'][1], 16);
-                    files[i]['year'] = parseInt(files[i]['data'][2], 16) + parseInt(files[i]['data'][3], 16);
+                    files[i]['year'] = parseInt((files[i]['data'][2] + "" + files[i]['data'][3]), 16) +"";
                 }
             if (l == true){
                 for (let i = 0; i < files.length; i++){
-                    _StdOut.putText(files[i]['name'] + " created on " + files[i]['day'] + " " + files[i]['month'] + " " +
+                    _StdOut.putText(files[i]['name'] + " created on " + files[i]['month'] + " " + files[i]['day'] + " " +
                     files[i]['year']+ " with a size of " + files[i]['size'] + " bytes ");
                     _StdOut.advanceLine();
                 }
@@ -356,8 +356,8 @@ module TSOS {
             }
             todaysDate[1] = month;
             let year = (today.getFullYear().toString(16));
-            todaysDate[2] = (year.substr(0,2));
-            todaysDate[3]= (year.substr(2, 2));
+            todaysDate[2] = (year.substring(0,2));
+            todaysDate[3]= (year.substring(2));
 
             return todaysDate;
         }
