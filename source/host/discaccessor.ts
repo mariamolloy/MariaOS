@@ -5,7 +5,7 @@ module TSOS {
         constructor() {
         }
 
-        //formats the disk
+        //fully formats the disk
         public fullFormat(): void {
             if (_Disc.format()) {
                 TSOS.Control.hostInitDisk();
@@ -21,9 +21,6 @@ module TSOS {
             return _Disc.storage.getItem(TSB);
         }
 
-        public createFile(): void {
-
-        }
 
         //TSB : TSB of the file we are writing to
         //bytes : data we are writing

@@ -54,16 +54,64 @@ module TSOS {
             }
         }
 
-
-        public createFile(fn: string){
-
+        public createFile(fn: string): boolean{
+            //check for existing file
+            if (this.doesFileExist(fn)){
+                _StdOut.putText("A file already exists with that name. Please choose a unique name.");
+                return false;
+            }
         }
 
+        //function to take a string data and convert first to ascii then to hex
+        //returns an array of each character in hex
+        public toHexASCII(data: string): string[]{
+            let hex = [];
+            //for each character look at ascii and convert to hex string
+            for (let i = 0; i < data.length; i++){
+                let hexChc = data.charCodeAt(i).toString(16);
+                hex.push(hexChc);
+            }
+            return hex;
+        }
+
+        //function to check if a file with a given file name exists or not already
         public doesFileExist(fn: string): boolean{
+            let hex = this.toHexASCII(fn);
+            for (let s = 0; s < _Disc.sectors; s++){
+                for (let b = 0; b < _Disc.blocks; b++){
+                    //first block is MBR and we will ignore it
+                    if (s ==0 && b ==0){
+                        continue;
+                    }
+                    var tsb = "0:"+s+":"+b;
+                    let fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsb));
+                    let fileMatch = true;
+                    //only look at blocks in use
+                    if (fileBlock.avail == "1"){
+                        let x = USED_BYTES;
+                        for (let j = 0; j < hex.length; j++){
+                            if (hex[j] != fileBlock.data[x]){
+                                fileMatch = false;
+                            }
+                            x++;
+                        }
+                        //what if we reach end of hex array but theres more to the fileblock?
+                        if (fileBlock.data[hex.length + USED_BYTES] != "00"){
+                            fileMatch = false;
+                        }
+                        if (fileMatch == true){
+                            return fileMatch;
+                        }
+                    }
+                }
+            }
             return false;
         }
 
-        public readFile(fn: string){
+
+
+
+        public readFile(fn: string): any{
 
         }
 
@@ -87,11 +135,18 @@ module TSOS {
                             continue;
                         }
                         var tsb = "0:" + s + ":" + b;
-                        let fileBlock = JSON.parse(_Disc.storage.getItem(tsb));
+                        let fileBlock = JSON.parse(_DiscAccessor.readFrmDisc(tsb));
+                        if (fileBlock.avail == 1){
+
+                        }
                     }
                 }
             }
 
+        }
+
+        public getSize(tsb): number{
+            return this.readFile(tsb).length;
         }
 
 

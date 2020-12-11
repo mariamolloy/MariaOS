@@ -35,7 +35,7 @@ const FILE_NO_NAME: number = 3;
 const IN_DISK: number = 999;
 
 const MAX_FILE_LENGTH: number = 56;
-
+const USED_BYTES: number = 4;
 
 
 //
