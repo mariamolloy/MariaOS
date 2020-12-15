@@ -46,6 +46,7 @@ module TSOS {
 
             _ProcessManager = new ProcessManager();
             _Scheduler = new Scheduler();
+            _Swapper = new Swapper();
             // ... more?
             //
 

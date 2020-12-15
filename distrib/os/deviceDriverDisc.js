@@ -153,6 +153,33 @@ var TSOS;
                 return false;
             }
         };
+        DeviceDriverDisc.prototype.writeProcess = function (fn, data) {
+            //check if file we are writing to exists
+            //bc if it doesnt we dont have to do anything
+            if (this.doesFileExist(fn) != false) {
+                //get the file we are adding to
+                var fileTSB = this.doesFileExist(fn) + "";
+                var fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
+                //now lets look for the file
+                var fcTSB = fnBlock.pointer;
+                var fileContentBlock = JSON.parse(_DiscAccessor.readFrmDisc(fcTSB));
+                //make sure we can allocate enough space for it
+                var space = this.allocateFileSpace(data, fcTSB);
+                if (space) {
+                    //we can actually write the data now
+                    this.write(fcTSB, data);
+                    _StdOut.putText("Process loaded onto hard drive");
+                }
+                else {
+                    _StdOut.putText("There is not sufficient free space on the disk to write this content. sorry");
+                    return false;
+                }
+            }
+            else {
+                _StdOut.putText("Please enter a valid filename");
+                return false;
+            }
+        };
         //function to write file contents to the disk
         //param : tsb is the first tsb were writing data in
         //param hexTest is the data were adding

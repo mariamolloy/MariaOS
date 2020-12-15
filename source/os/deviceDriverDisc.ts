@@ -151,6 +151,32 @@ module TSOS {
             }
         }
 
+        public writeProcess(fn: string, data: string[]): boolean{
+            //check if file we are writing to exists
+            //bc if it doesnt we dont have to do anything
+            if (this.doesFileExist(fn) != false) {
+                //get the file we are adding to
+                let fileTSB = this.doesFileExist(fn) + "";
+                let fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
+                //now lets look for the file
+                let fcTSB = fnBlock.pointer;
+                let fileContentBlock = JSON.parse(_DiscAccessor.readFrmDisc(fcTSB));
+                //make sure we can allocate enough space for it
+                let space = this.allocateFileSpace(data, fcTSB);
+                if (space){
+                    //we can actually write the data now
+                    this.write(fcTSB, data);
+                    _StdOut.putText("Process loaded onto hard drive");
+                } else{
+                    _StdOut.putText("There is not sufficient free space on the disk to write this content. sorry");
+                    return false;
+                }
+            } else {
+                _StdOut.putText("Please enter a valid filename");
+                return false;
+            }
+        }
+
         //function to write file contents to the disk
         //param : tsb is the first tsb were writing data in
         //param hexTest is the data were adding

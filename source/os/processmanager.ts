@@ -40,15 +40,29 @@ module TSOS {
 
         //return	the	PID	to	the	console	and	display	it.
         _StdOut.putText("Loaded Process " + processID);
+      } else if (_Disc.isFormatted){
+        //assign	a	Process	ID	(PID) and create	a	Process	Control	Block	(PCB)
+        var processID = this.idCounter;
+        var newPcb = new PCB(processID);
+
+
+        newPcb.init(part, p); //initialize the PCB we just made with the free partition we found earlier
+        //  _ProcessManager.running = newPcb; //set this as current PCB to put into memory
+
+        //add initalized PCB to resident queue now that it is loaded
+        this.resident.enqueue(newPcb);
+        this.idCounter++; //increment pcb id counter
+
+        //load onto disc
+        _Swapper.writeProcessToDisc(input, processID);
       } else {
-        _StdOut.putText("Memory full!!¡¡!! Please delete a loaded program before loading in a new one.");
+        _StdOut.putText("Memory full and disc unformatted!!¡¡!! Please delete a loaded program or format the hard drive before loading in a new one.");
       }
     }
 
     //runs a new process from reaedy queue
     public run(): void{
 
-      //to do: scheduling and priorities and all that fun stuff
       this.running = this.ready.dequeue();
       //take all pcb stuff and make it cpu stuff
       _CPU.PC = this.running.PC;

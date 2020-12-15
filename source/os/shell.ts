@@ -555,7 +555,8 @@ module TSOS {
 
                 _ProcessManager.load(bytes, priority); // load into memory
 
-            } else {
+            }
+              else {
                 _StdOut.putText("Please enter shorter input, yours is over 256 bytes");
             }
               //for testing

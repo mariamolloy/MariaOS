@@ -78,6 +78,8 @@ var _NextStep: boolean = false;
 var _DefaultQuantum: number = 6;
 var _Scheduler: TSOS.Scheduler;
 
+var _Swapper: TSOS.Swapper;
+
 // The OS Kernel and its queues.
 var _Kernel: TSOS.Kernel;
 var _KernelInterruptQueue: TSOS.Queue<any> = null; //idk what other type to make these tbh

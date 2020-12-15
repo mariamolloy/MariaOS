@@ -54,6 +54,7 @@ var _NextStep = false;
 //default quantum of 6 for round robin scheduling
 var _DefaultQuantum = 6;
 var _Scheduler;
+var _Swapper;
 // The OS Kernel and its queues.
 var _Kernel;
 var _KernelInterruptQueue = null; //idk what other type to make these tbh

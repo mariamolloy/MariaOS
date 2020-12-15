@@ -40,6 +40,7 @@ var TSOS;
             _MemoryManager = new TSOS.MemoryManager();
             _ProcessManager = new TSOS.ProcessManager();
             _Scheduler = new TSOS.Scheduler();
+            _Swapper = new TSOS.Swapper();
             // ... more?
             //
             // Enable the OS Interrupts.  (Not the CPU clock interrupt, as that is done in the hardware sim.)
