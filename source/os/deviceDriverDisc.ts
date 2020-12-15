@@ -160,7 +160,7 @@ module TSOS {
                 let fnBlock = JSON.parse(_DiscAccessor.readFrmDisc(fileTSB));
                 //now lets look for the file
                 let fcTSB = fnBlock.pointer;
-                let fileContentBlock = JSON.parse(_DiscAccessor.readFrmDisc(fcTSB));
+                //let fileContentBlock = JSON.parse(_DiscAccessor.readFrmDisc(fcTSB));
                 //make sure we can allocate enough space for it
                 let space = this.allocateFileSpace(data, fcTSB);
                 if (space){
@@ -457,14 +457,16 @@ module TSOS {
                 }
             if (l == true){
                 for (let i = 0; i < files.length; i++){
-                    _StdOut.putText(files[i]['name'] + " created on " + files[i]['month'] + " " + files[i]['day'] + " " +
-                    files[i]['year']+ " with a size of " + files[i]['size'] + " bytes ");
-                    _StdOut.advanceLine();
+                    if ((files[i]['name'].substr(0, 1) != "#")) {
+                        _StdOut.putText(files[i]['name'] + " created on " + files[i]['month'] + " " + files[i]['day'] + " " +
+                            files[i]['year'] + " with a size of " + files[i]['size'] + " bytes ");
+                        _StdOut.advanceLine();
+                    }
                 }
             } else {
                for (let i = 0; i < files.length; i++){
                    //dont print secret files!
-                   if (files[i]['name'].substr(0, 1) != "."){
+                   if ((files[i]['name'].substr(0, 1) != ".") && (files[i]['name'].substr(0, 1) != "#")){
                        _StdOut.putText(files[i]['name'] );
                        _StdOut.advanceLine();
                    }
